@@ -1,0 +1,31 @@
+<!-- Barra de navegação superior (toolbar) -->
+<mat-toolbar class="toolbar">
+    <!-- Título da aplicação -->
+    <span>Sistema de Monitoramento de Pacientes</span>
+    <span class="spacer"></span>
+    <!-- Botão do menu lateral -->
+    <button mat-icon-button (click)="drawer.toggle()">
+        <mat-icon>menu</mat-icon>
+    </button>
+</mat-toolbar>
+
+<!-- Container principal com menu lateral -->
+<mat-drawer-container class="container" autosize>
+    <!-- Menu lateral (sidenav) -->
+    <mat-drawer #drawer class="sidenav" mode="side" position="end">
+        <!-- Lista de itens do menu -->
+        <ul class="sidenav-list">
+            <li routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <mat-icon>home</mat-icon>
+                <span>Início</span>
+            </li>
+            <!-- Adicione mais itens do menu conforme necessário -->
+        </ul>
+    </mat-drawer>
+
+    <!-- Área de conteúdo principal -->
+    <mat-drawer-content class="sidenav-content">
+        <!-- Router outlet para renderizar os componentes das rotas -->
+        <router-outlet></router-outlet>
+    </mat-drawer-content>
+</mat-drawer-container>
