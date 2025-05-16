@@ -5,11 +5,11 @@
  * - Menu lateral (sidenav)
  * - Área de conteúdo principal
  */
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSidenavModule, MatSidenav } from '@angular/material/sidenav';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
@@ -29,6 +29,16 @@ import { CommonModule } from '@angular/common';
   styleUrl: './layout.component.css'
 })
 export class LayoutComponent {
+  @ViewChild('drawer') drawer!: MatSidenav;
+
+  toggleSidenav() {
+    this.drawer.toggle();
+  }
+
+  closeSidenav() {
+    this.drawer.close();
+  }
+
   // Aqui podem ser adicionadas propriedades e métodos específicos do layout
   // Por exemplo: controle de estado do menu, autenticação, etc.
 }

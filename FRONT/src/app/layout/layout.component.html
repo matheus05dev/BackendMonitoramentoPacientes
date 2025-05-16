@@ -4,7 +4,7 @@
     <span>Sistema de Monitoramento de Pacientes</span>
     <span class="spacer"></span>
     <!-- Botão do menu lateral -->
-    <button mat-icon-button (click)="drawer.toggle()">
+    <button mat-icon-button (click)="toggleSidenav()">
         <mat-icon>menu</mat-icon>
     </button>
 </mat-toolbar>
@@ -12,14 +12,32 @@
 <!-- Container principal com menu lateral -->
 <mat-drawer-container class="container" autosize>
     <!-- Menu lateral (sidenav) -->
-    <mat-drawer #drawer class="sidenav" mode="side" position="end">
+    <mat-drawer #drawer
+                class="sidenav"
+                mode="side"
+                position="end">
         <!-- Lista de itens do menu -->
         <ul class="sidenav-list">
             <li routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <mat-icon>home</mat-icon>
                 <span>Início</span>
             </li>
-            <!-- Adicione mais itens do menu conforme necessário -->
+            <li routerLink="/pacientes" routerLinkActive="active">
+                <mat-icon>personal_injury</mat-icon>
+                <span>Pacientes</span>
+            </li>
+            <li routerLink="/funcionarios" routerLinkActive="active">
+                <mat-icon>medical_services</mat-icon>
+                <span>Funcionários</span>
+            </li>
+            <li routerLink="/sensores" routerLinkActive="active">
+                <mat-icon>sensors</mat-icon>
+                <span>Sensores</span>
+            </li>
+            <li routerLink="/quartos" routerLinkActive="active">
+                <mat-icon>hotel</mat-icon>
+                <span>Quartos</span>
+            </li>
         </ul>
     </mat-drawer>
 

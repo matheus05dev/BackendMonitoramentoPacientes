@@ -353,6 +353,11 @@
 
 .atalho-card mat-icon {
     font-size: 2.2rem;
+    width: 2.2rem;
+    height: 2.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .atalho-card:hover {
