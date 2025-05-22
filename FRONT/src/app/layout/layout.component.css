@@ -1,0 +1,151 @@
+/* Reset e configurações globais do layout */
+:host {
+    display: block;
+    height: 100%;
+    width: 100%;
+    z-index: 1000;
+    background: #102542;
+    overflow: hidden;
+}
+
+/* Estilos da barra de navegação superior */
+.toolbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    z-index: 1000;
+    background: linear-gradient(90deg, #00c6fb 0%, #005bea 100%);
+    color: #fff;
+    box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.10);
+    border-bottom: 1.5px solid #00c6fb55;
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    backdrop-filter: blur(4px);
+}
+
+/* Espaçador flexível para alinhar elementos na toolbar */
+.spacer {
+    flex: 1 1 auto;
+}
+
+/* Container principal que ocupa todo o espaço disponível */
+.container {
+    position: fixed;
+    top: 64px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #f5f5f5;
+    overflow: hidden;
+    width: 100%;
+}
+
+/* Estilos do menu lateral */
+.sidenav {
+    width: auto;
+    background: linear-gradient(90deg, #00c6fb 0%, #005bea 100%);
+    border: none;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
+}
+
+/* Lista de itens do menu lateral */
+.sidenav-list {
+    list-style: none;
+    padding: 8px 0;
+    margin: 0;
+    height: 100%;
+    overflow-y: auto;
+}
+
+/* Estilos dos itens do menu */
+.sidenav-list li {
+    display: flex;
+    align-items: center;
+    padding: 12px 24px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    border-left: 3px solid transparent;
+    white-space: nowrap;
+    margin: 4px 0;
+}
+
+/* Efeito hover nos itens do menu */
+.sidenav-list li:hover,
+.sidenav-list li.active {
+    background: linear-gradient(90deg, #3ec6ff 0%, #5eaefd 100%);
+    border-left: 3px solid #00c6fb;
+    color: #fff;
+    box-shadow: 0 2px 8px 0 rgba(0, 198, 251, 0.10);
+}
+
+/* Espaçamento entre ícone e texto no menu */
+.sidenav-list mat-icon {
+    margin-right: 16px;
+    color: inherit;
+    flex-shrink: 0;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+/* Área de conteúdo principal */
+.sidenav-content {
+    padding: 0;
+    background-color: #102542;
+    height: 100%;
+    overflow-y: auto;
+    box-sizing: border-box;
+    position: relative;
+    width: 100%;
+}
+
+/* Estilos responsivos */
+@media (max-width: 599px) {
+    .toolbar {
+        height: 56px;
+    }
+
+    .container {
+        top: 56px;
+    }
+
+    .sidenav {
+        width: 100%;
+        max-width: 280px;
+    }
+
+    .sidenav-content {
+        width: 100%;
+    }
+}
+
+/* Estilos para o botão do menu */
+button[mat-icon-button] {
+    color: #fff;
+    transition: all 0.2s ease;
+}
+
+button[mat-icon-button]:hover {
+    background: rgba(255, 255, 255, 0.18);
+    color: #0112fa;
+    border-radius: 50%;
+}
+/* Estilos para o título da aplicação */
+.toolbar span {
+    font-size: 24px;
+    font-weight: 700;
+    margin-left: 20px;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 8px #0004;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+

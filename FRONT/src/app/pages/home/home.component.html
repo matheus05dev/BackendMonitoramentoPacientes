@@ -1,0 +1,155 @@
+<!-- HERO -->
+<section class="hero">
+    <div class="carousel-container">
+        <div class="carousel-slide" [style.transform]="'translateX(-' + (currentSlide * 100) + '%)'">
+            <!-- Slide 1 -->
+            <div class="carousel-item">
+                <img src="assets/images/imagem1.jpg" alt="Monitoramento de Pacientes" class="carousel-image">
+                <div class="carousel-caption">
+                    <h1>Bem-vindo ao Monitoramento de Pacientes</h1>
+                    <p>Gerencie quartos, monitore pacientes e atue rapidamente em situações críticas.</p>
+                </div>
+            </div>
+            <!-- Slide 2 -->
+            <div class="carousel-item">
+                <img src="assets/images/imagem2.jpg" alt="Gestão de Quartos" class="carousel-image">
+                <div class="carousel-caption">
+                    <h1>Gestão Inteligente de Quartos</h1>
+                    <p>Controle de ocupação e monitoramento em tempo real.</p>
+                </div>
+            </div>
+            <!-- Slide 3 -->
+            <div class="carousel-item">
+                <img src="assets/images/imagem3.jpg" alt="Cuidados com Pacientes" class="carousel-image">
+                <div class="carousel-caption">
+                    <h1>Cuidados Personalizados</h1>
+                    <p>Atendimento humanizado e monitoramento contínuo.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="carousel-indicators">
+            <div class="indicator-dot" *ngFor="let i of [0,1,2]" [class.active]="i === currentSlide"></div>
+        </div>
+    </div>
+</section>
+
+<!-- SEÇÃO QUARTOS -->
+<section class="section">
+    <h2>Quartos</h2>
+    <div class="card-list">
+        <mat-card class="card quarto">
+            <mat-card-content>
+                <div class="card-content">
+                    <mat-icon class="card-icon">hotel</mat-icon>
+                    <div class="card-info">
+                        <h3>Quarto 201</h3>
+                        <p><mat-icon>local_hospital</mat-icon> <strong>Ala:</strong> Norte</p>
+                        <p><mat-icon>group</mat-icon> <strong>Ocupação:</strong> 2/3</p>
+                        <p><mat-icon>check_circle</mat-icon> <strong>Status:</strong> Normal</p>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+        <mat-card class="card quarto">
+            <mat-card-content>
+                <div class="card-content">
+                    <mat-icon class="card-icon">hotel</mat-icon>
+                    <div class="card-info">
+                        <h3>Quarto 202 </h3>
+                        <p><mat-icon>local_hospital</mat-icon> <strong>Ala:</strong> Sul</p>
+                        <p><mat-icon>group</mat-icon> <strong>Ocupação:</strong> 1/3</p>
+                        <p><mat-icon>check_circle</mat-icon> <strong>Status:</strong> Normal</p>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</section>
+
+<!-- SEÇÃO PACIENTES CRÍTICOS -->
+<section class="section">
+    <h2>Pacientes que precisam de atenção</h2>
+    <div class="card-list">
+        <mat-card class="card paciente-critico">
+            <mat-card-content>
+                <div class="card-content">
+                    <mat-icon class="card-icon">personal_injury</mat-icon>
+                    <div class="card-info">
+                        <h3>Matheus Nunes da Silva</h3>
+                        <p><mat-icon>door_front</mat-icon> <strong>Quarto:</strong> 201</p>
+                        <p><mat-icon>warning</mat-icon> <strong>Condição:</strong> Instável</p>
+                        <p><mat-icon>schedule</mat-icon> <strong>Última checagem:</strong> 10 min atrás</p>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+        <mat-card class="card paciente-critico">
+            <mat-card-content>
+                <div class="card-content">
+                    <mat-icon class="card-icon">personal_injury</mat-icon>
+                    <div class="card-info">
+                        <h3>Thiago Ferreira do Nascimento</h3>
+                        <p><mat-icon>door_front</mat-icon> <strong>Quarto:</strong> 202</p>
+                        <p><mat-icon>warning</mat-icon> <strong>Condição:</strong> Estável</p>
+                        <p><mat-icon>schedule</mat-icon> <strong>Última checagem:</strong> 20 min atrás</p>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</section>
+
+<!-- SEÇÃO EMERGÊNCIAS RECENTES -->
+<section class="section">
+    <h2>Emergências Recentes</h2>
+    <div class="emergencias-list">
+        <div class="emergencia-item critica">
+            <mat-icon>warning</mat-icon>
+            <div>
+                <strong>Paciente:</strong> Matheus Nunes da Silva<br>
+                <strong>Quarto:</strong> 201<br>
+                <strong>Horário:</strong> 10 min atrás
+            </div>
+        </div>
+        <div class="emergencia-item alerta">
+            <mat-icon>priority_high</mat-icon>
+            <div>
+                <strong>Paciente:</strong> Thiago Ferreira do Nascimento<br>
+                <strong>Quarto:</strong> 202<br>
+                <strong>Horário:</strong> 1 hora atrás
+            </div>
+        </div>
+        <div class="emergencia-item alerta">
+            <mat-icon>priority_high</mat-icon>
+            <div>
+                <strong>Paciente:</strong> Thiago Ferreira do Nascimento<br>
+                <strong>Quarto:</strong> 202<br>
+                <strong>Horário:</strong> 1 hora atrás
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SEÇÃO ATALHOS DE GERENCIAMENTO -->
+<section class="section">
+    <h2>Gerenciamento Rápido</h2>
+    <div class="atalhos-list">
+        <a class="atalho-card" routerLink="/pacientes">
+            <mat-icon>personal_injury</mat-icon>
+            <span>Pacientes</span>
+        </a>
+        <a class="atalho-card" routerLink="/funcionarios">
+            <mat-icon>medical_services</mat-icon>
+            <span>Funcionários</span>
+        </a>
+        <a class="atalho-card" routerLink="/sensores">
+            <mat-icon>sensors</mat-icon>
+            <span>Sensores</span>
+        </a>
+        <a class="atalho-card" routerLink="/quartos">
+            <mat-icon>hotel</mat-icon>
+            <span>Quartos</span>
+        </a>
+    </div>
+</section>
