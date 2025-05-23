@@ -1,6 +1,7 @@
 package com.springwalker.back.api;
 
 import com.springwalker.back.model.FuncionarioSaude;
+import com.springwalker.back.model.Paciente;
 import com.springwalker.back.repository.FuncionarioSaudeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -77,15 +78,20 @@ public class FuncionarioSaudeRestController {
         return funcionarioSaudeRepository.findFuncionarioSaudesByNomeContaining(nome);
     }
 
+    //Buscar por Cpf
+    @GetMapping("/buscar-por-cpf/{cpf}")
+    public List<FuncionarioSaude> buscarPorCpf(@PathVariable String cpf){
+        return funcionarioSaudeRepository.findFuncionarioSaudesByNomeContaining(cpf);
+    }
 
 
-    //Buscar por Nome ou CPF
-    // @GetMapping("/buscar-por-nome-ou-cpf/{nome}")
-    // public List<FuncionarioSaude> buscarPorNomeOuCpf(
-    //         @PathVariable String nome
-    //){
-    //  return funcionarioSaudeRepository
-    //        .findFuncionarioSaudesByNomeContainingOrCpfContaining(nome);
-    //}
+//    //Buscar por Nome ou CPF
+//    @GetMapping("/buscar-por-nome-ou-cpf/{texto}")
+//    public List<FuncionarioSaude> buscarPorNomeOuCpf(
+//            @PathVariable String texto
+//    ){
+//        return funcionarioSaudeRepository
+//                .buscarFuncionarioSaudePorNomeOuCpf(texto);
+//    }
 
 }

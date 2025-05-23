@@ -2,6 +2,7 @@ package com.springwalker.back.api;
 
 import com.springwalker.back.model.Paciente;
 import com.springwalker.back.repository.PacienteRepository;
+import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -78,14 +79,19 @@ public class PacienteRestController {
     }
 
 
+    //Buscar por Cpf
+    @GetMapping("/buscar-por-cpf/{cpf}")
+    public List<Paciente> buscarPorCpf(@PathVariable String cpf){
+        return pacienteRepository.findPacientesByCpfContaining(cpf);
+    }
 
-    //Buscar por Nome ou CPF
-   // @GetMapping("/buscar-por-nome-ou-cpf/{nome}")
-   // public List<Paciente> buscarPorNomeOuCpf(
-   //         @PathVariable String nome
-    //){
-      //  return pacienteRepository
-        //        .findPacientesByNomeContainingOrCpfContaining(nome);
-    //}
+//    //Buscar por Nome ou CPF
+//    @GetMapping("/buscar-por-nome-ou-cpf/{texto}")
+//    public List<Paciente> buscarPorNomeOuCpf(
+//            @PathVariable String texto
+//    ){
+//        return pacienteRepository
+//                .buscarPacientePorNomeOuCpf(texto);
+//    }
 
 }
