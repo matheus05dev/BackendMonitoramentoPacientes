@@ -10,7 +10,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/funcionarioSaude")
 public class FuncionarioSaudeRestController {
-
     @Autowired
     private FuncionarioSaudeRepository funcionarioSaudeRepository;
 
@@ -27,6 +26,31 @@ public class FuncionarioSaudeRestController {
     @PatchMapping("/alterar")
     public void alterar(@RequestBody FuncionarioSaude funcionarioSaude){
         funcionarioSaudeRepository.save(funcionarioSaude);
+    }
+
+
+    @PutMapping("/alterar/{id}")
+    public void alterar(@PathVariable Long id, @RequestBody FuncionarioSaude funcionarioSaude){
+
+        // busca o funcionarioSaude no banco de dados
+        FuncionarioSaude funcionarioSaudeExistente = funcionarioSaudeRepository.findById(id).orElse(null);
+
+        if(funcionarioSaude.getCpf() != null){
+            funcionarioSaudeExistente.setCpf(funcionarioSaude.getCpf());
+        }
+
+        if(funcionarioSaude.getEmail() != null){
+            funcionarioSaudeExistente.setEmail(funcionarioSaude.getEmail());
+        }
+
+        if(funcionarioSaude.getNome() != null){
+            funcionarioSaudeExistente.setNome(funcionarioSaude.getNome());
+        }
+
+
+
+
+        funcionarioSaudeRepository.save(funcionarioSaudeExistente);
     }
 
     @DeleteMapping("/excluir/{id}")
@@ -50,22 +74,18 @@ public class FuncionarioSaudeRestController {
     //Buscar por Nome
     @GetMapping("/buscar-por-nome/{nome}")
     public List<FuncionarioSaude> buscarPorNome(@PathVariable String nome){
-        return funcionarioSaudeRepository.findFuncionarioSaudesByNomeContaining((nome));
+        return funcionarioSaudeRepository.findFuncionarioSaudesByNomeContaining(nome);
     }
 
 
 
     //Buscar por Nome ou CPF
-    //@GetMapping("/buscar-por-nome-ou-cpf/{nome}/{cpf}")
-    //public List<FuncionarioSaude> buscarPorNomeOuCpf(
-     //       @PathVariable String nome,
-       //     @PathVariable String cpf
+    // @GetMapping("/buscar-por-nome-ou-cpf/{nome}")
+    // public List<FuncionarioSaude> buscarPorNomeOuCpf(
+    //         @PathVariable String nome
     //){
-      //  return funcionarioSaudeRepository
-        //        .findFuncionarioSaudesByNomeContainingOrCpfContaining(nome, cpf);
+    //  return funcionarioSaudeRepository
+    //        .findFuncionarioSaudesByNomeContainingOrCpfContaining(nome);
     //}
-
-
-
 
 }

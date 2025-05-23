@@ -28,6 +28,31 @@ public class PacienteRestController {
         pacienteRepository.save(paciente);
     }
 
+
+    @PutMapping("/alterar/{id}")
+    public void alterar(@PathVariable Long id, @RequestBody Paciente paciente){
+
+        // busca o paciente no banco de dados
+        Paciente pacienteExistente = pacienteRepository.findById(id).orElse(null);
+
+        if(paciente.getCpf() != null){
+            pacienteExistente.setCpf(paciente.getCpf());
+        }
+
+        if(paciente.getEmail() != null){
+            pacienteExistente.setEmail(paciente.getEmail());
+        }
+
+        if(paciente.getNome() != null){
+            pacienteExistente.setNome(paciente.getNome());
+        }
+
+
+
+
+        pacienteRepository.save(pacienteExistente);
+    }
+
     @DeleteMapping("/excluir/{id}")
     public void excluir(@PathVariable Long id){
         pacienteRepository.deleteById(id);

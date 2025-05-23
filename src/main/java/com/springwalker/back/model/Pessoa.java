@@ -3,6 +3,9 @@ package com.springwalker.back.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,6 +18,9 @@ import java.util.List;
         discriminatorType = DiscriminatorType.STRING
 )
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Pessoa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,20 +49,5 @@ public class Pessoa {
         this.telefones.add(telefone);
     }
 
-    public String getNome() { return nome; }
-    public void setNome(String nome) { this.nome = nome; }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-
-    public String getCpf() { return cpf; } // Getter para CPF
-    public void setCpf(String cpf) { this.cpf = cpf; } // Setter para CPF
-
-    public List<Telefone> getTelefones() {
-        return telefones;
-    }
-
-    public void setTelefones(List<Telefone> telefones) {
-        this.telefones = telefones;
-    }
 }
