@@ -9,28 +9,29 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/funcionarioSaude")
+@RequestMapping("/api/funcionario")
+@CrossOrigin(origins = "*")
 public class FuncionarioSaudeRestController {
     @Autowired
     private FuncionarioSaudeRepository funcionarioSaudeRepository;
 
-    @GetMapping("/listar")
+    @GetMapping
     public List<FuncionarioSaude> listar(){
         return funcionarioSaudeRepository.findAll();
     }
 
-    @PostMapping("/inserir")
+    @PostMapping
     public void inserir(@RequestBody FuncionarioSaude funcionarioSaude){
         funcionarioSaudeRepository.save(funcionarioSaude);
     }
 
-    @PatchMapping("/alterar")
+    @PatchMapping("")
     public void alterar(@RequestBody FuncionarioSaude funcionarioSaude){
         funcionarioSaudeRepository.save(funcionarioSaude);
     }
 
 
-    @PutMapping("/alterar/{id}")
+    @PutMapping("/{id}")
     public void alterar(@PathVariable Long id, @RequestBody FuncionarioSaude funcionarioSaude){
 
         // busca o funcionarioSaude no banco de dados
