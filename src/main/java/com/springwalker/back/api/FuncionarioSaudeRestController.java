@@ -55,7 +55,7 @@ public class FuncionarioSaudeRestController {
         funcionarioSaudeRepository.save(funcionarioSaudeExistente);
     }
 
-    @DeleteMapping("/excluir/{id}")
+    @DeleteMapping("    /{id}")
     public void excluir(@PathVariable Long id){
         funcionarioSaudeRepository.deleteById(id);
     }
