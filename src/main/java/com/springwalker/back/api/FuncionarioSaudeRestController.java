@@ -49,13 +49,21 @@ public class FuncionarioSaudeRestController {
             funcionarioSaudeExistente.setNome(funcionarioSaude.getNome());
         }
 
+        if(funcionarioSaude.getDataNascimento() != null){
+            funcionarioSaudeExistente.setDataNascimento(funcionarioSaude.getDataNascimento());
+        }
+
+        if(funcionarioSaude.getTelefones() != null){
+            funcionarioSaudeExistente.setTelefones(funcionarioSaude.getTelefones());
+        }
+
 
 
 
         funcionarioSaudeRepository.save(funcionarioSaudeExistente);
     }
 
-    @DeleteMapping("    /{id}")
+    @DeleteMapping("/{id}")
     public void excluir(@PathVariable Long id){
         funcionarioSaudeRepository.deleteById(id);
     }
@@ -67,7 +75,7 @@ public class FuncionarioSaudeRestController {
     }
 
     // Buscar por Id
-    @GetMapping("/buscar/{id}")
+    @GetMapping("/{id}")
     public FuncionarioSaude buscarPorId(@PathVariable Long id){
         return funcionarioSaudeRepository.findById(id).get();
     }
