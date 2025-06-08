@@ -3,6 +3,7 @@ package com.springwalker.back.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,17 +33,20 @@ public class Pessoa {
 
     @NotEmpty(message = "O e-mail deve ser informado")
     @Email(message = "O e-mail informado é inválido")
+    @Column(unique = true)
     private String email;
 
-    @Basic
+    @NotNull
     @Temporal(TemporalType.DATE)
+    @Column(name = "data nascimento")
     private Date dataNascimento;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "pessoa_id")
+    @JoinColumn(name = "pessoa id")
     private List<Telefone> telefones = new ArrayList<Telefone>();
 
     @NotEmpty(message = "O CPF deve ser informado") // Validação para CPF
+    @Column(unique = true) // Garante que o CPF seja único
     private String cpf; // Propriedade CPF
 
     public void addTelefone(Telefone telefone) {

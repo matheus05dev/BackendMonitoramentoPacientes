@@ -11,6 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/funcionario")
 @CrossOrigin(origins = "*")
+
 public class FuncionarioSaudeRestController {
     @Autowired
     private FuncionarioSaudeRepository funcionarioSaudeRepository;
@@ -34,7 +35,6 @@ public class FuncionarioSaudeRestController {
     @PutMapping("/{id}")
     public void alterar(@PathVariable Long id, @RequestBody FuncionarioSaude funcionarioSaude){
 
-        // busca o funcionarioSaude no banco de dados
         FuncionarioSaude funcionarioSaudeExistente = funcionarioSaudeRepository.findById(id).orElse(null);
 
         if(funcionarioSaude.getCpf() != null){
@@ -57,10 +57,20 @@ public class FuncionarioSaudeRestController {
             funcionarioSaudeExistente.setTelefones(funcionarioSaude.getTelefones());
         }
 
+        if (funcionarioSaude.getCargo() != null) {
+            funcionarioSaudeExistente.setCargo(funcionarioSaude.getCargo());
+        }
 
+        if (funcionarioSaude.getEspecialidades() != null) {
+            funcionarioSaudeExistente.setEspecialidades(funcionarioSaude.getEspecialidades());
+        }
 
+        if (funcionarioSaude.getIndentificacao() != null) {
+            funcionarioSaudeExistente.setIndentificacao(funcionarioSaude.getIndentificacao());
+        }
 
         funcionarioSaudeRepository.save(funcionarioSaudeExistente);
+
     }
 
     @DeleteMapping("/{id}")
@@ -94,7 +104,7 @@ public class FuncionarioSaudeRestController {
     }
 
 
-//    //Buscar por Nome ou CPF
+//   // Buscar por Nome ou CPF
 //    @GetMapping("/buscar-por-nome-ou-cpf/{texto}")
 //    public List<FuncionarioSaude> buscarPorNomeOuCpf(
 //            @PathVariable String texto

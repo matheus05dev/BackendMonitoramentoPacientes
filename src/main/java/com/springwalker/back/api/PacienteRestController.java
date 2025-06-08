@@ -1,5 +1,7 @@
 package com.springwalker.back.api;
 
+import com.springwalker.back.DTO.MedicoResponsavelDTO;
+import com.springwalker.back.model.FuncionarioSaude;
 import com.springwalker.back.model.Paciente;
 import com.springwalker.back.repository.PacienteRepository;
 import org.hibernate.validator.constraints.br.CPF;
@@ -7,33 +9,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/paciente")
+
 public class PacienteRestController {
     @Autowired
     private PacienteRepository pacienteRepository;
 
-    @GetMapping("/listar")
+    @GetMapping
     public List<Paciente> listar(){
         return pacienteRepository.findAll();
     }
 
-    @PostMapping("/inserir")
+    @PostMapping
     public void inserir(@RequestBody Paciente paciente){
         pacienteRepository.save(paciente);
     }
 
-    @PatchMapping("/alterar")
-    public void alterar(@RequestBody Paciente paciente){
-        pacienteRepository.save(paciente);
-    }
 
-
-    @PutMapping("/alterar/{id}")
+    @PutMapping("/{id}")
     public void alterar(@PathVariable Long id, @RequestBody Paciente paciente){
 
-        // busca o paciente no banco de dados
         Paciente pacienteExistente = pacienteRepository.findById(id).orElse(null);
 
         if(paciente.getCpf() != null){
@@ -48,13 +47,45 @@ public class PacienteRestController {
             pacienteExistente.setNome(paciente.getNome());
         }
 
+        if(paciente.getDataNascimento() != null){
+            pacienteExistente.setDataNascimento(paciente.getDataNascimento());
+        }
 
+        if(paciente.getTelefones() != null){
+            pacienteExistente.setTelefones(paciente.getTelefones());
+        }
+        if (paciente.getAlergias() != null){
+            pacienteExistente.setAlergias(paciente.getAlergias());
+        }
+        if (paciente.getCondicoes_preexistentes() != null){
+            pacienteExistente.setCondicoes_preexistentes(paciente.getCondicoes_preexistentes());
+        }
 
+        if (paciente.getMedicoResponsavel() != null){
+            pacienteExistente.setMedicoResponsavel(paciente.getMedicoResponsavel());
+        }
+
+        if (paciente.getQuarto() != null){
+            pacienteExistente.setQuarto(paciente.getQuarto());
+        }
+
+        if (paciente.getDataInternacao() == null){
+            pacienteExistente.setDataInternacao(paciente.getDataInternacao());
+        }
+
+        if (paciente.getHistorico() != null){
+            pacienteExistente.setHistorico(paciente.getHistorico());
+        }
+
+        if (paciente.getLeito() != null){
+            pacienteExistente.setLeito(paciente.getLeito());
+
+        }
 
         pacienteRepository.save(pacienteExistente);
     }
 
-    @DeleteMapping("/excluir/{id}")
+    @DeleteMapping("/{id}")
     public void excluir(@PathVariable Long id){
         pacienteRepository.deleteById(id);
     }
@@ -93,5 +124,20 @@ public class PacienteRestController {
 //        return pacienteRepository
 //                .buscarPacientePorNomeOuCpf(texto);
 //    }
+
+    @GetMapping("/dto")
+    public List<PacienteDTO> listarComMedicoDTO() {
+        return pacienteRepository.findAll().stream().map(paciente -> {
+            MedicoResponsavelDTO medicoDTO = null;
+            if (paciente.getMedicoResponsavel() != null) {
+                medicoDTO = new MedicoResponsavelDTO(
+                    paciente.getMedicoResponsavel().getId(),
+                    paciente.getMedicoResponsavel().getNome(),
+                    paciente.getMedicoResponsavel().getEspecialidades()
+                );
+            }
+            return new PacienteDTO(paciente, medicoDTO);
+        }).collect(Collectors.toList());
+    }
 
 }
