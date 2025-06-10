@@ -30,5 +30,5 @@ public class FuncionarioSaude extends Pessoa {
 
     @NotEmpty
     @Column(unique = true)
-    private String indentificacao;
+    private String identificacao;
 }

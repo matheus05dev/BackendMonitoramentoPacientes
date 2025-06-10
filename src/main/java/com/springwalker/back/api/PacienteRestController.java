@@ -1,6 +1,5 @@
 package com.springwalker.back.api;
 
-import com.springwalker.back.DTO.MedicoResponsavelDTO;
 import com.springwalker.back.model.FuncionarioSaude;
 import com.springwalker.back.model.Paciente;
 import com.springwalker.back.repository.PacienteRepository;
@@ -125,19 +124,5 @@ public class PacienteRestController {
 //                .buscarPacientePorNomeOuCpf(texto);
 //    }
 
-    @GetMapping("/dto")
-    public List<PacienteDTO> listarComMedicoDTO() {
-        return pacienteRepository.findAll().stream().map(paciente -> {
-            MedicoResponsavelDTO medicoDTO = null;
-            if (paciente.getMedicoResponsavel() != null) {
-                medicoDTO = new MedicoResponsavelDTO(
-                    paciente.getMedicoResponsavel().getId(),
-                    paciente.getMedicoResponsavel().getNome(),
-                    paciente.getMedicoResponsavel().getEspecialidades()
-                );
-            }
-            return new PacienteDTO(paciente, medicoDTO);
-        }).collect(Collectors.toList());
-    }
 
 }

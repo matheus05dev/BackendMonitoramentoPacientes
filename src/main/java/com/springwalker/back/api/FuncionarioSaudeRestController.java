@@ -65,8 +65,8 @@ public class FuncionarioSaudeRestController {
             funcionarioSaudeExistente.setEspecialidades(funcionarioSaude.getEspecialidades());
         }
 
-        if (funcionarioSaude.getIndentificacao() != null) {
-            funcionarioSaudeExistente.setIndentificacao(funcionarioSaude.getIndentificacao());
+        if (funcionarioSaude.getIdentificacao() != null) {
+            funcionarioSaudeExistente.setIdentificacao(funcionarioSaude.getIdentificacao());
         }
 
         funcionarioSaudeRepository.save(funcionarioSaudeExistente);
