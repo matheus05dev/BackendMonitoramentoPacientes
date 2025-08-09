@@ -1,44 +1,87 @@
 package com.springwalker.back.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
 import com.springwalker.back.enums.LocalizacaoQuarto;
 import com.springwalker.back.enums.TipoQuarto;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 public class Quarto {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true)
     private Long id;
 
-    @NotEmpty
-    @Column(name = "número", unique = true)
+    @NotNull
+    @Column(name = "Número", unique = true)
     private Integer numero;
 
-    @NotEmpty
-    @Enumerated
-    @Column(name = "setor")
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "Setor")
     private LocalizacaoQuarto localizacao;
 
-    @NotEmpty
-    @Enumerated
-    @Column(name = "tipo")
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "Tipo")
     private TipoQuarto tipo;
 
-    @NotEmpty
-    @Column(name = "capacidade", unique = true)
+    @NotNull
+    @Column(name = "Capacidade")
     private Integer capacidade;
+
+    @OneToMany(mappedBy = "quarto")
+    private List<Paciente> pacientes = new ArrayList<>();
+
+    /**
+     * Adiciona um paciente ao quarto, respeitando a capacidade e evitando duplicidade.
+     */
+    public void adicionarPaciente(Paciente paciente) {
+        if (pacientes == null) {
+            pacientes = new ArrayList<>();
+        }
+
+        if (pacientes.size() >= capacidade) {
+            throw new IllegalStateException(
+                    "Quarto " + numero + " já atingiu a capacidade máxima de " + capacidade + " pacientes."
+            );
+        }
+
+        if (pacientes.contains(paciente)) {
+            throw new IllegalStateException(
+                    "Paciente já está neste quarto."
+            );
+        }
+
+        pacientes.add(paciente);
+    }
+
+    /**
+     * Remove um paciente do quarto.
+     */
+    public void removerPaciente(Paciente paciente) {
+        if (!pacientes.remove(paciente)) {
+            throw new IllegalStateException(
+                    "Paciente não encontrado no quarto " + numero
+            );
+        }
+    }
+
+    /**
+     * Verifica se ainda há vagas no quarto.
+     */
+    public boolean temVaga() {
+        return pacientes != null && pacientes.size() < capacidade;
+    }
 }

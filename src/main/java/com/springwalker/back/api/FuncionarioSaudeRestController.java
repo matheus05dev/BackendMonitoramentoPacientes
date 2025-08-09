@@ -103,14 +103,4 @@ public class FuncionarioSaudeRestController {
         return funcionarioSaudeRepository.findFuncionarioSaudesByNomeContaining(cpf);
     }
 
-
-//   // Buscar por Nome ou CPF
-//    @GetMapping("/buscar-por-nome-ou-cpf/{texto}")
-//    public List<FuncionarioSaude> buscarPorNomeOuCpf(
-//            @PathVariable String texto
-//    ){
-//        return funcionarioSaudeRepository
-//                .buscarFuncionarioSaudePorNomeOuCpf(texto);
-//    }
-
 }

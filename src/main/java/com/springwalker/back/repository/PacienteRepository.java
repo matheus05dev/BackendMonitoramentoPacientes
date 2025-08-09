@@ -30,6 +30,6 @@ public interface PacienteRepository extends JpaRepository<Paciente, Long> {
 
     String cpf(@NotEmpty(message = "O CPF deve ser informado") String cpf);
 
-//    @Query("Select nome From Paciente where cpf = ?1 or nome = ?1")
-//    List<Paciente> buscarPacientePorNomeOuCpf(String texto);
+    @Query("Select nome From Paciente where cpf = ?1 or nome = ?1")
+    List<Paciente> buscarPacientePorNomeOuCpf(String texto);
 }

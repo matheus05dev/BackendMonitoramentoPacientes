@@ -5,6 +5,7 @@ import com.springwalker.back.model.Paciente;
 import com.springwalker.back.repository.PacienteRepository;
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -56,35 +57,12 @@ public class PacienteRestController {
         if (paciente.getAlergias() != null){
             pacienteExistente.setAlergias(paciente.getAlergias());
         }
-        if (paciente.getCondicoes_preexistentes() != null){
-            pacienteExistente.setCondicoes_preexistentes(paciente.getCondicoes_preexistentes());
-        }
-
-        if (paciente.getMedicoResponsavel() != null){
-            pacienteExistente.setMedicoResponsavel(paciente.getMedicoResponsavel());
-        }
-
-        if (paciente.getQuarto() != null){
-            pacienteExistente.setQuarto(paciente.getQuarto());
-        }
-
-        if (paciente.getDataInternacao() == null){
-            pacienteExistente.setDataInternacao(paciente.getDataInternacao());
-        }
-
-        if (paciente.getHistorico() != null){
-            pacienteExistente.setHistorico(paciente.getHistorico());
-        }
-
-        if (paciente.getLeito() != null){
-            pacienteExistente.setLeito(paciente.getLeito());
-
-        }
 
         pacienteRepository.save(pacienteExistente);
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void excluir(@PathVariable Long id){
         pacienteRepository.deleteById(id);
     }

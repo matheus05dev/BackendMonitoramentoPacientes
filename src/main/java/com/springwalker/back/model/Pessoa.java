@@ -1,5 +1,6 @@
 package com.springwalker.back.model;
 
+import com.springwalker.back.enums.Sexo;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -38,7 +39,13 @@ public class Pessoa {
     private String email;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "Sexo")
+    private Sexo sexo;
+
+    @NotNull
     @Temporal(TemporalType.DATE)
+    @Basic
     @Column(name = "data nascimento")
     private LocalDate dataNascimento;
 

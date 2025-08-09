@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 @Entity
@@ -16,13 +16,6 @@ import java.util.List;
 @DiscriminatorValue(value = "P")
 public class Paciente extends Pessoa {
 
-    @NotEmpty
-    @Column
-    private String quadro;
-
-    @NotEmpty
-    @Column
-    private String historico;
 
     @NotEmpty
     @ElementCollection
@@ -30,26 +23,7 @@ public class Paciente extends Pessoa {
     @Column(name = "alergia")
     private List<String> alergias;
 
-    @NotEmpty
     @ManyToOne
-    @JoinColumn(name = "medico responsavel id")
-    private FuncionarioSaude medicoResponsavel;
-
-    @NotEmpty
-    @ElementCollection
-    @CollectionTable(name = "condições preexistentes", joinColumns = @JoinColumn(name = "paciente id"))
-    @Column(name = "condições preexistentes")
-    private List<String> condicoes_preexistentes;
-
-    @NotEmpty
-    @Column(name = "leito")
-    private String leito;
-
-    @ManyToOne
-    @JoinColumn(name = "quarto id")
+    @JoinColumn(name = "quarto_id") // Esta é a coluna de chave estrangeira
     private Quarto quarto;
-
-    @NotEmpty
-    @Temporal(TemporalType.DATE)
-    private Date dataInternacao;
 }
