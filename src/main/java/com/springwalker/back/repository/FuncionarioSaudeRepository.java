@@ -21,6 +21,8 @@ public interface FuncionarioSaudeRepository extends JpaRepository<FuncionarioSau
 
     List<FuncionarioSaude> findFuncionarioSaudesByNomeContainingOrCpfContaining(String nome, String cpf);
 
+    FuncionarioSaude findFuncionarioSaudeByCpf(String cpf);
+
 //    @Query("Select nome From FuncionarioSaude where cpf = ?1 or nome = ?1")
 //    List<FuncionarioSaude> buscarFuncionarioSaudePorNomeOuCpf(String texto);
 }

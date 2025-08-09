@@ -1,106 +1,80 @@
 package com.springwalker.back.api;
 
 import com.springwalker.back.model.FuncionarioSaude;
-import com.springwalker.back.model.Paciente;
-import com.springwalker.back.repository.FuncionarioSaudeRepository;
+import com.springwalker.back.service.FuncionarioSaudeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/funcionario")
 @CrossOrigin(origins = "*")
-
 public class FuncionarioSaudeRestController {
+
     @Autowired
-    private FuncionarioSaudeRepository funcionarioSaudeRepository;
+    private FuncionarioSaudeService funcionarioSaudeService;
 
+    // Buscar todos os funcionários
     @GetMapping
-    public List<FuncionarioSaude> listar(){
-        return funcionarioSaudeRepository.findAll();
+    public List<FuncionarioSaude> listar() {
+        return funcionarioSaudeService.listarTodos();
     }
 
+    // Inserir um novo funcionário
     @PostMapping
-    public void inserir(@RequestBody FuncionarioSaude funcionarioSaude){
-        funcionarioSaudeRepository.save(funcionarioSaude);
+    public FuncionarioSaude inserir(@RequestBody FuncionarioSaude funcionarioSaude) {
+        return funcionarioSaudeService.salvar(funcionarioSaude);
     }
 
-    @PatchMapping("")
-    public void alterar(@RequestBody FuncionarioSaude funcionarioSaude){
-        funcionarioSaudeRepository.save(funcionarioSaude);
+    // Alterar parcialmente um funcionário
+    @PatchMapping
+    public FuncionarioSaude alterar(@RequestBody FuncionarioSaude funcionarioSaude) {
+        return funcionarioSaudeService.salvar(funcionarioSaude);
     }
 
-
+    // Alterar um funcionário por ID
     @PutMapping("/{id}")
-    public void alterar(@PathVariable Long id, @RequestBody FuncionarioSaude funcionarioSaude){
-
-        FuncionarioSaude funcionarioSaudeExistente = funcionarioSaudeRepository.findById(id).orElse(null);
-
-        if(funcionarioSaude.getCpf() != null){
-            funcionarioSaudeExistente.setCpf(funcionarioSaude.getCpf());
+    public ResponseEntity<FuncionarioSaude> alterar(@PathVariable Long id, @RequestBody FuncionarioSaude funcionarioSaude) {
+        try {
+            FuncionarioSaude funcionarioAtualizado = funcionarioSaudeService.atualizar(id, funcionarioSaude);
+            return ResponseEntity.ok(funcionarioAtualizado);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
         }
-
-        if(funcionarioSaude.getEmail() != null){
-            funcionarioSaudeExistente.setEmail(funcionarioSaude.getEmail());
-        }
-
-        if(funcionarioSaude.getNome() != null){
-            funcionarioSaudeExistente.setNome(funcionarioSaude.getNome());
-        }
-
-        if(funcionarioSaude.getDataNascimento() != null){
-            funcionarioSaudeExistente.setDataNascimento(funcionarioSaude.getDataNascimento());
-        }
-
-        if(funcionarioSaude.getTelefones() != null){
-            funcionarioSaudeExistente.setTelefones(funcionarioSaude.getTelefones());
-        }
-
-        if (funcionarioSaude.getCargo() != null) {
-            funcionarioSaudeExistente.setCargo(funcionarioSaude.getCargo());
-        }
-
-        if (funcionarioSaude.getEspecialidades() != null) {
-            funcionarioSaudeExistente.setEspecialidades(funcionarioSaude.getEspecialidades());
-        }
-
-        if (funcionarioSaude.getIdentificacao() != null) {
-            funcionarioSaudeExistente.setIdentificacao(funcionarioSaude.getIdentificacao());
-        }
-
-        funcionarioSaudeRepository.save(funcionarioSaudeExistente);
-
     }
 
+    // Excluir um funcionário por ID
     @DeleteMapping("/{id}")
-    public void excluir(@PathVariable Long id){
-        funcionarioSaudeRepository.deleteById(id);
+    public void excluir(@PathVariable Long id) {
+        funcionarioSaudeService.deletar(id);
     }
 
-    //Inserir Vários
+    // Inserir vários funcionários de uma vez
     @PostMapping("/inserir-varios")
-    public void inserirVarios(@RequestBody List<FuncionarioSaude> funcionarioSaudes){
-        funcionarioSaudeRepository.saveAll(funcionarioSaudes);
+    public List<FuncionarioSaude> inserirVarios(@RequestBody List<FuncionarioSaude> funcionarios) {
+        return funcionarioSaudeService.salvarTodos(funcionarios);
     }
 
-    // Buscar por Id
+    // Buscar um funcionário por ID
     @GetMapping("/{id}")
-    public FuncionarioSaude buscarPorId(@PathVariable Long id){
-        return funcionarioSaudeRepository.findById(id).get();
+    public ResponseEntity<FuncionarioSaude> buscarPorId(@PathVariable Long id) {
+        Optional<FuncionarioSaude> funcionario = funcionarioSaudeService.buscarPorId(id);
+        return funcionario.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-
-    //Buscar por Nome
+    // Buscar funcionários por nome (busca parcial)
     @GetMapping("/buscar-por-nome/{nome}")
-    public List<FuncionarioSaude> buscarPorNome(@PathVariable String nome){
-        return funcionarioSaudeRepository.findFuncionarioSaudesByNomeContaining(nome);
+    public List<FuncionarioSaude> buscarPorNome(@PathVariable String nome) {
+        return funcionarioSaudeService.buscarPorNome(nome);
     }
 
-    //Buscar por Cpf
+    // Buscar um funcionário por CPF
     @GetMapping("/buscar-por-cpf/{cpf}")
-    public List<FuncionarioSaude> buscarPorCpf(@PathVariable String cpf){
-        return funcionarioSaudeRepository.findFuncionarioSaudesByNomeContaining(cpf);
+    public FuncionarioSaude buscarPorCpf(@PathVariable String cpf) {
+        return funcionarioSaudeService.buscarPorCpf(cpf);
     }
-
 }

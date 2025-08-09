@@ -1,106 +1,90 @@
 package com.springwalker.back.api;
 
-import com.springwalker.back.model.FuncionarioSaude;
 import com.springwalker.back.model.Paciente;
-import com.springwalker.back.repository.PacienteRepository;
-import org.hibernate.validator.constraints.br.CPF;
+import com.springwalker.back.service.PacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/paciente")
-
 public class PacienteRestController {
+
     @Autowired
-    private PacienteRepository pacienteRepository;
+    private PacienteService pacienteService;
 
+    // Buscar todos os pacientes
     @GetMapping
-    public List<Paciente> listar(){
-        return pacienteRepository.findAll();
+    public List<Paciente> listar() {
+        return pacienteService.listarTodos();
     }
 
+    // Inserir um novo paciente
     @PostMapping
-    public void inserir(@RequestBody Paciente paciente){
-        pacienteRepository.save(paciente);
+    public ResponseEntity<Paciente> inserir(@RequestBody Paciente paciente) {
+        try {
+            Paciente novoPaciente = pacienteService.inserir(paciente);
+            return new ResponseEntity<>(novoPaciente, HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            // A exceção da lógica de negócio é tratada aqui
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
     }
 
-
+    // Alterar um paciente por ID
     @PutMapping("/{id}")
-    public void alterar(@PathVariable Long id, @RequestBody Paciente paciente){
-
-        Paciente pacienteExistente = pacienteRepository.findById(id).orElse(null);
-
-        if(paciente.getCpf() != null){
-            pacienteExistente.setCpf(paciente.getCpf());
+    public Paciente alterar(@PathVariable Long id, @RequestBody Paciente paciente) {
+        try {
+            return pacienteService.alterar(id, paciente);
+        } catch (IllegalStateException e) {
+            // A exceção da lógica de negócio é tratada aqui
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
-
-        if(paciente.getEmail() != null){
-            pacienteExistente.setEmail(paciente.getEmail());
-        }
-
-        if(paciente.getNome() != null){
-            pacienteExistente.setNome(paciente.getNome());
-        }
-
-        if(paciente.getDataNascimento() != null){
-            pacienteExistente.setDataNascimento(paciente.getDataNascimento());
-        }
-
-        if(paciente.getTelefones() != null){
-            pacienteExistente.setTelefones(paciente.getTelefones());
-        }
-        if (paciente.getAlergias() != null){
-            pacienteExistente.setAlergias(paciente.getAlergias());
-        }
-
-        pacienteRepository.save(pacienteExistente);
     }
 
+    // Excluir um paciente por ID
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void excluir(@PathVariable Long id){
-        pacienteRepository.deleteById(id);
+    public void excluir(@PathVariable Long id) {
+        try {
+            pacienteService.excluir(id);
+        } catch (IllegalStateException e) {
+            // A exceção da lógica de negócio é tratada aqui
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 
-    //Inserir Vários
+    // Inserir vários pacientes de uma vez
     @PostMapping("/inserir-varios")
-    public void inserirVarios(@RequestBody List<Paciente> pacientes){
-        pacienteRepository.saveAll(pacientes);
+    public List<Paciente> inserirVarios(@RequestBody List<Paciente> pacientes) {
+        return pacienteService.inserirVarios(pacientes);
     }
 
-    // Buscar por Id
+    // Buscar um paciente por ID
     @GetMapping("/buscar/{id}")
-    public Paciente buscarPorId(@PathVariable Long id){
-        return pacienteRepository.findById(id).get();
+    public Paciente buscarPorId(@PathVariable Long id) {
+        try {
+            return pacienteService.buscarPorId(id);
+        } catch (IllegalStateException e) {
+            // A exceção da lógica de negócio é tratada aqui
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
     }
 
-
-    //Buscar por Nome
+    // Buscar pacientes por nome (busca parcial)
     @GetMapping("/buscar-por-nome/{nome}")
-    public List<Paciente> buscarPorNome(@PathVariable String nome){
-        return pacienteRepository.findPacientesByNomeContaining(nome);
+    public List<Paciente> buscarPorNome(@PathVariable String nome) {
+        return pacienteService.buscarPorNome(nome);
     }
 
-
-    //Buscar por Cpf
+    // Buscar pacientes por CPF
     @GetMapping("/buscar-por-cpf/{cpf}")
-    public List<Paciente> buscarPorCpf(@PathVariable String cpf){
-        return pacienteRepository.findPacientesByCpfContaining(cpf);
+    public List<Paciente> buscarPorCpf(@PathVariable String cpf) {
+        return pacienteService.buscarPorCpf(cpf);
     }
-
-//    //Buscar por Nome ou CPF
-//    @GetMapping("/buscar-por-nome-ou-cpf/{texto}")
-//    public List<Paciente> buscarPorNomeOuCpf(
-//            @PathVariable String texto
-//    ){
-//        return pacienteRepository
-//                .buscarPacientePorNomeOuCpf(texto);
-//    }
-
-
 }
