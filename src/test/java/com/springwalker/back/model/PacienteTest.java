@@ -22,7 +22,7 @@ class PacienteTest {
     void inserir() {
         Paciente paciente = new Paciente();
         paciente.setCpf("453.842.298-37");
-        paciente.setSexo(Sexo.Femenino);
+        paciente.setSexo(Sexo.Feminino);
         paciente.setEmail("m@v.com");
         paciente.setDataNascimento(Date.valueOf(LocalDate.of(2025,12,15)).toLocalDate());
         paciente.setNome("Joana Pereira");
