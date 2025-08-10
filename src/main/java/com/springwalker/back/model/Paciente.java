@@ -19,11 +19,11 @@ public class Paciente extends Pessoa {
 
     @NotEmpty
     @ElementCollection
-    @CollectionTable(name = "alergias", joinColumns = @JoinColumn(name = "paciente id"))
-    @Column(name = "alergia")
+    @CollectionTable(name = "Alergias", joinColumns = @JoinColumn(name = "Paciente Id"))
+    @Column(name = "Alergia")
     private List<String> alergias;
 
     @ManyToOne
-    @JoinColumn(name = "quarto_id") // Esta é a coluna de chave estrangeira
+    @JoinColumn(name = "Quarto Id")
     private Quarto quarto;
 }

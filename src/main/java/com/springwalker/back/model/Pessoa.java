@@ -46,11 +46,11 @@ public class Pessoa {
     @NotNull
     @Temporal(TemporalType.DATE)
     @Basic
-    @Column(name = "data nascimento")
+    @Column(name = "Data Nascimento")
     private LocalDate dataNascimento;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "pessoa id")
+    @JoinColumn(name = "Pessoa id")
     private List<Telefone> telefones = new ArrayList<Telefone>();
 
     @NotEmpty(message = "O CPF deve ser informado") // Validação para CPF

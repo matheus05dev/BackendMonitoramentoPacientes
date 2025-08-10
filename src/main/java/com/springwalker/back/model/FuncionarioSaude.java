@@ -19,16 +19,16 @@ public class FuncionarioSaude extends Pessoa {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "cargo")
+    @Column(name = "Cargo")
     private Cargo cargo;
 
     @NotEmpty
     @ElementCollection
-    @CollectionTable(name = "especialidades", joinColumns = @JoinColumn(name = "funcionario_id"))
-    @Column(name = "especialidade")
+    @CollectionTable(name = "Especialidades", joinColumns = @JoinColumn(name = "Funcionario Id"))
+    @Column(name = "Especialidade")
     private List<String> especialidades;
 
     @NotEmpty
-    @Column(unique = true)
+    @Column(unique = true, name = "Identificação" )
     private String identificacao;
 }
