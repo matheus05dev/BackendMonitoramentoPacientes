@@ -12,6 +12,7 @@ import java.util.List;
 
 @Entity
 @SuperBuilder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @DiscriminatorValue(value = "P")

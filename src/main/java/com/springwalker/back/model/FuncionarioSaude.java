@@ -14,6 +14,7 @@ import java.util.List;
 @DiscriminatorValue(value = "F")
 @Entity
 @SuperBuilder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class FuncionarioSaude extends Pessoa {
