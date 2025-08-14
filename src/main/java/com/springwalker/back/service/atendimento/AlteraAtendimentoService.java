@@ -1,4 +1,4 @@
-package com.springwalker.back.service;
+package com.springwalker.back.service.atendimento;
 
 import com.springwalker.back.enums.Cargo;
 import com.springwalker.back.enums.StatusPaciente;
@@ -8,82 +8,20 @@ import com.springwalker.back.repository.AtendimentoRepository;
 import com.springwalker.back.repository.FuncionarioSaudeRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class AtendimentoService {
+public class AlteraAtendimentoService {
 
 
     private final AtendimentoRepository atendimentoRepository;
 
     private  final FuncionarioSaudeRepository funcionarioSaudeRepository;
 
-    //lógica de criar atendimento
-    @Transactional
-    public Atendimento criarAtendimento(Atendimento atendimento) {
-        // Validação crucial: Verifica se o paciente já tem um atendimento em aberto.
-        // Um atendimento está em aberto se a 'dataSaida' for nula.
-        if (atendimento.getPaciente() == null || atendimento.getPaciente().getId() == null) {
-            throw new IllegalArgumentException("O paciente deve ser informado para criar um atendimento.");
-        }
-        // Chamada do repositório corrigida, removendo o parâmetro 'null'.
-        if (atendimentoRepository.existsByPacienteIdAndDataSaidaIsNull(atendimento.getPaciente().getId())) {
-            throw new IllegalStateException("O paciente já possui um atendimento em aberto.");
-        }
-
-        // Valida se o médico responsável existe
-        FuncionarioSaude medicoResponsavel = funcionarioSaudeRepository.findById(atendimento.getMedicoResponsavel().getId())
-                .orElseThrow(() -> new NoSuchElementException("Médico responsável não encontrado com o ID: " + atendimento.getMedicoResponsavel().getId()));
-
-        // Data automática de entrada e paciente entra como internado
-        atendimento.setDataEntrada(LocalDateTime.now());
-        atendimento.setStatusPaciente(StatusPaciente.Internado);
-        atendimento.setDataSaida(null); // Garante que a data de saída é nula para um novo atendimento.
-
-        // Valida se o cargo do funcionário é MEDICO
-        if (medicoResponsavel.getCargo() != Cargo.MEDICO) {
-            throw new IllegalArgumentException("O funcionário responsável deve ser um médico.");
-        }
-
-        // Se houver um médico de complicação, valida se ele também é um médico.
-        if (atendimento.getMedicoComplicacao() != null && atendimento.getMedicoComplicacao().getId() != null) {
-            FuncionarioSaude medicoComplicacao = funcionarioSaudeRepository.findById(atendimento.getMedicoComplicacao().getId())
-                    .orElseThrow(() -> new NoSuchElementException("Médico de complicação não encontrado com o ID: " + atendimento.getMedicoComplicacao().getId()));
-
-            if (medicoComplicacao.getCargo() != Cargo.MEDICO) {
-                throw new IllegalArgumentException("O funcionário de complicação deve ser um médico.");
-            }
-        }
-
-        return atendimentoRepository.save(atendimento);
-    }
-    //lógica de buscar atendimento por id
-    public Optional<Atendimento> buscarAtendimentoPorId(Long id) {
-        return atendimentoRepository.findById(id);
-    }
-
-    //lógica de buscar todos atendimento
-    public List<Atendimento> buscarTodosAtendimentos() {
-        return atendimentoRepository.findAll();
-    }
-
-    //lógica de apagar atendimento
-    @Transactional
-    public void deletarAtendimento(Long id) {
-        // 1. Busca o atendimento existente pelo ID
-        Atendimento atendimentoExistente = atendimentoRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Atendimento não encontrado com o ID: " + id));
-
-        // 2. Apaga o atendimento no qual o id coincide
-        atendimentoRepository.delete(atendimentoExistente);
-    }
 
     //lógica de alterar atendimento
     @Transactional

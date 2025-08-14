@@ -1,9 +1,8 @@
 package com.springwalker.back.api;
 
 import com.springwalker.back.model.Quarto;
-import com.springwalker.back.service.QuartoService;
+import com.springwalker.back.service.quartos.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,19 +16,24 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QuartoRestController {
 
-    private final QuartoService quartoService;
+    private final BuscaQuartoService buscaQuartoService;
+    private final CriaQuartoService criaQuartoService;
+    private final DeletaQuartoService deletaQuartoService;
+    private final AlteraQuartoService alteraQuartoService;
+    private final AtribuiPacienteQuartoService atribuiPacienteQuartoService;
+    private final RemovePacienteQuartoService removePacienteQuartoService;
 
     // Buscar todos os quartos
     @GetMapping
     public List<Quarto> listar() {
-        return quartoService.listarTodos();
+        return buscaQuartoService.listarTodos();
     }
 
     // Buscar um quarto por ID
     @GetMapping("/{id}")
     public Quarto buscarPorId(@PathVariable Long id) {
         try {
-            return quartoService.buscarPorId(id);
+            return buscaQuartoService.buscarPorId(id);
         } catch (IllegalStateException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -38,7 +42,7 @@ public class QuartoRestController {
     // Inserir um novo quarto
     @PostMapping
     public ResponseEntity<Quarto> inserir(@RequestBody Quarto quarto) {
-        Quarto novoQuarto = quartoService.inserir(quarto);
+        Quarto novoQuarto = criaQuartoService.inserir(quarto);
         return new ResponseEntity<>(novoQuarto, HttpStatus.CREATED);
     }
 
@@ -46,7 +50,7 @@ public class QuartoRestController {
     @PutMapping("/{id}")
     public Quarto alterar(@PathVariable Long id, @RequestBody Quarto quarto) {
         try {
-            return quartoService.alterar(id, quarto);
+            return alteraQuartoService.alterar(id, quarto);
         } catch (IllegalStateException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -57,7 +61,7 @@ public class QuartoRestController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void excluir(@PathVariable Long id) {
         try {
-            quartoService.excluir(id);
+            deletaQuartoService.excluir(id);
         } catch (IllegalStateException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
@@ -66,14 +70,14 @@ public class QuartoRestController {
     // Inserir vários quartos
     @PostMapping("/inserir-varios")
     public List<Quarto> inserirVarios(@RequestBody List<Quarto> quartos) {
-        return quartoService.inserirVarios(quartos);
+        return criaQuartoService.inserirVarios(quartos);
     }
 
     // Endpoint para alocar paciente em um quarto
     @PutMapping("/{quartoId}/alocar-paciente/{pacienteId}")
     public Quarto alocarPaciente(@PathVariable Long quartoId, @PathVariable Long pacienteId) {
         try {
-            return quartoService.alocarPaciente(quartoId, pacienteId);
+            return atribuiPacienteQuartoService.alocarPaciente(quartoId, pacienteId);
         } catch (IllegalStateException e) {
             // A exceção da lógica de negócio é tratada aqui
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
@@ -84,7 +88,7 @@ public class QuartoRestController {
     @PutMapping("/{quartoId}/remover-paciente/{pacienteId}")
     public Quarto removerPaciente(@PathVariable Long quartoId, @PathVariable Long pacienteId) {
         try {
-            return quartoService.removerPaciente(quartoId, pacienteId);
+            return removePacienteQuartoService.removerPaciente(quartoId, pacienteId);
         } catch (IllegalStateException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }

@@ -1,9 +1,11 @@
 package com.springwalker.back.api;
 
 import com.springwalker.back.model.FuncionarioSaude;
-import com.springwalker.back.service.FuncionarioSaudeService;
+import com.springwalker.back.service.funcionarioSaude.AlteraFuncionarioSaudeService;
+import com.springwalker.back.service.funcionarioSaude.BuscarFuncionarioSaudeService;
+import com.springwalker.back.service.funcionarioSaude.CriaFuncionarioSaudeService;
+import com.springwalker.back.service.funcionarioSaude.DelataFuncionarioSaudeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,31 +18,34 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class FuncionarioSaudeRestController {
 
-    private final FuncionarioSaudeService funcionarioSaudeService;
+    private final BuscarFuncionarioSaudeService buscarFuncionarioSaudeService;
+    private final AlteraFuncionarioSaudeService alteraFuncionarioSaudeService;
+    private final CriaFuncionarioSaudeService criaFuncionarioSaudeService;
+    private final DelataFuncionarioSaudeService delataFuncionarioSaudeService;
 
     // Buscar todos os funcionários
     @GetMapping
     public List<FuncionarioSaude> listar() {
-        return funcionarioSaudeService.listarTodos();
+        return buscarFuncionarioSaudeService.listarTodos();
     }
 
     // Inserir um novo funcionário
     @PostMapping
     public FuncionarioSaude inserir(@RequestBody FuncionarioSaude funcionarioSaude) {
-        return funcionarioSaudeService.salvar(funcionarioSaude);
+        return criaFuncionarioSaudeService.salvar(funcionarioSaude);
     }
 
     // Alterar parcialmente um funcionário
     @PatchMapping
     public FuncionarioSaude alterar(@RequestBody FuncionarioSaude funcionarioSaude) {
-        return funcionarioSaudeService.salvar(funcionarioSaude);
+        return criaFuncionarioSaudeService.salvar(funcionarioSaude);
     }
 
     // Alterar um funcionário por ID
     @PutMapping("/{id}")
     public ResponseEntity<FuncionarioSaude> alterar(@PathVariable Long id, @RequestBody FuncionarioSaude funcionarioSaude) {
         try {
-            FuncionarioSaude funcionarioAtualizado = funcionarioSaudeService.atualizar(id, funcionarioSaude);
+            FuncionarioSaude funcionarioAtualizado = alteraFuncionarioSaudeService.atualizar(id, funcionarioSaude);
             return ResponseEntity.ok(funcionarioAtualizado);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
@@ -50,19 +55,19 @@ public class FuncionarioSaudeRestController {
     // Excluir um funcionário por ID
     @DeleteMapping("/{id}")
     public void excluir(@PathVariable Long id) {
-        funcionarioSaudeService.deletar(id);
+        delataFuncionarioSaudeService.deletar(id);
     }
 
     // Inserir vários funcionários de uma vez
     @PostMapping("/inserir-varios")
     public List<FuncionarioSaude> inserirVarios(@RequestBody List<FuncionarioSaude> funcionarios) {
-        return funcionarioSaudeService.salvarTodos(funcionarios);
+        return criaFuncionarioSaudeService.salvarTodos(funcionarios);
     }
 
     // Buscar um funcionário por ID
     @GetMapping("/{id}")
     public ResponseEntity<FuncionarioSaude> buscarPorId(@PathVariable Long id) {
-        Optional<FuncionarioSaude> funcionario = funcionarioSaudeService.buscarPorId(id);
+        Optional<FuncionarioSaude> funcionario = buscarFuncionarioSaudeService.buscarPorId(id);
         return funcionario.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -70,12 +75,12 @@ public class FuncionarioSaudeRestController {
     // Buscar funcionários por nome (busca parcial)
     @GetMapping("/buscar-por-nome/{nome}")
     public List<FuncionarioSaude> buscarPorNome(@PathVariable String nome) {
-        return funcionarioSaudeService.buscarPorNome(nome);
+        return buscarFuncionarioSaudeService.buscarPorNome(nome);
     }
 
     // Buscar um funcionário por CPF
     @GetMapping("/buscar-por-cpf/{cpf}")
     public FuncionarioSaude buscarPorCpf(@PathVariable String cpf) {
-        return funcionarioSaudeService.buscarPorCpf(cpf);
+        return buscarFuncionarioSaudeService.buscarPorCpf(cpf);
     }
 }
