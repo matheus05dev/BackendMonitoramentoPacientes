@@ -7,6 +7,7 @@ import com.springwalker.back.model.FuncionarioSaude;
 import com.springwalker.back.repository.AtendimentoRepository;
 import com.springwalker.back.repository.FuncionarioSaudeRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +17,15 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class AtendimentoService {
 
-    @Autowired
-    private AtendimentoRepository atendimentoRepository;
 
-    @Autowired
-    private FuncionarioSaudeRepository funcionarioSaudeRepository;
+    private final AtendimentoRepository atendimentoRepository;
 
+    private  final FuncionarioSaudeRepository funcionarioSaudeRepository;
+
+    //lógica de criar atendimento
     @Transactional
     public Atendimento criarAtendimento(Atendimento atendimento) {
         // Valida se o médico responsável existe
@@ -47,15 +49,17 @@ public class AtendimentoService {
 
         return atendimentoRepository.save(atendimento);
     }
-
+    //lógica de buscar atendimento por id
     public Optional<Atendimento> buscarAtendimentoPorId(Long id) {
         return atendimentoRepository.findById(id);
     }
 
+    //lógica de buscar todos atendimento
     public List<Atendimento> buscarTodosAtendimentos() {
         return atendimentoRepository.findAll();
     }
 
+    //lógica de apagar atendimento
     @Transactional
     public Atendimento deletarAtendimento(Long id, Atendimento atendimento) {
         // 1. Busca o atendimento existente pelo ID
@@ -67,7 +71,7 @@ public class AtendimentoService {
         return atendimentoExistente;
     }
 
-
+    //lógica de alterar atendimento
     @Transactional
     public Atendimento alterarAtendimento(Long id, Atendimento atendimentoAtualizado) {
         // 1. Busca o atendimento existente pelo ID

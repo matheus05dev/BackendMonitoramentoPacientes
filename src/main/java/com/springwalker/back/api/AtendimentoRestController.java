@@ -13,7 +13,7 @@ import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/atendimento")
-public class AtendimentoController {
+public class AtendimentoRestController {
 
     @Autowired
     private AtendimentoService atendimentoService;

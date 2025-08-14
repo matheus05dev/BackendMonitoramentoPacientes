@@ -2,6 +2,7 @@ package com.springwalker.back.service;
 
 import com.springwalker.back.model.FuncionarioSaude;
 import com.springwalker.back.repository.FuncionarioSaudeRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,10 +10,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class FuncionarioSaudeService {
 
-    @Autowired
-    private FuncionarioSaudeRepository funcionarioSaudeRepository;
+
+    private final FuncionarioSaudeRepository funcionarioSaudeRepository;
 
     // Lógica para buscar todos os funcionários
     public List<FuncionarioSaude> listarTodos() {

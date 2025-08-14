@@ -4,6 +4,7 @@ import com.springwalker.back.model.Paciente;
 import com.springwalker.back.model.Quarto;
 import com.springwalker.back.repository.PacienteRepository;
 import com.springwalker.back.repository.QuartoRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,13 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class QuartoService {
 
-    @Autowired
-    private QuartoRepository quartoRepository;
+    private final QuartoRepository quartoRepository;
 
-    @Autowired
-    private PacienteRepository pacienteRepository;
+    private final PacienteRepository pacienteRepository;
 
     // Lógica para buscar todos os quartos
     public List<Quarto> listarTodos() {

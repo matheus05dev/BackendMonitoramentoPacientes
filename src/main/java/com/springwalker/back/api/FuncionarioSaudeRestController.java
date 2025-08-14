@@ -2,6 +2,7 @@ package com.springwalker.back.api;
 
 import com.springwalker.back.model.FuncionarioSaude;
 import com.springwalker.back.service.FuncionarioSaudeService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,10 +13,10 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/funcionario")
 @CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 public class FuncionarioSaudeRestController {
 
-    @Autowired
-    private FuncionarioSaudeService funcionarioSaudeService;
+    private final FuncionarioSaudeService funcionarioSaudeService;
 
     // Buscar todos os funcionários
     @GetMapping

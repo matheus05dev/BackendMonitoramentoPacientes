@@ -2,16 +2,17 @@ package com.springwalker.back.service;
 
 import com.springwalker.back.model.Paciente;
 import com.springwalker.back.repository.PacienteRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class PacienteService {
 
-    @Autowired
-    private PacienteRepository pacienteRepository;
+    private final PacienteRepository pacienteRepository;
 
     // Lógica para buscar todos os pacientes
     public List<Paciente> listarTodos() {

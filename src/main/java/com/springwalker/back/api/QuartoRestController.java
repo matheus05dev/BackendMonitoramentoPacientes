@@ -2,6 +2,7 @@ package com.springwalker.back.api;
 
 import com.springwalker.back.model.Quarto;
 import com.springwalker.back.service.QuartoService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +14,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/quarto")
 @CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 public class QuartoRestController {
 
-    @Autowired
-    private QuartoService quartoService;
+    private final QuartoService quartoService;
 
     // Buscar todos os quartos
     @GetMapping

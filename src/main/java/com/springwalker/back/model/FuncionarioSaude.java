@@ -7,12 +7,13 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
 @DiscriminatorValue(value = "F")
 @Entity
-@Data
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 public class FuncionarioSaude extends Pessoa {

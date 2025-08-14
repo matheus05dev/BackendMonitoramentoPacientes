@@ -2,6 +2,7 @@ package com.springwalker.back.api;
 
 import com.springwalker.back.model.Paciente;
 import com.springwalker.back.service.PacienteService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +14,10 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api/paciente")
+@RequiredArgsConstructor
 public class PacienteRestController {
 
-    @Autowired
-    private PacienteService pacienteService;
+    private final PacienteService pacienteService;
 
     // Buscar todos os pacientes
     @GetMapping
