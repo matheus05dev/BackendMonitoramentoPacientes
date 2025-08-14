@@ -25,9 +25,15 @@ public class AtendimentoRestController {
             Atendimento novoAtendimento = atendimentoService.criarAtendimento(atendimento);
             return new ResponseEntity<>(novoAtendimento, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
+            // Lida com erros de validação de negócio (ex: médico responsável com cargo incorreto)
             return ResponseEntity.badRequest().body(null);
         } catch (NoSuchElementException e) {
+            // Lida com o caso de IDs não encontrados (ex: médico responsável)
             return ResponseEntity.notFound().build();
+        } catch (IllegalStateException e) {
+            // Adicionado: Lida com a regra de negócio de atendimento em aberto,
+            // retornando um status 409 Conflict.
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
 
@@ -63,15 +69,15 @@ public class AtendimentoRestController {
 
     // Apagar um atendimento
     @DeleteMapping("/{id}")
-    public ResponseEntity<Atendimento> deletarAtendimento(@PathVariable Long id, @Valid @RequestBody Atendimento atendimento) {
+    public ResponseEntity<Void> deletarAtendimento(@PathVariable Long id) {
         try {
-            Atendimento atendimentoDeletado = atendimentoService.deletarAtendimento(id, atendimento);
-            return ResponseEntity.ok(atendimentoDeletado);
-            } catch (NoSuchElementException e) {
+            // O serviço agora não recebe um corpo e não retorna nada.
+            atendimentoService.deletarAtendimento(id);
+            // Retorna 204 No Content para indicar sucesso na deleção sem corpo na resposta.
+            return ResponseEntity.noContent().build();
+        } catch (NoSuchElementException e) {
             // Lida com o caso em que o atendimento a ser deletado não foi encontrado.
             return ResponseEntity.notFound().build();
         }
     }
-
-
 }

@@ -22,7 +22,6 @@ public class Atendimento {
     @Column(name = "id", unique = true)
     private Long id;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "Status Paciente")
     private StatusPaciente statusPaciente;

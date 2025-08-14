@@ -28,9 +28,24 @@ public class AtendimentoService {
     //lógica de criar atendimento
     @Transactional
     public Atendimento criarAtendimento(Atendimento atendimento) {
+        // Validação crucial: Verifica se o paciente já tem um atendimento em aberto.
+        // Um atendimento está em aberto se a 'dataSaida' for nula.
+        if (atendimento.getPaciente() == null || atendimento.getPaciente().getId() == null) {
+            throw new IllegalArgumentException("O paciente deve ser informado para criar um atendimento.");
+        }
+        // Chamada do repositório corrigida, removendo o parâmetro 'null'.
+        if (atendimentoRepository.existsByPacienteIdAndDataSaidaIsNull(atendimento.getPaciente().getId())) {
+            throw new IllegalStateException("O paciente já possui um atendimento em aberto.");
+        }
+
         // Valida se o médico responsável existe
         FuncionarioSaude medicoResponsavel = funcionarioSaudeRepository.findById(atendimento.getMedicoResponsavel().getId())
                 .orElseThrow(() -> new NoSuchElementException("Médico responsável não encontrado com o ID: " + atendimento.getMedicoResponsavel().getId()));
+
+        // Data automática de entrada e paciente entra como internado
+        atendimento.setDataEntrada(LocalDateTime.now());
+        atendimento.setStatusPaciente(StatusPaciente.Internado);
+        atendimento.setDataSaida(null); // Garante que a data de saída é nula para um novo atendimento.
 
         // Valida se o cargo do funcionário é MEDICO
         if (medicoResponsavel.getCargo() != Cargo.MEDICO) {
@@ -38,7 +53,7 @@ public class AtendimentoService {
         }
 
         // Se houver um médico de complicação, valida se ele também é um médico.
-        if (atendimento.getMedicoComplicacao() != null) {
+        if (atendimento.getMedicoComplicacao() != null && atendimento.getMedicoComplicacao().getId() != null) {
             FuncionarioSaude medicoComplicacao = funcionarioSaudeRepository.findById(atendimento.getMedicoComplicacao().getId())
                     .orElseThrow(() -> new NoSuchElementException("Médico de complicação não encontrado com o ID: " + atendimento.getMedicoComplicacao().getId()));
 
@@ -61,14 +76,13 @@ public class AtendimentoService {
 
     //lógica de apagar atendimento
     @Transactional
-    public Atendimento deletarAtendimento(Long id, Atendimento atendimento) {
+    public void deletarAtendimento(Long id) {
         // 1. Busca o atendimento existente pelo ID
         Atendimento atendimentoExistente = atendimentoRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Atendimento não encontrado com o ID: " + id));
 
         // 2. Apaga o atendimento no qual o id coincide
         atendimentoRepository.delete(atendimentoExistente);
-        return atendimentoExistente;
     }
 
     //lógica de alterar atendimento
