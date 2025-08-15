@@ -2,9 +2,7 @@ package com.springwalker.back.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.sql.Date;
@@ -12,10 +10,11 @@ import java.util.List;
 
 @Entity
 @SuperBuilder
-@Data
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@DiscriminatorValue(value = "P")
 public class Paciente extends Pessoa {
 
     @ElementCollection
