@@ -18,8 +18,6 @@ import java.util.List;
 @DiscriminatorValue(value = "P")
 public class Paciente extends Pessoa {
 
-
-    @NotEmpty
     @ElementCollection
     @CollectionTable(name = "Alergias", joinColumns = @JoinColumn(name = "Paciente Id"))
     @Column(name = "Alergia")
