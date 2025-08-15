@@ -12,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CriaPacienteService {
 
-    private PacienteRepository pacienteRepository;
+    private final PacienteRepository pacienteRepository;
 
     @Transactional
     // Lógica de negócio para inserir um novo paciente

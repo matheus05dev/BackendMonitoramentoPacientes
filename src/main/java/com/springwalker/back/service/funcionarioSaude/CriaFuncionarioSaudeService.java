@@ -14,7 +14,7 @@ import java.util.List;
 public class CriaFuncionarioSaudeService {
 
 
-    private FuncionarioSaudeRepository funcionarioSaudeRepository;
+    private final FuncionarioSaudeRepository funcionarioSaudeRepository;
 
     @Transactional
     // Lógica para salvar um funcionário novo ou existente

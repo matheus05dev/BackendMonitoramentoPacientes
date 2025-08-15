@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AlteraFuncionarioSaudeService {
 
-    private FuncionarioSaudeRepository funcionarioSaudeRepository;
+    private final FuncionarioSaudeRepository funcionarioSaudeRepository;
 
     @Transactional
     // Lógica para atualizar um funcionário existente por ID, alterando apenas os campos não nulos

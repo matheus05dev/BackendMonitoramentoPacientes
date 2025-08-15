@@ -11,7 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BuscaPacienteService {
 
-    private PacienteRepository pacienteRepository;
+    private final PacienteRepository pacienteRepository;
 
     // Lógica para buscar todos os pacientes
     public List<Paciente> listarTodos() {

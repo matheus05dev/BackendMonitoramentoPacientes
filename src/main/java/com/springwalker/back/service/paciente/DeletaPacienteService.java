@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DeletaPacienteService {
 
-    private PacienteRepository pacienteRepository;
+    private final PacienteRepository pacienteRepository;
 
     // Lógica para excluir um paciente por ID
     @Transactional
