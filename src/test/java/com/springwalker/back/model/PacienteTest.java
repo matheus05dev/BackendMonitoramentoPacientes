@@ -1,7 +1,8 @@
 package com.springwalker.back.model;
 
-import com.springwalker.back.enums.Sexo;
-import com.springwalker.back.repository.PacienteRepository;
+import com.springwalker.back.core.enums.Sexo;
+import com.springwalker.back.paciente.model.Paciente;
+import com.springwalker.back.paciente.repository.PacienteRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
