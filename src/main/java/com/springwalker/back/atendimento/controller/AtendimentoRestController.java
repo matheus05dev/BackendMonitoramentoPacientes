@@ -17,6 +17,7 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/atendimento")
+@CrossOrigin(origins = "*")
 public class AtendimentoRestController {
 
 
