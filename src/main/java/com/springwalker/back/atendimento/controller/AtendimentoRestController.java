@@ -21,7 +21,7 @@ import java.util.NoSuchElementException;
 public class AtendimentoRestController {
 
 
-    private final AlteraAtendimentoService alteraAtendimento;
+    private final AlteraAtendimentoService alteraAtendimentos;
     private final CriaAtendimentoService criaAtendimento;
     private final BuscaAtendimentoService buscaAtendimento;
     private final DeletaAtendimentoService  deletaAtendimento;
