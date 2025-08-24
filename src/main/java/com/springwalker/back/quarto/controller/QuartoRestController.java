@@ -12,7 +12,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/quarto")
-@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class QuartoRestController {
 

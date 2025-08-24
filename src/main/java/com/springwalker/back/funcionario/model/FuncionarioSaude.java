@@ -1,5 +1,7 @@
 package com.springwalker.back.funcionario.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.springwalker.back.atendimento.model.Atendimento;
 import com.springwalker.back.core.enums.Cargo;
 import com.springwalker.back.core.model.Pessoa;
 import jakarta.persistence.*;
@@ -34,4 +36,13 @@ public class FuncionarioSaude extends Pessoa {
     @NotEmpty
     @Column(unique = true, name = "Identificação" )
     private String identificacao;
+
+    @OneToMany(mappedBy = "medicoResponsavel", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Atendimento> atendimentos;
+
+
+    @OneToMany(mappedBy = "medicoComplicacao", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Atendimento> atendimentosComplicacao;
 }

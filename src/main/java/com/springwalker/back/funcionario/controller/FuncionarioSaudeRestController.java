@@ -14,7 +14,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/funcionario")
-@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class FuncionarioSaudeRestController {
 

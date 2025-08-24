@@ -1,5 +1,6 @@
 package com.springwalker.back.atendimento.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.springwalker.back.core.enums.Diagnostico;
 import com.springwalker.back.core.enums.StatusPaciente;
 import com.springwalker.back.funcionario.model.FuncionarioSaude;
@@ -59,19 +60,17 @@ public class Atendimento {
     @Column(name = "Tratamento complicação")
     private String tratamento_complicacao;
 
-    @NotNull
     @ManyToOne
-    @JoinColumn(name = "Paciente Id")
+    @JoinColumn(name = "Paciente Id", nullable = true)
     private Paciente paciente;
 
-    @NotNull
     @ManyToOne
-    @JoinColumn(name = "Médico Responsável Id")
+    @JsonBackReference
+    @JoinColumn(name = "Médico Responsável Id", nullable = true)
     private FuncionarioSaude medicoResponsavel;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "Medico Complicacao Id")
     private FuncionarioSaude medicoComplicacao;
-
-
 }

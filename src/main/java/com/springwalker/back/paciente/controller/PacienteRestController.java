@@ -14,7 +14,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/api/paciente")
 @RequiredArgsConstructor
 public class PacienteRestController {
@@ -58,7 +57,7 @@ public class PacienteRestController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void excluir(@PathVariable Long id) {
         try {
-            deletaPacienteService.excluir(id);
+            deletaPacienteService.deletar(id);
         } catch (IllegalStateException e) {
             // A exceção da lógica de negócio é tratada aqui
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
