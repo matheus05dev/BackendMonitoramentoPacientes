@@ -65,12 +65,12 @@ public class Atendimento {
     private Paciente paciente;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("responsavel-atendimento")
     @JoinColumn(name = "Médico Responsável Id", nullable = true)
     private FuncionarioSaude medicoResponsavel;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonBackReference("complicacao-atendimento")
     @JoinColumn(name = "Medico Complicacao Id")
     private FuncionarioSaude medicoComplicacao;
 }
