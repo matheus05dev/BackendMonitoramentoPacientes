@@ -38,7 +38,7 @@ public class FuncionarioSaude extends Pessoa {
     private String identificacao;
 
     @OneToMany(mappedBy = "medicoResponsavel", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference("responsavel-atendimento") 
+    @JsonManagedReference("responsavel-atendimento")
     private List<Atendimento> atendimentos;
 
 
@@ -46,3 +46,4 @@ public class FuncionarioSaude extends Pessoa {
     @JsonManagedReference("complicacao-atendimento")
     private List<Atendimento> atendimentosComplicacao;
 }
+
