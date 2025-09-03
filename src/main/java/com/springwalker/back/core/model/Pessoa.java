@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.aspectj.bridge.IMessage;
+import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -50,12 +52,12 @@ public class Pessoa {
     private List<Telefone> telefones = new ArrayList<Telefone>();
 
     @NotEmpty(message = "O CPF deve ser informado") // Validação para CPF
-    @Column(unique = true) // Garante que o CPF seja único
+    @Column(name = "CPF", unique = true)// Garante que o CPF seja único
+    @CPF (message = "O CPF informado é inválido")// Validação do CPF
     private String cpf; // Propriedade CPF
 
     public void addTelefone(Telefone telefone) {
         this.telefones.add(telefone);
     }
-
 
 }
