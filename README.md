@@ -6,7 +6,7 @@ O InfraMed é um projeto inovador que nasceu para solucionar um desafio crítico
 
 ## Tecnologias Utilizadas
 - **Java 24:** Linguagem de programação robusta e amplamente utilizada para aplicações corporativas.
-- **Spring Boot 3.x:** Framework para desenvolvimento rápido de aplicações Java, facilitando a criação de APIs RESTful e microsserviços.
+- **Spring Boot 3.4.5:** Framework para desenvolvimento rápido de aplicações Java, facilitando a criação de APIs RESTful e microsserviços.
 - **Spring Data JPA:** Simplifica a implementação de camadas de acesso a dados, utilizando o padrão Repository e abstraindo a complexidade do ORM.
 - **Hibernate:** Implementação de ORM (Object-Relational Mapping) que facilita a persistência de objetos Java em bancos de dados relacionais.
 - **Maven:** Ferramenta de automação de build e gerenciamento de dependências.
