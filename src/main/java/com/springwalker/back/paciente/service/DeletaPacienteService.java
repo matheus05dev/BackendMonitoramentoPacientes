@@ -15,7 +15,12 @@ public class DeletaPacienteService {
     private final AtendimentoRepository atendimentoRepository;
 
     @Transactional
-    public void deletar(Long id) {
+    public void execute(Long id) {
+        // Adiciona verificação de existência para fornecer um erro claro
+        if (!pacienteRepository.existsById(id)) {
+            throw new RuntimeException("Paciente não encontrado com ID: " + id);
+        }
+
         // Passo 1: Desvincula o paciente de todos os seus atendimentos
         atendimentoRepository.desvincularPaciente(id);
 

@@ -1,6 +1,5 @@
 package com.springwalker.back.paciente.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.springwalker.back.core.model.Pessoa;
 import com.springwalker.back.quarto.model.Quarto;
 import jakarta.persistence.*;
@@ -25,6 +24,5 @@ public class Paciente extends Pessoa {
 
     @ManyToOne
     @JoinColumn(name = "Quarto Id")
-    @JsonIgnore
     private Quarto quarto;
 }

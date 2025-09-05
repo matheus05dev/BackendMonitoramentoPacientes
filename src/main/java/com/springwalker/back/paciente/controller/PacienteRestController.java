@@ -1,95 +1,81 @@
 package com.springwalker.back.paciente.controller;
 
-import com.springwalker.back.paciente.model.Paciente;
+import com.springwalker.back.paciente.dto.PacienteRequestDTO;
+import com.springwalker.back.paciente.dto.PacienteResponseDTO;
 import com.springwalker.back.paciente.service.AlteraPacienteService;
 import com.springwalker.back.paciente.service.BuscaPacienteService;
 import com.springwalker.back.paciente.service.CriaPacienteService;
 import com.springwalker.back.paciente.service.DeletaPacienteService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/paciente")
+@RequestMapping("/api/pacientes") // Plural, seguindo o padrão REST
 @RequiredArgsConstructor
 public class PacienteRestController {
 
+    private final CriaPacienteService criaPacienteService;
     private final BuscaPacienteService buscaPacienteService;
     private final AlteraPacienteService alteraPacienteService;
-    private final CriaPacienteService criaPacienteService;
     private final DeletaPacienteService deletaPacienteService;
 
-    // Buscar todos os pacientes
-    @GetMapping
-    public List<Paciente> listar() {
-        return buscaPacienteService.listarTodos();
-    }
-
-    // Inserir um novo paciente
     @PostMapping
-    public ResponseEntity<Paciente> inserir(@RequestBody Paciente paciente) {
+    public ResponseEntity<PacienteResponseDTO> criarPaciente(@RequestBody @Valid PacienteRequestDTO requestDTO) {
         try {
-            Paciente novoPaciente = criaPacienteService.inserir(paciente);
-            return new ResponseEntity<>(novoPaciente, HttpStatus.CREATED);
+            PacienteResponseDTO responseDTO = criaPacienteService.execute(requestDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
         } catch (IllegalArgumentException e) {
-            // A exceção da lógica de negócio é tratada aqui
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            // Captura a exceção de CPF duplicado do serviço
+            return ResponseEntity.badRequest().header("X-Error-Message", e.getMessage()).build();
         }
     }
 
-    // Alterar um paciente por ID
+    @GetMapping
+    public ResponseEntity<List<PacienteResponseDTO>> listarTodosPacientes() {
+        return ResponseEntity.ok(buscaPacienteService.listarTodos());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PacienteResponseDTO> buscarPacientePorId(@PathVariable Long id) {
+        return buscaPacienteService.buscarPorId(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/{cpf}")
+    public ResponseEntity<PacienteResponseDTO> buscarPacientePorCpf(@PathVariable String cpf) {
+        return buscaPacienteService.buscarPorCpf(cpf)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/{nome}")
+    public ResponseEntity<List<PacienteResponseDTO>> buscarPacientePorNome(@RequestParam("nome") String nome) {
+        return ResponseEntity.ok(buscaPacienteService.buscarPorNome(nome));
+    }
+
     @PutMapping("/{id}")
-    public Paciente alterar(@PathVariable Long id, @RequestBody Paciente paciente) {
+    public ResponseEntity<PacienteResponseDTO> alterarPaciente(@PathVariable Long id, @RequestBody @Valid PacienteRequestDTO requestDTO) {
         try {
-            return alteraPacienteService.alterar(id, paciente);
-        } catch (IllegalStateException e) {
-            // A exceção da lógica de negócio é tratada aqui
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+            PacienteResponseDTO responseDTO = alteraPacienteService.execute(id, requestDTO);
+            return ResponseEntity.ok(responseDTO);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
         }
     }
 
-    // Excluir um paciente por ID
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void excluir(@PathVariable Long id) {
+    public ResponseEntity<Void> deletarPaciente(@PathVariable Long id) {
         try {
-            deletaPacienteService.deletar(id);
-        } catch (IllegalStateException e) {
-            // A exceção da lógica de negócio é tratada aqui
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+            deletaPacienteService.execute(id);
+            return ResponseEntity.noContent().build(); // Status 204
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
         }
-    }
-
-    // Inserir vários pacientes de uma vez
-    @PostMapping("/inserir-varios")
-    public List<Paciente> inserirVarios(@RequestBody List<Paciente> pacientes) {
-        return criaPacienteService.inserirVarios(pacientes);
-    }
-
-    // Buscar um paciente por ID
-    @GetMapping("/buscar/{id}")
-    public Paciente buscarPorId(@PathVariable Long id) {
-        try {
-            return buscaPacienteService.buscarPorId(id);
-        } catch (IllegalStateException e) {
-            // A exceção da lógica de negócio é tratada aqui
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
-    }
-
-    // Buscar pacientes por nome (busca parcial)
-    @GetMapping("/buscar-por-nome/{nome}")
-    public List<Paciente> buscarPorNome(@PathVariable String nome) {
-        return buscaPacienteService.buscarPorNome(nome);
-    }
-
-    // Buscar pacientes por CPF
-    @GetMapping("/buscar-por-cpf/{cpf}")
-    public List<Paciente> buscarPorCpf(@PathVariable String cpf) {
-        return buscaPacienteService.buscarPorCpf(cpf);
     }
 }

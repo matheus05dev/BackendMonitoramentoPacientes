@@ -4,20 +4,13 @@ import com.springwalker.back.funcionario.model.FuncionarioSaude;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface FuncionarioSaudeRepository extends JpaRepository<FuncionarioSaude, Long> {
 
-    List<FuncionarioSaude> findByNomeContainingIgnoreCase(String nome);
+    Optional<FuncionarioSaude> findFuncionarioSaudeByCpf(String cpf);
 
-    FuncionarioSaude findByEmail(String email);
-
-    FuncionarioSaude findByCpf(String cpf);
-
-    FuncionarioSaude findByNome(String nome);
+    boolean existsByCpf(String cpf);
 
     List<FuncionarioSaude> findFuncionarioSaudesByNomeContaining(String nome);
-
-    List<FuncionarioSaude> findFuncionarioSaudesByNomeContainingOrCpfContaining(String nome, String cpf);
-
-    FuncionarioSaude findFuncionarioSaudeByCpf(String cpf);
 }

@@ -14,8 +14,12 @@ public class DelataFuncionarioSaudeService {
     private final AtendimentoRepository atendimentoRepository;
 
     @Transactional
-    // Lógica para deletar um funcionário por ID, desvinculando-o dos atendimentos
-    public void deletar(Long id) {
+    public void execute(Long id) {
+        // Verifica se o funcionário existe antes de tentar deletar
+        if (!funcionarioSaudeRepository.existsById(id)) {
+            throw new RuntimeException("Funcionário não encontrado com ID: " + id);
+        }
+
         // Desvincula o funcionário de todos os atendimentos como médico responsável
         atendimentoRepository.desvincularMedicoResponsavel(id);
 
