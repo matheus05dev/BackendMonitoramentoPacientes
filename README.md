@@ -80,7 +80,7 @@ Base URL: `/api/pacientes`
 | `PUT` | `/{id}` | Altera um paciente existente. | `PacienteRequestDTO` (JSON) | `200 OK` (Paciente alterado), `404 NOT FOUND` |
 | `DELETE` | `/{id}` | Deleta um paciente. | N/A | `204 NO CONTENT`, `404 NOT FOUND` |
 
-*Nota sobre `GET /api/pacientes/{cpf}` e `GET /api/pacientes/{id}`:* Embora ambos usem um path variable, o Spring é capaz de distinguir entre eles com base no tipo de dado esperado (Long para ID, String para CPF). No entanto, para maior clareza e evitar ambiguidades em outros contextos, uma abordagem comum seria usar `/api/pacientes/cpf/{cpf}` ou `/api/pacientes/id/{id}`.
+*Nota sobre `GET /api/pacientes/{cpf}` e `GET /api/pacientes/{id}`:* Embora ambos usem um path variable, o Spring é capaz de distinguir entre eles com base no tipo de dado esperado (Long para ID, String para CPF). No entanto, para maior clareza e evitar ambiguidades em outros contextos, uma abordagem comum seria usar `/api/pacientes/cpf/{cpf}` ou `/api/pacientes/id/{id}` para melhor leitura.
 
 ### Endpoints de Atendimento
 Base URL: `/api/atendimento`
@@ -106,7 +106,7 @@ Base URL: `/api/funcionarios`
 | `PUT` | `/{id}` | Altera um funcionário de saúde existente. | `FuncionarioSaudeRequestDTO` (JSON) | `200 OK` (Funcionário alterado), `404 NOT FOUND` |
 | `DELETE` | `/{id}` | Deleta um funcionário de saúde. | N/A | `204 NO CONTENT`, `404 NOT FOUND` |
 
-*Nota sobre `GET /api/funcionarios/{cpf}` e `GET /api/funcionarios/{id}`:* Similar aos endpoints de Paciente, o Spring é capaz de distinguir. Para maior clareza, considere usar `/api/funcionarios/cpf/{cpf}` ou `/api/funcionarios/id/{id}`.
+*Nota sobre `GET /api/funcionarios/{cpf}` e `GET /api/funcionarios/{id}`:* Similar aos endpoints de Paciente, o Spring é capaz de distinguir. Para maior clareza seria assim `/api/funcionarios/cpf/{cpf}` ou `/api/funcionarios/id/{id}`.
 
 ## Como Rodar o Projeto
 
@@ -127,9 +127,5 @@ Base URL: `/api/funcionarios`
     mvn spring-boot:run
     ```
     O aplicativo estará disponível em `http://localhost:8080`.
-
-## Contribuição
-Sinta-se à vontade para abrir issues ou pull requests.
-
-## Licença
-Este projeto está licenciado sob a Licença MIT.
+    
+## Esse projeto foi um produto final de um curso (TCC) feito em grupo do curso Técnico de Desenvolvimento de Sistemas da Escola SENAI 403 "Antônio Ermírio de Moraes" da cidade de Alumínio-SP
