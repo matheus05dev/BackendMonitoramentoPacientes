@@ -1,11 +1,14 @@
 package com.springwalker.back.atendimento.service;
 
-import com.springwalker.back.core.enums.Cargo;
-import com.springwalker.back.core.enums.StatusPaciente;
+import com.springwalker.back.atendimento.dto.AtendimentoRequestDTO;
+import com.springwalker.back.atendimento.dto.AtendimentoResponseDTO;
+import com.springwalker.back.atendimento.mapper.AtendimentoMapper;
 import com.springwalker.back.atendimento.model.Atendimento;
 import com.springwalker.back.funcionario.model.FuncionarioSaude;
 import com.springwalker.back.atendimento.repository.AtendimentoRepository;
 import com.springwalker.back.funcionario.repository.FuncionarioSaudeRepository;
+import com.springwalker.back.paciente.model.Paciente;
+import com.springwalker.back.paciente.repository.PacienteRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,44 +19,44 @@ import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
-
 public class CriaAtendimentoService {
-
     private final FuncionarioSaudeRepository funcionarioSaudeRepository;
     private final AtendimentoRepository atendimentoRepository;
+    private final PacienteRepository pacienteRepository;
+    private final AtendimentoMapper atendimentoMapper;
 
-
-    //lógica de criar atendimento
     @Transactional
-    public Atendimento criarAtendimento(@Valid Atendimento atendimento) {
-        if (atendimento.getPaciente() == null || atendimento.getPaciente().getId() == null) {
-            throw new IllegalArgumentException("O paciente deve ser informado para criar um atendimento.");
-        }
-
-        if (atendimentoRepository.existsByPacienteIdAndDataSaidaIsNull(atendimento.getPaciente().getId())) {
+    public AtendimentoResponseDTO criarAtendimento(@Valid AtendimentoRequestDTO dto) {
+        Paciente paciente = pacienteRepository.findById(dto.getPacienteId())
+                .orElseThrow(() -> new NoSuchElementException("Paciente não encontrado"));
+        if (atendimentoRepository.existsByPacienteIdAndDataSaidaIsNull(dto.getPacienteId())) {
             throw new IllegalStateException("O paciente já possui um atendimento em aberto.");
         }
-
-        FuncionarioSaude medicoResponsavel = funcionarioSaudeRepository.findById(atendimento.getMedicoResponsavel().getId())
-                .orElseThrow(() -> new NoSuchElementException("Médico responsável não encontrado com o ID: " + atendimento.getMedicoResponsavel().getId()));
-
-        if (medicoResponsavel.getCargo() != Cargo.MEDICO) {
+        FuncionarioSaude medicoResponsavel = funcionarioSaudeRepository.findById(dto.getMedicoResponsavelId())
+                .orElseThrow(() -> new NoSuchElementException("Médico responsável não encontrado"));
+        if (medicoResponsavel.getCargo() != com.springwalker.back.core.enums.Cargo.MEDICO) {
             throw new IllegalArgumentException("O funcionário responsável deve ser um médico.");
         }
-
-        if (atendimento.getMedicoComplicacao() != null && atendimento.getMedicoComplicacao().getId() != null) {
-            FuncionarioSaude medicoComplicacao = funcionarioSaudeRepository.findById(atendimento.getMedicoComplicacao().getId())
-                    .orElseThrow(() -> new NoSuchElementException("Médico de complicação não encontrado com o ID: " + atendimento.getMedicoComplicacao().getId()));
-
-            if (medicoComplicacao.getCargo() != Cargo.MEDICO) {
+        FuncionarioSaude medicoComplicacao = null;
+        if (dto.getMedicoComplicacaoId() != null) {
+            medicoComplicacao = funcionarioSaudeRepository.findById(dto.getMedicoComplicacaoId())
+                    .orElseThrow(() -> new NoSuchElementException("Médico de complicação não encontrado"));
+            if (medicoComplicacao.getCargo() != com.springwalker.back.core.enums.Cargo.MEDICO) {
                 throw new IllegalArgumentException("O funcionário de complicação deve ser um médico.");
             }
         }
-
+        Atendimento atendimento = atendimentoMapper.toEntity(dto);
+        atendimento.setPaciente(paciente);
+        atendimento.setMedicoResponsavel(medicoResponsavel);
+        atendimento.setMedicoComplicacao(medicoComplicacao);
         atendimento.setDataEntrada(LocalDateTime.now());
-        atendimento.setStatusPaciente(StatusPaciente.Internado);
+        atendimento.setStatusPaciente(com.springwalker.back.core.enums.StatusPaciente.Internado);
         atendimento.setDataSaida(null);
-
-        return atendimentoRepository.save(atendimento);
+        // Preenchendo nomes imutáveis
+        atendimento.setNomePaciente(paciente.getNome());
+        atendimento.setNomeMedicoResponsavel(medicoResponsavel.getNome());
+        atendimento.setNomeMedicoComplicacao(medicoComplicacao != null ? medicoComplicacao.getNome() : null);
+        Atendimento salvo = atendimentoRepository.save(atendimento);
+        return atendimentoMapper.toResponseDTO(salvo);
     }
 }

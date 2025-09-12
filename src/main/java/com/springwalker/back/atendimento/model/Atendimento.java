@@ -73,4 +73,13 @@ public class Atendimento {
     @JsonBackReference("complicacao-atendimento")
     @JoinColumn(name = "Medico Complicacao Id")
     private FuncionarioSaude medicoComplicacao;
+
+    @Column(name = "Nome Paciente", updatable = false)
+    private String nomePaciente;
+
+    @Column(name = "Nome Médico Responsável", updatable = false)
+    private String nomeMedicoResponsavel;
+
+    @Column(name = "Nome Médico Complicação", updatable = false)
+    private String nomeMedicoComplicacao;
 }

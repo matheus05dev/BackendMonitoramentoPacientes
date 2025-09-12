@@ -1,5 +1,8 @@
 package com.springwalker.back.quarto.service;
 
+import com.springwalker.back.quarto.dto.QuartoRequestDTO;
+import com.springwalker.back.quarto.dto.QuartoResponseDTO;
+import com.springwalker.back.quarto.mapper.QuartoMapper;
 import com.springwalker.back.quarto.model.Quarto;
 import com.springwalker.back.quarto.repository.QuartoRepository;
 import jakarta.transaction.Transactional;
@@ -11,26 +14,15 @@ import org.springframework.stereotype.Service;
 public class AlteraQuartoService {
 
     private final QuartoRepository quartoRepository;
+    private final QuartoMapper quartoMapper;
 
     @Transactional
-    // Lógica para alterar um quarto
-    public Quarto alterar(Long id, Quarto quarto) {
+    public QuartoResponseDTO alterar(Long id, QuartoRequestDTO dto) {
         Quarto quartoExistente = quartoRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Quarto não encontrado com o ID: " + id));
-
-        if (quarto.getCapacidade() != null) {
-            quartoExistente.setCapacidade(quarto.getCapacidade());
-        }
-        if (quarto.getLocalizacao() != null) {
-            quartoExistente.setLocalizacao(quarto.getLocalizacao());
-        }
-        if (quarto.getNumero() != null) {
-            quartoExistente.setNumero(quarto.getNumero());
-        }
-        if (quarto.getTipo() != null) {
-            quartoExistente.setTipo(quarto.getTipo());
-        }
-
-        return quartoRepository.save(quartoExistente);
+        // Atualiza os campos da entidade existente com base no DTO
+        quartoMapper.updateFromDto(dto, quartoExistente);
+        Quarto salvo = quartoRepository.save(quartoExistente);
+        return quartoMapper.toResponseDTO(salvo);
     }
 }

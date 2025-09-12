@@ -1,11 +1,14 @@
 package com.springwalker.back.atendimento.service;
 
-import com.springwalker.back.core.enums.Cargo;
-import com.springwalker.back.core.enums.StatusPaciente;
+import com.springwalker.back.atendimento.dto.AtendimentoRequestDTO;
+import com.springwalker.back.atendimento.dto.AtendimentoResponseDTO;
+import com.springwalker.back.atendimento.mapper.AtendimentoMapper;
 import com.springwalker.back.atendimento.model.Atendimento;
 import com.springwalker.back.funcionario.model.FuncionarioSaude;
 import com.springwalker.back.atendimento.repository.AtendimentoRepository;
 import com.springwalker.back.funcionario.repository.FuncionarioSaudeRepository;
+import com.springwalker.back.paciente.model.Paciente;
+import com.springwalker.back.paciente.repository.PacienteRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,61 +19,60 @@ import java.util.NoSuchElementException;
 @Service
 @RequiredArgsConstructor
 public class AlteraAtendimentoService {
-
-
     private final AtendimentoRepository atendimentoRepository;
+    private final FuncionarioSaudeRepository funcionarioSaudeRepository;
+    private final PacienteRepository pacienteRepository;
+    private final AtendimentoMapper atendimentoMapper;
 
-    private  final FuncionarioSaudeRepository funcionarioSaudeRepository;
-
-
-    //lógica de alterar atendimento
     @Transactional
-    public Atendimento alterarAtendimento(Long id, Atendimento atendimentoAtualizado) {
-        // 1. Busca o atendimento existente pelo ID
+    public AtendimentoResponseDTO alterarAtendimento(Long id, AtendimentoRequestDTO dto) {
         Atendimento atendimentoExistente = atendimentoRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Atendimento não encontrado com o ID: " + id));
 
-        // 2. Atualiza o status do paciente
-        atendimentoExistente.setStatusPaciente(atendimentoAtualizado.getStatusPaciente());
+        // Regra de negócio: não permitir alteração se já estiver Liberado
+        if (atendimentoExistente.getStatusPaciente() != null && atendimentoExistente.getStatusPaciente().name().equals("Liberado")) {
+            throw new IllegalStateException("Não é permitido alterar um atendimento já liberado.");
+        }
 
-        // 3. Adiciona a lógica para a data de saída baseada no status do paciente
-        if (atendimentoAtualizado.getStatusPaciente() == StatusPaciente.Liberado) {
-            // Se o status for "Liberado", define a data de saída para a data e hora atuais.
+        // Atualiza campos
+        atendimentoExistente.setStatusPaciente(dto.getStatusPaciente());
+        if (dto.getStatusPaciente() != null && dto.getStatusPaciente().name().equals("Liberado")) {
             atendimentoExistente.setDataSaida(LocalDateTime.now());
-        } else if (atendimentoAtualizado.getStatusPaciente() == StatusPaciente.Internado) {
-            // Se o status for alterado para "Internado", limpa a data de saída (caso tenha sido liberado e re-internado).
+        } else if (dto.getStatusPaciente() != null && dto.getStatusPaciente().name().equals("Internado")) {
             atendimentoExistente.setDataSaida(null);
         }
+        atendimentoExistente.setAcompanhante(dto.getAcompanhante());
+        atendimentoExistente.setCondicoesPreexistentes(dto.getCondicoesPreexistentes());
+        atendimentoExistente.setObservacoes(dto.getObservacoes());
+        atendimentoExistente.setTratamento(dto.getTratamento());
+        atendimentoExistente.setDiagnostico(dto.getDiagnostico());
+        atendimentoExistente.setDiagnostico_complicacao(dto.getDiagnosticoComplicacao());
+        atendimentoExistente.setTratamento_complicacao(dto.getTratamentoComplicacao());
 
-        // 4. Atualiza os demais campos do atendimento com os dados do objeto recebido
-        atendimentoExistente.setAcompanhante(atendimentoAtualizado.getAcompanhante());
-        atendimentoExistente.setCondicoesPreexistentes(atendimentoAtualizado.getCondicoesPreexistentes());
-        atendimentoExistente.setObservacoes(atendimentoAtualizado.getObservacoes());
-        atendimentoExistente.setTratamento(atendimentoAtualizado.getTratamento());
-        atendimentoExistente.setDiagnostico(atendimentoAtualizado.getDiagnostico());
-
-        // 5. Lógica para complicação
-        if (atendimentoAtualizado.getDiagnostico_complicacao() != null) {
-            atendimentoExistente.setDiagnostico_complicacao(atendimentoAtualizado.getDiagnostico_complicacao());
-            atendimentoExistente.setTratamento_complicacao(atendimentoAtualizado.getTratamento_complicacao());
-
-            if (atendimentoAtualizado.getMedicoComplicacao() != null && atendimentoAtualizado.getMedicoComplicacao().getId() != null) {
-                FuncionarioSaude medicoComplicacao = funcionarioSaudeRepository.findById(atendimentoAtualizado.getMedicoComplicacao().getId())
-                        .orElseThrow(() -> new NoSuchElementException("Médico de complicação não encontrado com o ID: " + atendimentoAtualizado.getMedicoComplicacao().getId()));
-
-                if (medicoComplicacao.getCargo() != Cargo.MEDICO) {
-                    throw new IllegalArgumentException("O funcionário de complicação deve ser um médico.");
-                }
-                atendimentoExistente.setMedicoComplicacao(medicoComplicacao);
-            }
+        // Atualiza paciente e médicos SEMPRE que vier no DTO, mesmo que o ID não mude
+        if (dto.getPacienteId() != null) {
+            Paciente paciente = pacienteRepository.findById(dto.getPacienteId())
+                    .orElseThrow(() -> new NoSuchElementException("Paciente não encontrado"));
+            atendimentoExistente.setPaciente(paciente);
+            atendimentoExistente.setNomePaciente(paciente.getNome());
+        }
+        if (dto.getMedicoResponsavelId() != null) {
+            FuncionarioSaude medicoResponsavel = funcionarioSaudeRepository.findById(dto.getMedicoResponsavelId())
+                    .orElseThrow(() -> new NoSuchElementException("Médico responsável não encontrado"));
+            atendimentoExistente.setMedicoResponsavel(medicoResponsavel);
+            atendimentoExistente.setNomeMedicoResponsavel(medicoResponsavel.getNome());
+        }
+        if (dto.getMedicoComplicacaoId() != null) {
+            FuncionarioSaude medicoComplicacao = funcionarioSaudeRepository.findById(dto.getMedicoComplicacaoId())
+                    .orElseThrow(() -> new NoSuchElementException("Médico complicação não encontrado"));
+            atendimentoExistente.setMedicoComplicacao(medicoComplicacao);
+            atendimentoExistente.setNomeMedicoComplicacao(medicoComplicacao.getNome());
         } else {
-            // Se a complicação for removida, limpa os campos relacionados
-            atendimentoExistente.setDiagnostico_complicacao(null);
-            atendimentoExistente.setTratamento_complicacao(null);
             atendimentoExistente.setMedicoComplicacao(null);
+            atendimentoExistente.setNomeMedicoComplicacao(null);
         }
 
-        // 6. Salva e retorna o atendimento atualizado
-        return atendimentoRepository.save(atendimentoExistente);
+        Atendimento salvo = atendimentoRepository.save(atendimentoExistente);
+        return atendimentoMapper.toResponseDTO(salvo);
     }
 }

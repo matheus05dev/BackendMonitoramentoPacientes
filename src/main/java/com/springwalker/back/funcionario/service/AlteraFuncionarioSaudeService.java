@@ -1,5 +1,8 @@
 package com.springwalker.back.funcionario.service;
 
+import com.springwalker.back.funcionario.dto.FuncionarioSaudeRequestDTO;
+import com.springwalker.back.funcionario.dto.FuncionarioSaudeResponseDTO;
+import com.springwalker.back.funcionario.mapper.FuncionarioMapper;
 import com.springwalker.back.funcionario.model.FuncionarioSaude;
 import com.springwalker.back.funcionario.repository.FuncionarioSaudeRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,45 +14,21 @@ import org.springframework.transaction.annotation.Transactional;
 public class AlteraFuncionarioSaudeService {
 
     private final FuncionarioSaudeRepository funcionarioSaudeRepository;
+    private final FuncionarioMapper funcionarioMapper;
 
     @Transactional
-    // Lógica para atualizar um funcionário existente por ID, alterando apenas os campos não nulos
-    public FuncionarioSaude atualizar(Long id, FuncionarioSaude funcionarioSaude) {
-        FuncionarioSaude funcionarioSaudeExistente = funcionarioSaudeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Funcionário não encontrado"));
+    public FuncionarioSaudeResponseDTO execute(Long id, FuncionarioSaudeRequestDTO dto) {
+        // Busca a entidade existente
+        FuncionarioSaude funcionarioExistente = funcionarioSaudeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Funcionário não encontrado com ID: " + id));
 
-        if(funcionarioSaude.getCpf() != null){
-            funcionarioSaudeExistente.setCpf(funcionarioSaude.getCpf());
-        }
+        // Usa o mapper para atualizar a entidade com os dados do DTO
+        funcionarioMapper.updateFromDto(dto, funcionarioExistente);
 
-        if(funcionarioSaude.getEmail() != null){
-            funcionarioSaudeExistente.setEmail(funcionarioSaude.getEmail());
-        }
+        // Salva a entidade atualizada
+        FuncionarioSaude funcionarioAtualizado = funcionarioSaudeRepository.save(funcionarioExistente);
 
-        if(funcionarioSaude.getNome() != null){
-            funcionarioSaudeExistente.setNome(funcionarioSaude.getNome());
-        }
-
-        if(funcionarioSaude.getDataNascimento() != null){
-            funcionarioSaudeExistente.setDataNascimento(funcionarioSaude.getDataNascimento());
-        }
-
-        if(funcionarioSaude.getTelefones() != null){
-            funcionarioSaudeExistente.setTelefones(funcionarioSaude.getTelefones());
-        }
-
-        if (funcionarioSaude.getCargo() != null) {
-            funcionarioSaudeExistente.setCargo(funcionarioSaude.getCargo());
-        }
-
-        if (funcionarioSaude.getEspecialidades() != null) {
-            funcionarioSaudeExistente.setEspecialidades(funcionarioSaude.getEspecialidades());
-        }
-
-        if (funcionarioSaude.getIdentificacao() != null) {
-            funcionarioSaudeExistente.setIdentificacao(funcionarioSaude.getIdentificacao());
-        }
-
-        return funcionarioSaudeRepository.save(funcionarioSaudeExistente);
+        // Retorna o DTO de resposta
+        return funcionarioMapper.toResponseDTO(funcionarioAtualizado);
     }
 }

@@ -1,36 +1,44 @@
 package com.springwalker.back.funcionario.service;
 
-import com.springwalker.back.funcionario.model.FuncionarioSaude;
+import com.springwalker.back.funcionario.dto.FuncionarioSaudeResponseDTO;
+import com.springwalker.back.funcionario.mapper.FuncionarioMapper;
 import com.springwalker.back.funcionario.repository.FuncionarioSaudeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class BuscarFuncionarioSaudeService {
 
     private final FuncionarioSaudeRepository funcionarioSaudeRepository;
+    private final FuncionarioMapper funcionarioMapper;
 
-    // Lógica para buscar todos os funcionários
-    public List<FuncionarioSaude> listarTodos() {
-        return funcionarioSaudeRepository.findAll();
+    public List<FuncionarioSaudeResponseDTO> listarTodos() {
+        return funcionarioSaudeRepository.findAll()
+                .stream()
+                .map(funcionarioMapper::toResponseDTO)
+                .collect(Collectors.toList());
     }
 
-    // Lógica para buscar um funcionário por ID
-    public Optional<FuncionarioSaude> buscarPorId(Long id) {
-        return funcionarioSaudeRepository.findById(id);
+    public Optional<FuncionarioSaudeResponseDTO> buscarPorId(Long id) {
+        return funcionarioSaudeRepository.findById(id)
+                .map(funcionarioMapper::toResponseDTO);
     }
 
-    // Lógica para buscar funcionários por nome (busca parcial)
-    public List<FuncionarioSaude> buscarPorNome(String nome) {
-        return funcionarioSaudeRepository.findFuncionarioSaudesByNomeContaining(nome);
+    public List<FuncionarioSaudeResponseDTO> buscarPorNome(String nome) {
+        return funcionarioSaudeRepository.findFuncionarioSaudesByNomeContaining(nome)
+                .stream()
+                .map(funcionarioMapper::toResponseDTO)
+                .collect(Collectors.toList());
     }
 
-    // Lógica para buscar um funcionário por CPF
-    public FuncionarioSaude buscarPorCpf(String cpf) {
-        return funcionarioSaudeRepository.findFuncionarioSaudeByCpf(cpf);
+    public Optional<FuncionarioSaudeResponseDTO> buscarPorCpf(String cpf) {
+        // CORREÇÃO: Removido Optional.ofNullable, pois o repositório já retorna Optional
+        return funcionarioSaudeRepository.findFuncionarioSaudeByCpf(cpf)
+                .map(funcionarioMapper::toResponseDTO);
     }
 }

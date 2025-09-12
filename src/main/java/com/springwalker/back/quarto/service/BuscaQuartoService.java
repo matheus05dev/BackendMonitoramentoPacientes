@@ -1,5 +1,7 @@
 package com.springwalker.back.quarto.service;
 
+import com.springwalker.back.quarto.dto.QuartoResponseDTO;
+import com.springwalker.back.quarto.mapper.QuartoMapper;
 import com.springwalker.back.quarto.model.Quarto;
 import com.springwalker.back.quarto.repository.QuartoRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,15 +14,17 @@ import java.util.List;
 public class BuscaQuartoService {
 
     private final QuartoRepository quartoRepository;
+    private final QuartoMapper quartoMapper;
 
     // Lógica para buscar todos os quartos
-    public List<Quarto> listarTodos() {
-        return quartoRepository.findAll();
+    public List<QuartoResponseDTO> listarTodos() {
+        return quartoRepository.findAll().stream().map(quartoMapper::toResponseDTO).toList();
     }
 
     // Lógica para buscar um quarto por ID
-    public Quarto buscarPorId(Long id) {
+    public QuartoResponseDTO buscarPorId(Long id) {
         return quartoRepository.findById(id)
+                .map(quartoMapper::toResponseDTO)
                 .orElseThrow(() -> new IllegalStateException("Quarto não encontrado com o ID: " + id));
     }
 
