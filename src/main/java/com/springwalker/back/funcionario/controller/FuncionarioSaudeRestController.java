@@ -1,6 +1,7 @@
 package com.springwalker.back.funcionario.controller;
 
-import com.springwalker.back.funcionario.model.FuncionarioSaude;
+import com.springwalker.back.funcionario.dto.FuncionarioSaudeRequestDTO;
+import com.springwalker.back.funcionario.dto.FuncionarioSaudeResponseDTO;
 import com.springwalker.back.funcionario.service.AlteraFuncionarioSaudeService;
 import com.springwalker.back.funcionario.service.BuscarFuncionarioSaudeService;
 import com.springwalker.back.funcionario.service.CriaFuncionarioSaudeService;
@@ -10,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/funcionario")
@@ -24,27 +24,21 @@ public class FuncionarioSaudeRestController {
 
     // Buscar todos os funcionários
     @GetMapping
-    public List<FuncionarioSaude> listar() {
+    public List<FuncionarioSaudeResponseDTO> listar() {
         return buscarFuncionarioSaudeService.listarTodos();
     }
 
     // Inserir um novo funcionário
     @PostMapping
-    public FuncionarioSaude inserir(@RequestBody FuncionarioSaude funcionarioSaude) {
-        return criaFuncionarioSaudeService.salvar(funcionarioSaude);
-    }
-
-    // Alterar parcialmente um funcionário
-    @PatchMapping
-    public FuncionarioSaude alterar(@RequestBody FuncionarioSaude funcionarioSaude) {
-        return criaFuncionarioSaudeService.salvar(funcionarioSaude);
+    public FuncionarioSaudeResponseDTO inserir(@RequestBody FuncionarioSaudeRequestDTO funcionarioSaude) {
+        return criaFuncionarioSaudeService.execute(funcionarioSaude);
     }
 
     // Alterar um funcionário por ID
     @PutMapping("/{id}")
-    public ResponseEntity<FuncionarioSaude> alterar(@PathVariable Long id, @RequestBody FuncionarioSaude funcionarioSaude) {
+    public ResponseEntity<FuncionarioSaudeResponseDTO> alterar(@PathVariable Long id, @RequestBody FuncionarioSaudeRequestDTO funcionarioSaude) {
         try {
-            FuncionarioSaude funcionarioAtualizado = alteraFuncionarioSaudeService.atualizar(id, funcionarioSaude);
+            FuncionarioSaudeResponseDTO funcionarioAtualizado = alteraFuncionarioSaudeService.execute(id, funcionarioSaude);
             return ResponseEntity.ok(funcionarioAtualizado);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
@@ -54,32 +48,28 @@ public class FuncionarioSaudeRestController {
     // Excluir um funcionário por ID
     @DeleteMapping("/{id}")
     public void excluir(@PathVariable Long id) {
-        delataFuncionarioSaudeService.deletar(id);
-    }
-
-    // Inserir vários funcionários de uma vez
-    @PostMapping("/inserir-varios")
-    public List<FuncionarioSaude> inserirVarios(@RequestBody List<FuncionarioSaude> funcionarios) {
-        return criaFuncionarioSaudeService.salvarTodos(funcionarios);
+        delataFuncionarioSaudeService.execute(id);
     }
 
     // Buscar um funcionário por ID
     @GetMapping("/{id}")
-    public ResponseEntity<FuncionarioSaude> buscarPorId(@PathVariable Long id) {
-        Optional<FuncionarioSaude> funcionario = buscarFuncionarioSaudeService.buscarPorId(id);
-        return funcionario.map(ResponseEntity::ok)
+    public ResponseEntity<FuncionarioSaudeResponseDTO> buscarPorId(@PathVariable Long id) {
+        return buscarFuncionarioSaudeService.buscarPorId(id)
+                .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Buscar funcionários por nome (busca parcial)
     @GetMapping("/buscar-por-nome/{nome}")
-    public List<FuncionarioSaude> buscarPorNome(@PathVariable String nome) {
+    public List<FuncionarioSaudeResponseDTO> buscarPorNome(@PathVariable String nome) {
         return buscarFuncionarioSaudeService.buscarPorNome(nome);
     }
 
     // Buscar um funcionário por CPF
     @GetMapping("/buscar-por-cpf/{cpf}")
-    public FuncionarioSaude buscarPorCpf(@PathVariable String cpf) {
-        return buscarFuncionarioSaudeService.buscarPorCpf(cpf);
+    public ResponseEntity<FuncionarioSaudeResponseDTO> buscarPorCpf(@PathVariable String cpf) {
+        return buscarFuncionarioSaudeService.buscarPorCpf(cpf)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
