@@ -204,8 +204,8 @@ Base URL: `/api/pacientes`
 | GET | `/id/{id}` | Busca paciente por ID |
 | GET | `/cpf/{cpf}` | Busca paciente por CPF |
 | GET | `/nome/{nome}` | Busca pacientes por nome |
-| PUT | `/id/{id}` | Altera paciente existente |
-| DELETE | `/id/{id}` | Remove paciente |
+| PUT | `/{id}` | Altera paciente existente |
+| DELETE | `/{id}` | Remove paciente |
 
 ### Atendimento
 Base URL: `/api/atendimento`
@@ -228,8 +228,8 @@ Base URL: `/api/funcionarios`
 | GET | `/id/{id}` | Busca funcionário por ID |
 | GET | `/cpf/{cpf}` | Busca funcionário por CPF |
 | GET | `/nome/{nome}` | Busca funcionários por nome |
-| PUT | `/id/{id}` | Altera funcionário existente |
-| DELETE | `/id/{id}` | Remove funcionário |
+| PUT | `/{id}` | Altera funcionário existente |
+| DELETE | `/{id}` | Remove funcionário |
 
 *Obs.: Para evitar ambiguidades, recomenda-se usar `/cpf/{cpf}` e `/id/{id}` nos endpoints de busca por CPF e ID.*
 
