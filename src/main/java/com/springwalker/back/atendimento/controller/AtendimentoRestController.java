@@ -10,6 +10,10 @@ import com.springwalker.back.funcionario.model.FuncionarioSaude;
 import com.springwalker.back.funcionario.repository.FuncionarioSaudeRepository;
 import com.springwalker.back.paciente.model.Paciente;
 import com.springwalker.back.paciente.repository.PacienteRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,6 +27,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/atendimento")
+@Tag(name = "Atendimentos", description = "Gerenciamento de atendimentos médicos")
 public class AtendimentoRestController {
     private final AlteraAtendimentoService alteraAtendimento;
     private final CriaAtendimentoService criaAtendimento;
@@ -33,6 +38,11 @@ public class AtendimentoRestController {
 
     // Inserir um novo atendimento
     @PostMapping
+    @Operation(summary = "Criar novo atendimento", description = "Cria um novo atendimento médico associando paciente e funcionário")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Atendimento criado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos")
+    })
     public ResponseEntity<AtendimentoResponseDTO> criaAtendimento(@Valid @RequestBody AtendimentoRequestDTO dto) {
         AtendimentoResponseDTO responseDTO = criaAtendimento.criarAtendimento(dto);
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
@@ -40,6 +50,11 @@ public class AtendimentoRestController {
 
     // Buscar atendimento por Id
     @GetMapping("/{id}")
+    @Operation(summary = "Buscar atendimento por ID", description = "Retorna os detalhes de um atendimento específico pelo ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Atendimento encontrado"),
+            @ApiResponse(responseCode = "404", description = "Atendimento não encontrado")
+    })
     public ResponseEntity<AtendimentoResponseDTO> buscarAtendimentoPorId(@PathVariable Long id) {
         return buscaAtendimento.buscarAtendimentoPorId(id)
                 .map(ResponseEntity::ok)
@@ -48,6 +63,8 @@ public class AtendimentoRestController {
 
     // Buscar todos atendimentos
     @GetMapping
+    @Operation(summary = "Listar todos os atendimentos", description = "Retorna uma lista de todos os atendimentos registrados")
+    @ApiResponse(responseCode = "200", description = "Lista de atendimentos retornada com sucesso")
     public ResponseEntity<List<AtendimentoResponseDTO>> buscarTodosAtendimentos() {
         List<AtendimentoResponseDTO> dtos = buscaAtendimento.buscarTodosAtendimentos();
         return ResponseEntity.ok(dtos);
@@ -55,13 +72,25 @@ public class AtendimentoRestController {
 
     // Alterar um atendimento existente
     @PutMapping("/{id}")
-    public ResponseEntity<AtendimentoResponseDTO> alterarAtendimento(@PathVariable Long id, @Valid @RequestBody AtendimentoRequestDTO dto) {
+    @Operation(summary = "Alterar atendimento", description = "Atualiza os dados de um atendimento existente")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Atendimento alterado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+            @ApiResponse(responseCode = "404", description = "Atendimento não encontrado")
+    })
+    public ResponseEntity<AtendimentoResponseDTO> alterarAtendimento(@PathVariable Long id,
+            @Valid @RequestBody AtendimentoRequestDTO dto) {
         AtendimentoResponseDTO responseDTO = alteraAtendimento.alterarAtendimento(id, dto);
         return ResponseEntity.ok(responseDTO);
     }
 
     // Apagar um atendimento
     @DeleteMapping("/{id}")
+    @Operation(summary = "Deletar atendimento", description = "Remove um atendimento do sistema")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Atendimento deletado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Atendimento não encontrado")
+    })
     public ResponseEntity<AtendimentoResponseDTO> deletarAtendimento(@PathVariable Long id) {
         AtendimentoResponseDTO dto = deletaAtendimento.deletarAtendimento(id);
         return ResponseEntity.ok(dto);
