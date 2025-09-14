@@ -255,6 +255,9 @@ Base URL: `/api/funcionarios`
 5. **Acesse a aplicação:**
    - O backend estará disponível em: [http://localhost:8080](http://localhost:8080)
 
+6. **Para acessar documentação da API**
+   - Acesse a documentação feita no swagger: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080)
+   - Documentação do Swagger com detalhes especificos dos endpoints e corpo das requisições e respostas em formato de JSON
 ---
 
 ## Sobre o Projeto
