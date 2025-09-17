@@ -111,7 +111,7 @@ flowchart TD
     Paciente --alocado em--> Quarto
     Atendimento --envolve--> Paciente
     Atendimento --realizado por--> Funcionario
-    Atendimento --obtem historico de --> Leitura
+    Atendimento --obtem historico de--> Leitura
 ```
 
 > **Resumo visual:**
