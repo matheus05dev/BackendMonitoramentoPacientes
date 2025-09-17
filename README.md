@@ -84,7 +84,7 @@ flowchart TD
         Atendimento[Atendimento]
         Quarto[Quarto]
         Sensor[Sensor]
-        Leitura[Leitura]
+        Monitoramento[Leitura]
         Notificacao[Notificação]
         User[User]
         Pessoa[Pessoa]
@@ -103,14 +103,15 @@ flowchart TD
     Paciente -- herda --> Pessoa
     Funcionario -- herda --> Pessoa
     Pessoa --relaciona--> User
-    Paciente --monitorado por--> Sensor
-    Sensor --gera--> Leitura
+    Paciente --monitorado por--> esp32
+    esp32 --gera--> Leitura
     Leitura --pertence a--> Paciente
     Notificacao --relaciona--> Paciente
     Notificacao --notifica--> Funcionario
     Paciente --alocado em--> Quarto
     Atendimento --envolve--> Paciente
     Atendimento --realizado por--> Funcionario
+    Atendimento --obtem historico de --> Leitura
 ```
 
 > **Resumo visual:**
@@ -124,7 +125,7 @@ O sistema InfraMed implementa regras de negócio alinhadas ao modelo de dados e 
 
 ### Usuários e Permissões
 - Todo acesso ao sistema é feito por um **User**, que possui credenciais e permissões específicas.
-- Apenas usuários autenticados podem acessar funcionalidades restritas conforme seu perfil (Paciente, Profissional de Saúde, Administrador).
+- Apenas usuários autenticados podem acessar funcionalidades restritas conforme seu perfil (Profissional de Saúde, Administrador).
 
 ### Hierarquia de Entidades
 - **Pessoa** é a base para **Paciente** e **Profissional de Saúde**, garantindo unicidade e integridade dos dados pessoais.
@@ -145,10 +146,10 @@ O sistema InfraMed implementa regras de negócio alinhadas ao modelo de dados e 
 - Cada quarto possui capacidade máxima definida e não pode exceder esse limite de ocupação.
 - Um paciente só pode estar em um quarto por vez.
 
-### Sensor e Leitura
-- Cada sensor é vinculado a um paciente e pode gerar múltiplas leituras.
-- Leituras de sensores devem conter valor, data/hora e referência ao paciente e sensor.
-- Leituras anômalas podem gerar notificações automáticas.
+### Monitoramento
+- Cada sensor/leitura é vinculado a um paciente e pode gerar múltiplas leituras.
+- Leituras de sensores devem conter valor, data/hora e referência ao paciente/atendimento que o sensor for atribuido.
+- Leituras anômalas podem gerar notificações automáticas como possível erro.
 
 ### Notificações
 - Notificações são geradas automaticamente pelo sistema em caso de eventos críticos (ex: leitura fora do padrão, necessidade de intervenção médica).
@@ -207,17 +208,6 @@ Base URL: `/api/pacientes`
 | PUT | `/{id}` | Altera paciente existente |
 | DELETE | `/{id}` | Remove paciente |
 
-### Atendimento
-Base URL: `/api/atendimento`
-
-| Método | URL | Descrição |
-|---|---|---|
-| POST | `/` | Cria novo atendimento |
-| GET | `/` | Lista todos os atendimentos |
-| GET | `/{id}` | Busca atendimento por ID |
-| PUT | `/{id}` | Altera atendimento existente |
-| DELETE | `/{id}` | Remove atendimento |
-
 ### Funcionário
 Base URL: `/api/funcionarios`
 
@@ -230,6 +220,25 @@ Base URL: `/api/funcionarios`
 | GET | `/nome/{nome}` | Busca funcionários por nome |
 | PUT | `/{id}` | Altera funcionário existente |
 | DELETE | `/{id}` | Remove funcionário |
+|        |     |           |
+### Atendimento
+Base URL: `/api/atendimento`
+
+| Método | URL | Descrição |
+|---|---|---|
+| POST | `/` | Cria novo atendimento |
+| GET | `/` | Lista todos os atendimentos |
+| GET | `/{id}` | Busca atendimento por ID |
+| PUT | `/{id}` | Altera atendimento existente |
+| DELETE | `/{id}` | Remove atendimento |
+
+### Leitura
+Base URL: `/api/atendimento/{atendimentoId}/leituras`
+
+| Método | URL | Descrição         |
+|---|---|-------------------|
+| POST | `/` | Cria nova leitura |
+
 
 *Obs.: Para evitar ambiguidades, recomenda-se usar `/cpf/{cpf}` e `/id/{id}` nos endpoints de busca por CPF e ID.*
 
