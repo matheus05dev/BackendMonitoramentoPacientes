@@ -268,7 +268,7 @@ Base URL: `/api/atendimento/{atendimentoId}/leituras`
    - Documentação do Swagger com detalhes especificos dos endpoints e corpo das requisições e respostas em formato de JSON
 
 7. **Para testar o monitoramento e parte do IoT**
-   -- Acessar o repositorio do código em python que esta disponível em [https://github.com/matheus05dev/SimuladorIoTMonitoramentoPacientes](...) para envio de dados do sensor via HTTP simulando o microcontrolador (Esp 32/Arduino/ Raspberry py)
+   - Acessar o repositorio do código em python que esta disponível em [https://github.com/matheus05dev/SimuladorIoTMonitoramentoPacientes](...) para envio de dados do sensor via HTTP simulando o microcontrolador (Esp 32/Arduino/ Raspberry py)
 ---
 
 ## Sobre o Projeto
