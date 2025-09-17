@@ -1,9 +1,10 @@
 package com.springwalker.back.atendimento.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.springwalker.back.core.enums.Diagnostico;
+import com.springwalker.back.core.enums.StatusMonitoramento;
 import com.springwalker.back.core.enums.StatusPaciente;
 import com.springwalker.back.funcionario.model.FuncionarioSaude;
+import com.springwalker.back.monitoramento.model.LeituraSensor;
 import com.springwalker.back.paciente.model.Paciente;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -12,6 +13,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -27,6 +29,10 @@ public class Atendimento {
     @Enumerated(EnumType.STRING)
     @Column(name = "Status Paciente")
     private StatusPaciente statusPaciente;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status_monitoramento")
+    private StatusMonitoramento statusMonitoramento;
 
     @Column(name = "Acompanhante")
     private String acompanhante;
@@ -65,12 +71,10 @@ public class Atendimento {
     private Paciente paciente;
 
     @ManyToOne
-    @JsonBackReference("responsavel-atendimento")
     @JoinColumn(name = "Médico Responsável Id", nullable = true)
     private FuncionarioSaude medicoResponsavel;
 
     @ManyToOne
-    @JsonBackReference("complicacao-atendimento")
     @JoinColumn(name = "Medico Complicacao Id")
     private FuncionarioSaude medicoComplicacao;
 
@@ -82,4 +86,7 @@ public class Atendimento {
 
     @Column(name = "Nome Médico Complicação", updatable = false)
     private String nomeMedicoComplicacao;
+
+    @OneToMany(mappedBy = "atendimento", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<LeituraSensor> leituras;
 }

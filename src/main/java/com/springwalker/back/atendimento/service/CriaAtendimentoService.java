@@ -52,6 +52,7 @@ public class CriaAtendimentoService {
         atendimento.setDataEntrada(LocalDateTime.now());
         atendimento.setStatusPaciente(com.springwalker.back.core.enums.StatusPaciente.Internado);
         atendimento.setDataSaida(null);
+        atendimento.setStatusMonitoramento(dto.getStatusMonitoramento());
         // Preenchendo nomes imutáveis
         atendimento.setNomePaciente(paciente.getNome());
         atendimento.setNomeMedicoResponsavel(medicoResponsavel.getNome());

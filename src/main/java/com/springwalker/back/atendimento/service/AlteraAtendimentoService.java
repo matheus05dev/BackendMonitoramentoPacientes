@@ -48,6 +48,7 @@ public class AlteraAtendimentoService {
         atendimentoExistente.setDiagnostico(dto.getDiagnostico());
         atendimentoExistente.setDiagnostico_complicacao(dto.getDiagnosticoComplicacao());
         atendimentoExistente.setTratamento_complicacao(dto.getTratamentoComplicacao());
+        atendimentoExistente.setStatusMonitoramento(dto.getStatusMonitoramento());
 
         // Atualiza paciente e médicos SEMPRE que vier no DTO, mesmo que o ID não mude
         if (dto.getPacienteId() != null) {

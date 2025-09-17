@@ -1,7 +1,9 @@
 package com.springwalker.back.atendimento.dto;
 
 import com.springwalker.back.core.enums.Diagnostico;
+import com.springwalker.back.core.enums.StatusMonitoramento;
 import com.springwalker.back.core.enums.StatusPaciente;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import java.time.LocalDateTime;
 
@@ -20,4 +22,5 @@ public class AtendimentoRequestDTO {
     private String observacoes;
     private Diagnostico diagnosticoComplicacao;
     private String tratamentoComplicacao;
+    private StatusMonitoramento statusMonitoramento;
 }
