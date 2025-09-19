@@ -1,7 +1,10 @@
 package com.springwalker.back.monitoramento.model;
 
 import com.springwalker.back.atendimento.model.Atendimento;
+import com.springwalker.back.core.enums.CondicaoSaude;
+import com.springwalker.back.core.enums.Gravidade;
 import com.springwalker.back.core.enums.TipoDado;
+import com.springwalker.back.core.enums.UnidadeMedida;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,9 +36,18 @@ public class LeituraSensor {
     private TipoDado tipoDado;
 
     @Column(name = "unidade_medida")
-    private String unidadeMedida;
+    @Enumerated(EnumType.STRING)
+    private UnidadeMedida unidadeMedida;
 
     @ManyToOne
     @JoinColumn(name = "atendimento_id", nullable = false)
     private Atendimento atendimento;
+
+    @Column(name = "gravidade")
+    @Enumerated(EnumType.STRING)
+    private Gravidade gravidade;
+
+    @Column(name = "condicao_saude")
+    @Enumerated(EnumType.STRING)
+    private CondicaoSaude condicaoSaude;
 }

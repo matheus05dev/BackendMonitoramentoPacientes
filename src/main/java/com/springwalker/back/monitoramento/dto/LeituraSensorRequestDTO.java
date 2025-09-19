@@ -1,6 +1,9 @@
 package com.springwalker.back.monitoramento.dto;
 
+import com.springwalker.back.core.enums.CondicaoSaude;
+import com.springwalker.back.core.enums.Gravidade;
 import com.springwalker.back.core.enums.TipoDado;
+import com.springwalker.back.core.enums.UnidadeMedida;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -14,6 +17,9 @@ public class LeituraSensorRequestDTO {
     private TipoDado tipoDado;
 
     @NotNull
-    private String unidadeMedida;
+    private UnidadeMedida unidadeMedida;
 
+    private CondicaoSaude condicaoSaude;
+
+    private Gravidade gravidade;
 }

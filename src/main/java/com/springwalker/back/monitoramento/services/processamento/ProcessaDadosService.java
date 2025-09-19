@@ -1,4 +1,4 @@
-package com.springwalker.back.monitoramento.services;
+package com.springwalker.back.monitoramento.services.processamento;
 
 import com.springwalker.back.atendimento.model.Atendimento;
 import com.springwalker.back.atendimento.repository.AtendimentoRepository;
@@ -20,6 +20,7 @@ public class ProcessaDadosService {
     private final LeituraSensorRepository leituraSensorRepository;
     private final AtendimentoRepository atendimentoRepository;
     private final LeituraSensorMapper leituraSensorMapper;
+    private final AnaliseDadosSensorService analiseDadosSensorService;
 
     public LeituraSensorResponseDTO salvar(Long atendimentoId, LeituraSensorRequestDTO requestDTO) {
         Atendimento atendimento = atendimentoRepository.findById(atendimentoId)
@@ -33,9 +34,14 @@ public class ProcessaDadosService {
         leituraSensor.setDataHora(LocalDateTime.now());
         leituraSensor.setAtendimento(atendimento);
 
+        // 1. Analisar os dados e popular a entidade ANTES de salvar
+        analiseDadosSensorService.analisarDadosSensor(leituraSensor);
+
+        // 2. Salvar a entidade já com os dados da análise
         LeituraSensor savedLeitura = leituraSensorRepository.save(leituraSensor);
 
-        return leituraSensorMapper.toResponse(savedLeitura);
-    }
+        LeituraSensorResponseDTO responseDTO = leituraSensorMapper.toResponse(savedLeitura);
 
+        return responseDTO;
+    }
 }
