@@ -19,10 +19,10 @@ public interface AtendimentoMapper {
     Atendimento toEntity(AtendimentoRequestDTO dto);
 
     @Mapping(target = "pacienteId", source = "paciente.id")
-    @Mapping(target = "nomePaciente", source = "paciente.nome", defaultValue = "")
+    @Mapping(target = "nomePaciente", source = "nomePaciente")
     @Mapping(target = "medicoResponsavelId", source = "medicoResponsavel.id")
-    @Mapping(target = "nomeMedicoResponsavel", source = "medicoResponsavel.nome", defaultValue = "")
+    @Mapping(target = "nomeMedicoResponsavel", source = "nomeMedicoResponsavel")
     @Mapping(target = "medicoComplicacaoId", source = "medicoComplicacao.id")
-    @Mapping(target = "nomeMedicoComplicacao", source = "medicoComplicacao.nome", defaultValue = "null")
+    @Mapping(target = "nomeMedicoComplicacao", source = "nomeMedicoComplicacao")
     AtendimentoResponseDTO toResponseDTO(Atendimento atendimento);
 }
