@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/atendimento")
+@RequestMapping("/api/leituras")
 @RequiredArgsConstructor
 public class LeituraSensorController {
 
@@ -19,7 +19,7 @@ public class LeituraSensorController {
     private final BuscaLeituraService buscaLeituraService;
 
     // Recebe Leitura
-    @PostMapping("/{atendimentoId}/leituras")
+    @PostMapping("/atendimento/{atendimentoId}")
     public ResponseEntity<LeituraSensorResponseDTO> salvarLeitura(
             @PathVariable Long atendimentoId,
             @RequestBody LeituraSensorRequestDTO requestDTO) {
@@ -28,14 +28,14 @@ public class LeituraSensorController {
     }
 
     // Busca Leitura de apenas um atendimento especifico
-    @GetMapping("/{atendimentoId}/leituras")
+    @GetMapping("/atendimento/{atendimentoId}")
     public ResponseEntity<List<LeituraSensorResponseDTO>> buscarLeiturasPorAtendimento(@PathVariable Long atendimentoId) {
         List<LeituraSensorResponseDTO> leituras = buscaLeituraService.buscarPorAtendimento(atendimentoId);
         return ResponseEntity.ok(leituras);
     }
 
     // Busca todas Leituras
-    @GetMapping("/leituras")
+    @GetMapping
     public ResponseEntity<List<LeituraSensorResponseDTO>> buscarTodasLeituras() {
         List<LeituraSensorResponseDTO> leituras = buscaLeituraService.buscarTodas();
         return ResponseEntity.ok(leituras);

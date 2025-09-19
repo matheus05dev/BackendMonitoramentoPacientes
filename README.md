@@ -1,3 +1,4 @@
+
 # Backend Monitoramento de Pacientes
 
 ## Sumário
@@ -59,7 +60,7 @@ O diagrama abaixo ilustra, de forma simplificada e didática, como a arquitetura
 - **Controller:** Porta de entrada das requisições (ex: cadastrar paciente, buscar quarto). Recebe dados do usuário e envia para o Service.
 - **Service:** Onde fica a lógica de negócio (ex: regras para alocar paciente, validar médico). Processa dados e chama o Repository.
 - **Repository:** Responsável por salvar, buscar e atualizar dados no banco de dados.
-- **Model/Entity:** Representa as "coisas" do sistema (Paciente, Quarto, etc.) e como são armazenadas.
+- **Model/Entity:** Representa as \"coisas\" do sistema (Paciente, Quarto, etc.) e como são armazenadas.
 - **DTO:** Objetos usados para transferir dados entre as camadas, garantindo segurança e clareza.
 
 Os domínios representam os principais elementos do hospital, e as setas mostram como eles se relacionam (ex: um Paciente está em um Quarto, um Sensor gera Leituras para um Paciente, etc.).
@@ -232,11 +233,15 @@ Base URL: `/api/atendimento`
 | DELETE | `/{id}` | Remove atendimento |
 
 ### Leitura
-Base URL: `/api/atendimento/{atendimentoId}/leituras`
+Base URL: `/api/leituras`
 
-| Método | URL | Descrição         |
-|---|---|-------------------|
-| POST | `/` | Cria nova leitura |
+| Método | URL | Descrição |
+|---|---|---|
+| POST | `/atendimento/{atendimentoId}` | Cria nova leitura |
+| GET | `/atendimento/{atendimentoId}` | Lista leituras por atendimento |
+| GET | `/` | Lista todas as leituras |
+
+---
 
 
 *Obs.: Para evitar ambiguidades, recomenda-se usar `/cpf/{cpf}` e `/id/{id}` nos endpoints de busca por CPF e ID.*
@@ -273,4 +278,4 @@ Base URL: `/api/atendimento/{atendimentoId}/leituras`
 
 ## Sobre o Projeto
 
-Este projeto foi desenvolvido como Trabalho de Conclusão de Curso (TCC) do curso Técnico de Desenvolvimento de Sistemas da Escola SENAI 403 "Antônio Ermírio de Moraes" de Alumínio-SP, em trabalho colaborativo de equipe. O objetivo é demonstrar domínio de arquitetura moderna, princípios de engenharia de software e foco em soluções reais para o setor de saúde, sendo ideal para portfólio profissional e inicio na área de desenvolvimento de software.
+Este projeto foi desenvolvido como Trabalho de Conclusão de Curso (TCC) do curso Técnico de Desenvolvimento de Sistemas da Escola SENAI 403 \"Antônio Ermírio de Moraes\" de Alumínio-SP, em trabalho colaborativo de equipe. O objetivo é demonstrar domínio de arquitetura moderna, princípios de engenharia de software e foco em soluções reais para o setor de saúde, sendo ideal para portfólio profissional e inicio na área de desenvolvimento de software.
