@@ -1,4 +1,4 @@
-package com.springwalker.back.monitoramento.services.processamento;
+package com.springwalker.back.monitoramento.services.leitura.processamento;
 
 import com.springwalker.back.core.enums.CondicaoSaude;
 import com.springwalker.back.core.enums.Gravidade;

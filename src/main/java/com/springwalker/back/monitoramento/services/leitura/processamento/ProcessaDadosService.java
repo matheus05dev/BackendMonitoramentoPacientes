@@ -1,4 +1,4 @@
-package com.springwalker.back.monitoramento.services.processamento;
+package com.springwalker.back.monitoramento.services.leitura.processamento;
 
 import com.springwalker.back.atendimento.model.Atendimento;
 import com.springwalker.back.atendimento.repository.AtendimentoRepository;
@@ -8,6 +8,7 @@ import com.springwalker.back.monitoramento.dto.LeituraSensorResponseDTO;
 import com.springwalker.back.monitoramento.mapper.LeituraSensorMapper;
 import com.springwalker.back.monitoramento.model.LeituraSensor;
 import com.springwalker.back.monitoramento.repository.LeituraSensorRepository;
+import com.springwalker.back.monitoramento.services.notificacao.processamento.GerenciadorNotificacaoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,7 @@ public class ProcessaDadosService {
     private final AtendimentoRepository atendimentoRepository;
     private final LeituraSensorMapper leituraSensorMapper;
     private final AnaliseDadosSensorService analiseDadosSensorService;
+    private final GerenciadorNotificacaoService gerenciadorNotificacaoService; // Alterado
 
     public LeituraSensorResponseDTO salvar(Long atendimentoId, LeituraSensorRequestDTO requestDTO) {
         Atendimento atendimento = atendimentoRepository.findById(atendimentoId)
@@ -39,6 +41,9 @@ public class ProcessaDadosService {
 
         // 2. Salvar a entidade já com os dados da análise
         LeituraSensor savedLeitura = leituraSensorRepository.save(leituraSensor);
+
+        // 3. Processar e enviar notificação se necessário
+        gerenciadorNotificacaoService.processarEEnviarNotificacao(savedLeitura);
 
         LeituraSensorResponseDTO responseDTO = leituraSensorMapper.toResponse(savedLeitura);
 

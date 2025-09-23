@@ -1,4 +1,4 @@
-package com.springwalker.back.monitoramento.services;
+package com.springwalker.back.monitoramento.services.leitura;
 
 import com.springwalker.back.monitoramento.dto.LeituraSensorResponseDTO;
 import com.springwalker.back.monitoramento.mapper.LeituraSensorMapper;
