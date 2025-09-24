@@ -1,41 +1,61 @@
 package com.springwalker.back.monitoramento.controller;
 
-import com.springwalker.back.monitoramento.dto.LeituraSensorResponseDTO;
-import com.springwalker.back.monitoramento.mapper.LeituraSensorMapper;
-import com.springwalker.back.monitoramento.model.LeituraSensor;
+import com.springwalker.back.core.enums.StatusNotificacao;
+import com.springwalker.back.monitoramento.dto.NotificacaoResponseDTO;
+import com.springwalker.back.monitoramento.mapper.NotificacaoMapper;
+import com.springwalker.back.monitoramento.model.Notificacao;
 import com.springwalker.back.monitoramento.services.notificacao.processamento.GerenciadorNotificacaoService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/notificacoes")
 @RequiredArgsConstructor
-@Tag(name = "Notificações", description = "Endpoints para consultar o histórico de notificações")
+@Tag(name = "Notificações", description = "Endpoints para consultar e gerenciar o ciclo de vida das notificações de alerta")
 public class NotificacaoRestController {
 
     private final GerenciadorNotificacaoService gerenciadorNotificacaoService;
-    private final LeituraSensorMapper leituraSensorMapper;
+    private final NotificacaoMapper notificacaoMapper;
 
-    @GetMapping("/notificacoes")
-    @Operation(summary = "Busca o histórico de notificações", description = "Retorna uma lista de todas as leituras de sensores que geraram uma notificação (ou seja, com gravidade diferente de 'NORMAL').")
+    @GetMapping
+    @Operation(summary = "Busca o histórico de notificações", description = "Retorna uma lista de todas as notificações geradas. Pode ser filtrado por status (ABERTA, EM_ATENDIMENTO, FECHADA).")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Histórico de notificações retornado com sucesso")
     })
-    public ResponseEntity<List<LeituraSensorResponseDTO>> getNotificacoes() {
-        List<LeituraSensor> notificacoes = gerenciadorNotificacaoService.buscarTodasNotificacoes();
-        List<LeituraSensorResponseDTO> response = notificacoes.stream()
-                .map(leituraSensorMapper::toResponse)
+    public ResponseEntity<List<NotificacaoResponseDTO>> getNotificacoes(
+            @Parameter(description = "Filtra as notificações por status") @RequestParam(required = false) StatusNotificacao status) {
+
+        List<Notificacao> notificacoes;
+        if (status != null) {
+            notificacoes = gerenciadorNotificacaoService.buscarNotificacoesPorStatus(status);
+        } else {
+            notificacoes = gerenciadorNotificacaoService.buscarTodasNotificacoes();
+        }
+
+        List<NotificacaoResponseDTO> response = notificacoes.stream()
+                .map(notificacaoMapper::toResponse)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{id}/fechar")
+    @Operation(summary = "Fecha uma notificação de alerta", description = "Altera o status de uma notificação para 'FECHADA', indicando que o alerta foi atendido.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Notificação fechada com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Notificação não encontrada")
+    })
+    public ResponseEntity<NotificacaoResponseDTO> fecharNotificacao(@PathVariable Long id) {
+        return gerenciadorNotificacaoService.fecharNotificacao(id)
+                .map(notificacao -> ResponseEntity.ok(notificacaoMapper.toResponse(notificacao)))
+                .orElse(ResponseEntity.notFound().build());
     }
 }

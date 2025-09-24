@@ -1,39 +1,60 @@
 package com.springwalker.back.monitoramento.services.notificacao.processamento;
 
 import com.springwalker.back.core.enums.Gravidade;
+import com.springwalker.back.core.enums.StatusNotificacao;
 import com.springwalker.back.monitoramento.model.LeituraSensor;
-import com.springwalker.back.monitoramento.repository.LeituraSensorRepository;
+import com.springwalker.back.monitoramento.model.Notificacao;
+import com.springwalker.back.monitoramento.repository.NotificacaoRepository;
 import com.springwalker.back.monitoramento.services.notificacao.NotificacaoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class GerenciadorNotificacaoService {
 
-    private final LeituraSensorRepository leituraSensorRepository;
-    private final NotificacaoService notificacaoService; // O serviço que de fato envia
+    private final NotificacaoRepository notificacaoRepository;
+    private final NotificacaoService notificacaoService;
 
-    // Processa uma leitura de sensor e decide se uma notificação deve ser enviada. A notificação é enviada se a gravidade não for NORMAL.
     public void processarEEnviarNotificacao(LeituraSensor leitura) {
         if (deveNotificar(leitura.getGravidade())) {
-            notificacaoService.enviarNotificacao(leitura);
+            Notificacao notificacao = Notificacao.builder()
+                    .leituraSensor(leitura)
+                    .status(StatusNotificacao.ABERTA)
+                    .dataCriacao(LocalDateTime.now())
+                    .build();
+
+            Notificacao savedNotificacao = notificacaoRepository.save(notificacao);
+
+            notificacaoService.enviarNotificacao(savedNotificacao);
         }
     }
 
-
-    public List<LeituraSensor> buscarTodasNotificacoes() {
-        // Busca todas as leituras e filtra em memória.
-        // Para grandes volumes de dados, uma query customizada no repositório seria mais eficiente.
-        return leituraSensorRepository.findAll().stream()
-                .filter(leitura -> deveNotificar(leitura.getGravidade()))
-                .collect(Collectors.toList());
+    public List<Notificacao> buscarTodasNotificacoes() {
+        return notificacaoRepository.findAllByOrderByDataCriacaoDesc();
     }
 
-    // Regra de negócio centralizada para determinar se uma gravidade requer notificação
+    public List<Notificacao> buscarNotificacoesPorStatus(StatusNotificacao status) {
+        return notificacaoRepository.findByStatus(status);
+    }
+
+    public Optional<Notificacao> fecharNotificacao(Long id) {
+        Optional<Notificacao> notificacaoOpt = notificacaoRepository.findById(id);
+        if (notificacaoOpt.isPresent()) {
+            Notificacao notificacao = notificacaoOpt.get();
+            if (notificacao.getStatus() != StatusNotificacao.FECHADA) {
+                notificacao.setStatus(StatusNotificacao.FECHADA);
+                notificacao.setDataFechamento(LocalDateTime.now());
+                return Optional.of(notificacaoRepository.save(notificacao));
+            }
+        }
+        return notificacaoOpt;
+    }
+
     private boolean deveNotificar(Gravidade gravidade) {
         return gravidade != null && gravidade != Gravidade.NORMAL;
     }
