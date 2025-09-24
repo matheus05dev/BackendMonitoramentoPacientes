@@ -246,10 +246,10 @@ Base URL: `/api/leituras`
 ### Notificações
 Base URL: `/api/notificacoes`
 
-| Método | URL | Descrição |
-|---|---|---|
+| Método | URL | Descrição                       |
+|---|---|---------------------------------|
 | PUT | `/{id}/fechar` | Fecha uma notificação de alerta |
-| GET | `/` | Lista todas as leituras |
+| GET | `/` | Lista todas as notificações     |
 ---
 
 
