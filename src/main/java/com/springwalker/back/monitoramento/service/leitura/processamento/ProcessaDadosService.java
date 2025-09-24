@@ -1,14 +1,14 @@
-package com.springwalker.back.monitoramento.services.leitura.processamento;
+package com.springwalker.back.monitoramento.service.leitura.processamento;
 
 import com.springwalker.back.atendimento.model.Atendimento;
 import com.springwalker.back.atendimento.repository.AtendimentoRepository;
 import com.springwalker.back.core.enums.StatusMonitoramento;
-import com.springwalker.back.monitoramento.dto.LeituraSensorRequestDTO;
-import com.springwalker.back.monitoramento.dto.LeituraSensorResponseDTO;
+import com.springwalker.back.monitoramento.dto.leitura.LeituraSensorRequestDTO;
+import com.springwalker.back.monitoramento.dto.leitura.LeituraSensorResponseDTO;
 import com.springwalker.back.monitoramento.mapper.LeituraSensorMapper;
 import com.springwalker.back.monitoramento.model.LeituraSensor;
 import com.springwalker.back.monitoramento.repository.LeituraSensorRepository;
-import com.springwalker.back.monitoramento.services.notificacao.processamento.GerenciadorNotificacaoService;
+import com.springwalker.back.monitoramento.service.notificacao.processamento.GerenciadorNotificacaoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

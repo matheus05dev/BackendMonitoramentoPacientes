@@ -1,9 +1,9 @@
 package com.springwalker.back.monitoramento.controller;
 
-import com.springwalker.back.monitoramento.dto.LeituraSensorRequestDTO;
-import com.springwalker.back.monitoramento.dto.LeituraSensorResponseDTO;
-import com.springwalker.back.monitoramento.services.leitura.BuscaLeituraService;
-import com.springwalker.back.monitoramento.services.leitura.processamento.ProcessaDadosService;
+import com.springwalker.back.monitoramento.dto.leitura.LeituraSensorRequestDTO;
+import com.springwalker.back.monitoramento.dto.leitura.LeituraSensorResponseDTO;
+import com.springwalker.back.monitoramento.service.leitura.BuscaLeituraService;
+import com.springwalker.back.monitoramento.service.leitura.processamento.ProcessaDadosService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

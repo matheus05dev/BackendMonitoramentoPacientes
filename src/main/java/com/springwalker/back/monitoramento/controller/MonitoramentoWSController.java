@@ -1,11 +1,11 @@
 package com.springwalker.back.monitoramento.controller;
 
-import com.springwalker.back.monitoramento.dto.LeituraSensorResponseDTO;
-import com.springwalker.back.monitoramento.dto.NotificacaoResponseDTO;
+import com.springwalker.back.monitoramento.dto.leitura.LeituraSensorResponseDTO;
+import com.springwalker.back.monitoramento.dto.notificacao.NotificacaoResponseDTO;
 import com.springwalker.back.monitoramento.mapper.NotificacaoMapper;
 import com.springwalker.back.monitoramento.model.Notificacao;
-import com.springwalker.back.monitoramento.services.leitura.BuscaLeituraService;
-import com.springwalker.back.monitoramento.services.notificacao.processamento.GerenciadorNotificacaoService;
+import com.springwalker.back.monitoramento.service.leitura.BuscaLeituraService;
+import com.springwalker.back.monitoramento.service.notificacao.processamento.GerenciadorNotificacaoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;

@@ -1,11 +1,11 @@
-package com.springwalker.back.monitoramento.services.notificacao.processamento;
+package com.springwalker.back.monitoramento.service.notificacao.processamento;
 
 import com.springwalker.back.core.enums.Gravidade;
 import com.springwalker.back.core.enums.StatusNotificacao;
 import com.springwalker.back.monitoramento.model.LeituraSensor;
 import com.springwalker.back.monitoramento.model.Notificacao;
 import com.springwalker.back.monitoramento.repository.NotificacaoRepository;
-import com.springwalker.back.monitoramento.services.notificacao.NotificacaoService;
+import com.springwalker.back.monitoramento.service.notificacao.NotificacaoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

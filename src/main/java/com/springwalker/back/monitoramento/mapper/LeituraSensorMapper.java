@@ -1,7 +1,7 @@
 package com.springwalker.back.monitoramento.mapper;
 
-import com.springwalker.back.monitoramento.dto.LeituraSensorRequestDTO;
-import com.springwalker.back.monitoramento.dto.LeituraSensorResponseDTO;
+import com.springwalker.back.monitoramento.dto.leitura.LeituraSensorRequestDTO;
+import com.springwalker.back.monitoramento.dto.leitura.LeituraSensorResponseDTO;
 import com.springwalker.back.monitoramento.model.LeituraSensor;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

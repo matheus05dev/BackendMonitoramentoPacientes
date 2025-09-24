@@ -1,4 +1,4 @@
-package com.springwalker.back.monitoramento.dto;
+package com.springwalker.back.monitoramento.dto.leitura;
 
 import lombok.Data;
 

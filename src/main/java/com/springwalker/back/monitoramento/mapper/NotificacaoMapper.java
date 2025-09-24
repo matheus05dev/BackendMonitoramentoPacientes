@@ -1,6 +1,6 @@
 package com.springwalker.back.monitoramento.mapper;
 
-import com.springwalker.back.monitoramento.dto.NotificacaoResponseDTO;
+import com.springwalker.back.monitoramento.dto.notificacao.NotificacaoResponseDTO;
 import com.springwalker.back.monitoramento.model.Notificacao;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

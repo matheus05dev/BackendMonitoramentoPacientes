@@ -1,6 +1,6 @@
-package com.springwalker.back.monitoramento.services.notificacao;
+package com.springwalker.back.monitoramento.service.notificacao;
 
-import com.springwalker.back.monitoramento.dto.NotificacaoResponseDTO;
+import com.springwalker.back.monitoramento.dto.notificacao.NotificacaoResponseDTO;
 import com.springwalker.back.monitoramento.mapper.NotificacaoMapper;
 import com.springwalker.back.monitoramento.model.Notificacao;
 import lombok.RequiredArgsConstructor;

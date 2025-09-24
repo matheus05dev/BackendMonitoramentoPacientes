@@ -1,22 +1,25 @@
-package com.springwalker.back.monitoramento.dto;
+package com.springwalker.back.monitoramento.dto.leitura;
 
 import com.springwalker.back.core.enums.CondicaoSaude;
 import com.springwalker.back.core.enums.Gravidade;
 import com.springwalker.back.core.enums.TipoDado;
 import com.springwalker.back.core.enums.UnidadeMedida;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import java.time.LocalDateTime;
 
 @Data
-public class LeituraSensorResponseDTO {
+public class LeituraSensorRequestDTO {
 
-    private Long id;
-    private Long atendimentoId;
+    @NotNull
     private Double valor;
-    private LocalDateTime dataHora;
-    private TipoDado tipoDado;
-    private UnidadeMedida unidadeMedida;
-    private CondicaoSaude condicaoSaude;
-    private Gravidade gravidade;
 
+    @NotNull
+    private TipoDado tipoDado;
+
+    @NotNull
+    private UnidadeMedida unidadeMedida;
+
+    private CondicaoSaude condicaoSaude;
+
+    private Gravidade gravidade;
 }

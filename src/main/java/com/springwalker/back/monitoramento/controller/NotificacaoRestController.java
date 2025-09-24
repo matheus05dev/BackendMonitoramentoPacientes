@@ -1,10 +1,10 @@
 package com.springwalker.back.monitoramento.controller;
 
 import com.springwalker.back.core.enums.StatusNotificacao;
-import com.springwalker.back.monitoramento.dto.NotificacaoResponseDTO;
+import com.springwalker.back.monitoramento.dto.notificacao.NotificacaoResponseDTO;
 import com.springwalker.back.monitoramento.mapper.NotificacaoMapper;
 import com.springwalker.back.monitoramento.model.Notificacao;
-import com.springwalker.back.monitoramento.services.notificacao.processamento.GerenciadorNotificacaoService;
+import com.springwalker.back.monitoramento.service.notificacao.processamento.GerenciadorNotificacaoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

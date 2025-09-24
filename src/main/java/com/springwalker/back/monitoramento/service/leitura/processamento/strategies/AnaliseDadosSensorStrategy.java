@@ -1,4 +1,4 @@
-package com.springwalker.back.monitoramento.services.leitura.processamento.strategies;
+package com.springwalker.back.monitoramento.service.leitura.processamento.strategies;
 
 import com.springwalker.back.core.enums.TipoDado;
 import com.springwalker.back.monitoramento.model.LeituraSensor;

@@ -1,6 +1,6 @@
-package com.springwalker.back.monitoramento.services.leitura;
+package com.springwalker.back.monitoramento.service.leitura;
 
-import com.springwalker.back.monitoramento.dto.LeituraSensorResponseDTO;
+import com.springwalker.back.monitoramento.dto.leitura.LeituraSensorResponseDTO;
 import com.springwalker.back.monitoramento.mapper.LeituraSensorMapper;
 import com.springwalker.back.monitoramento.repository.LeituraSensorRepository;
 import lombok.RequiredArgsConstructor;
