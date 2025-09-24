@@ -6,11 +6,9 @@ import com.springwalker.back.atendimento.model.Atendimento;
 import com.springwalker.back.monitoramento.mapper.LeituraSensorMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring", uses = {LeituraSensorMapper.class})
 public interface AtendimentoMapper {
-    AtendimentoMapper INSTANCE = Mappers.getMapper(AtendimentoMapper.class);
 
     @Mapping(target = "paciente", ignore = true)
     @Mapping(target = "medicoResponsavel", ignore = true)
