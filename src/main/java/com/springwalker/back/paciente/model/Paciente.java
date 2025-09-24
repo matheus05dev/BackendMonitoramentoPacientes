@@ -12,7 +12,7 @@ import java.util.List;
 @SuperBuilder
 @Getter
 @Setter
-@ToString
+@ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class Paciente extends Pessoa {
