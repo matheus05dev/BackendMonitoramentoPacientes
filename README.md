@@ -220,7 +220,8 @@ Base URL: `/api/funcionarios`
 | GET | `/nome/{nome}` | Busca funcionários por nome |
 | PUT | `/{id}` | Altera funcionário existente |
 | DELETE | `/{id}` | Remove funcionário |
-|        |     |           |
+
+
 ### Atendimento
 Base URL: `/api/atendimento`
 
@@ -241,6 +242,14 @@ Base URL: `/api/leituras`
 | GET | `/atendimento/{atendimentoId}` | Lista leituras por atendimento |
 | GET | `/` | Lista todas as leituras |
 
+
+### Notificações
+Base URL: `/api/notificacoes`
+
+| Método | URL | Descrição |
+|---|---|---|
+| PUT | `/{id}/fechar` | Fecha uma notificação de alerta |
+| GET | `/` | Lista todas as leituras |
 ---
 
 
