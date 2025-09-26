@@ -6,5 +6,4 @@ public enum LocalizacaoQuarto {
     SETOR_LESTE,
     SETOR_OESTE,
     SETOR_CENTRO,
-    SETOR_UTI
 }
