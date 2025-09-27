@@ -50,4 +50,7 @@ public class LeituraSensor {
     @Column(name = "condicao_saude")
     @Enumerated(EnumType.STRING)
     private CondicaoSaude condicaoSaude;
+
+    @OneToOne(mappedBy = "leituraSensor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Notificacao notificacao;
 }
