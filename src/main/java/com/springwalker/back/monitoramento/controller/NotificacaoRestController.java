@@ -4,6 +4,7 @@ import com.springwalker.back.core.enums.StatusNotificacao;
 import com.springwalker.back.monitoramento.dto.notificacao.NotificacaoResponseDTO;
 import com.springwalker.back.monitoramento.mapper.NotificacaoMapper;
 import com.springwalker.back.monitoramento.model.Notificacao;
+import com.springwalker.back.monitoramento.service.notificacao.BuscarNotificacaoService;
 import com.springwalker.back.monitoramento.service.notificacao.processamento.GerenciadorNotificacaoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 public class NotificacaoRestController {
 
     private final GerenciadorNotificacaoService gerenciadorNotificacaoService;
+    private final BuscarNotificacaoService buscarNotificacaoService;
     private final NotificacaoMapper notificacaoMapper;
 
     @GetMapping
@@ -36,9 +38,9 @@ public class NotificacaoRestController {
 
         List<Notificacao> notificacoes;
         if (status != null) {
-            notificacoes = gerenciadorNotificacaoService.buscarNotificacoesPorStatus(status);
+            notificacoes = buscarNotificacaoService.buscarNotificacoesPorStatus(status);
         } else {
-            notificacoes = gerenciadorNotificacaoService.buscarTodasNotificacoes();
+            notificacoes = buscarNotificacaoService.buscarTodasNotificacoes();
         }
 
         List<NotificacaoResponseDTO> response = notificacoes.stream()

@@ -5,6 +5,7 @@ import com.springwalker.back.monitoramento.dto.notificacao.NotificacaoResponseDT
 import com.springwalker.back.monitoramento.mapper.NotificacaoMapper;
 import com.springwalker.back.monitoramento.model.Notificacao;
 import com.springwalker.back.monitoramento.service.leitura.BuscaLeituraService;
+import com.springwalker.back.monitoramento.service.notificacao.BuscarNotificacaoService;
 import com.springwalker.back.monitoramento.service.notificacao.processamento.GerenciadorNotificacaoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -22,6 +23,7 @@ public class MonitoramentoWSController {
 
     private final BuscaLeituraService buscaLeituraService;
     private final GerenciadorNotificacaoService gerenciadorNotificacaoService;
+    private final BuscarNotificacaoService buscarNotificacaoService;
     private final NotificacaoMapper notificacaoMapper; // Adicionado
 
     /**
@@ -45,7 +47,7 @@ public class MonitoramentoWSController {
     @SendToUser("/queue/notificacoes")
     public List<NotificacaoResponseDTO> buscarHistoricoNotificacoes(Principal principal) {
         System.out.println("Recebida requisição WS de " + principal.getName() + " para buscar histórico de notificações.");
-        List<Notificacao> notificacoes = gerenciadorNotificacaoService.buscarTodasNotificacoes();
+        List<Notificacao> notificacoes = buscarNotificacaoService.buscarTodasNotificacoes();
         return notificacoes.stream()
                 .map(notificacaoMapper::toResponse) // Corrigido para usar o mapper correto
                 .collect(Collectors.toList());

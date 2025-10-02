@@ -1,58 +1,43 @@
 package com.springwalker.back.monitoramento.service.notificacao.processamento;
 
 import com.springwalker.back.core.enums.Gravidade;
-import com.springwalker.back.core.enums.StatusNotificacao;
 import com.springwalker.back.monitoramento.model.LeituraSensor;
 import com.springwalker.back.monitoramento.model.Notificacao;
-import com.springwalker.back.monitoramento.repository.NotificacaoRepository;
-import com.springwalker.back.monitoramento.service.notificacao.NotificacaoService;
+import com.springwalker.back.monitoramento.service.notificacao.BuscarNotificacaoService;
+import com.springwalker.back.monitoramento.service.notificacao.EnviadorNotificacaoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class GerenciadorNotificacaoService {
 
-    private final NotificacaoRepository notificacaoRepository;
-    private final NotificacaoService notificacaoService;
+    private final CriadorNotificacaoService criadorNotificacaoService;
+    private final FechadorNotificacaoService fechadorNotificacaoService;
+    private final EnviadorNotificacaoService enviadorNotificacaoService;
+    private final BuscarNotificacaoService buscarNotificacaoService;
 
     public void processarEEnviarNotificacao(LeituraSensor leitura) {
+        // 1. A leitura é grave o suficiente para justificar uma notificação?
         if (deveNotificar(leitura.getGravidade())) {
-            Notificacao notificacao = Notificacao.builder()
-                    .leituraSensor(leitura)
-                    .status(StatusNotificacao.ABERTA)
-                    .dataCriacao(LocalDateTime.now())
-                    .build();
 
-            Notificacao savedNotificacao = notificacaoRepository.save(notificacao);
+            // 2. Lógica de Fadiga de Alarme: Já existe um alarme aberto para este mesmo problema?
+            Optional<Notificacao> notificacaoExistente = buscarNotificacaoService
+                    .buscarNotificacaoAbertaPorAtendimentoETipoDado(leitura.getAtendimento().getId(), leitura.getTipoDado());
 
-            notificacaoService.enviarNotificacao(savedNotificacao);
+            // 3. Se não houver notificação aberta, crie e envie uma nova.
+            if (notificacaoExistente.isEmpty()) {
+                Notificacao savedNotificacao = criadorNotificacaoService.criarEGravarNotificacao(leitura);
+                enviadorNotificacaoService.enviarNotificacao(savedNotificacao);
+            }
+            // Se já existir, não faz nada, suprimindo o alarme repetido.
         }
-    }
-
-    public List<Notificacao> buscarTodasNotificacoes() {
-        return notificacaoRepository.findAllByOrderByDataCriacaoDesc();
-    }
-
-    public List<Notificacao> buscarNotificacoesPorStatus(StatusNotificacao status) {
-        return notificacaoRepository.findByStatus(status);
     }
 
     public Optional<Notificacao> fecharNotificacao(Long id) {
-        Optional<Notificacao> notificacaoOpt = notificacaoRepository.findById(id);
-        if (notificacaoOpt.isPresent()) {
-            Notificacao notificacao = notificacaoOpt.get();
-            if (notificacao.getStatus() != StatusNotificacao.FECHADA) {
-                notificacao.setStatus(StatusNotificacao.FECHADA);
-                notificacao.setDataFechamento(LocalDateTime.now());
-                return Optional.of(notificacaoRepository.save(notificacao));
-            }
-        }
-        return notificacaoOpt;
+        return fechadorNotificacaoService.fecharNotificacao(id);
     }
 
     private boolean deveNotificar(Gravidade gravidade) {

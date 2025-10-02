@@ -9,15 +9,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class NotificacaoService {
+public class EnviadorNotificacaoService {
 
     private final SimpMessagingTemplate messagingTemplate;
     private final NotificacaoMapper notificacaoMapper;
 
-    /**
-     * Converte a entidade Notificacao para DTO e a envia via WebSocket para o tópico de notificações.
-     * @param notificacao A entidade Notificacao que foi criada e salva.
-     */
+    //Converte a entidade Notificacao para DTO e a envia via WebSocket para o tópico de notificações
     public void enviarNotificacao(Notificacao notificacao) {
         if (notificacao != null) {
             System.out.println("Enviando notificação com ID: " + notificacao.getId() + " para o tópico /topic/notificacoes");
