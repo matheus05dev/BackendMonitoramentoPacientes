@@ -7,6 +7,7 @@ public enum CondicaoSaude {
     ESTADO_FEBRIL,
     NORMAL,
     HIPOTERMIA,
+    HIPORTEMIA_SEVERA,
 
     // Para Frequência Cardíaca
     TAQUICARDIA,

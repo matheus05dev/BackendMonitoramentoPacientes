@@ -16,7 +16,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/pacientes") // Plural, seguindo o padrão REST
@@ -35,13 +37,15 @@ public class PacienteRestController {
             @ApiResponse(responseCode = "201", description = "Paciente criado com sucesso"),
             @ApiResponse(responseCode = "400", description = "Dados inválidos")
     })
-    public ResponseEntity<PacienteResponseDTO> criarPaciente(@RequestBody @Valid PacienteRequestDTO requestDTO) {
+    public ResponseEntity<?> criarPaciente(@RequestBody @Valid PacienteRequestDTO requestDTO) {
         try {
             PacienteResponseDTO responseDTO = criaPacienteService.execute(requestDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
         } catch (IllegalArgumentException e) {
             // Captura a exceção de CPF duplicado do serviço
-            return ResponseEntity.badRequest().header("X-Error-Message", e.getMessage()).build();
+            Map<String, String> error = new HashMap<>();
+            error.put("message", e.getMessage());
+            return ResponseEntity.badRequest().body(error);
         }
     }
 
@@ -79,7 +83,7 @@ public class PacienteRestController {
     @GetMapping("/nome/{nome}")
     @Operation(summary = "Buscar pacientes por nome", description = "Retorna uma lista de pacientes que correspondem ao nome informado")
     @ApiResponse(responseCode = "200", description = "Lista de pacientes retornada com sucesso")
-    public ResponseEntity<List<PacienteResponseDTO>> buscarPacientePorNome(@RequestParam("nome") String nome) {
+    public ResponseEntity<List<PacienteResponseDTO>> buscarPacientePorNome(@PathVariable String nome) {
         return ResponseEntity.ok(buscaPacienteService.buscarPorNome(nome));
     }
 

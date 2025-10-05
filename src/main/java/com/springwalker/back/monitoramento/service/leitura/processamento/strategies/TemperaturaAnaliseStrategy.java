@@ -17,10 +17,12 @@ public class TemperaturaAnaliseStrategy implements AnaliseDadosSensorStrategy {
     @Override
     public void analisar(LeituraSensor leitura) {
         double valor = leitura.getValor();
-
-        if (valor <35 && valor <= 36) {
-            leitura.setCondicaoSaude(CondicaoSaude.HIPOTERMIA);
+        if(valor <35){
+            leitura.setCondicaoSaude(CondicaoSaude.HIPORTEMIA_SEVERA);
             leitura.setGravidade(Gravidade.EMERGENCIAL);
+        } else if(valor <= 36) {
+            leitura.setCondicaoSaude(CondicaoSaude.HIPOTERMIA);
+            leitura.setGravidade(Gravidade.ALERTA);
         } else if (valor >= 36.1 && valor <= 37.2) {
             leitura.setCondicaoSaude(CondicaoSaude.NORMAL);
             leitura.setGravidade(Gravidade.NORMAL);
