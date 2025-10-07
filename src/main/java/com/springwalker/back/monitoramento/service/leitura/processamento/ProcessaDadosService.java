@@ -9,8 +9,10 @@ import com.springwalker.back.monitoramento.mapper.LeituraSensorMapper;
 import com.springwalker.back.monitoramento.model.LeituraSensor;
 import com.springwalker.back.monitoramento.repository.LeituraSensorRepository;
 import com.springwalker.back.monitoramento.service.notificacao.processamento.GerenciadorNotificacaoService;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -22,11 +24,19 @@ public class ProcessaDadosService {
     private final AtendimentoRepository atendimentoRepository;
     private final LeituraSensorMapper leituraSensorMapper;
     private final AnaliseDadosSensorService analiseDadosSensorService;
-    private final GerenciadorNotificacaoService gerenciadorNotificacaoService; // Alterado
+    private final GerenciadorNotificacaoService gerenciadorNotificacaoService;
+    private final EntityManager entityManager;
 
+    @Transactional
     public LeituraSensorResponseDTO salvar(Long atendimentoId, LeituraSensorRequestDTO requestDTO) {
+        // Limpa o cache do EntityManager para garantir que o Atendimento seja carregado fresco do banco de dados
+        entityManager.clear();
+
         Atendimento atendimento = atendimentoRepository.findById(atendimentoId)
                 .orElseThrow(() -> new RuntimeException("Atendimento não encontrado com o ID: " + atendimentoId));
+
+        // Não precisamos mais do refresh aqui, pois o clear() já garante a busca fresca.
+        // entityManager.refresh(atendimento);
 
         if (atendimento.getStatusMonitoramento() != StatusMonitoramento.MONITORANDO) {
             throw new RuntimeException("O atendimento com ID " + atendimentoId + " não está em modo de monitoramento.");
@@ -36,13 +46,10 @@ public class ProcessaDadosService {
         leituraSensor.setDataHora(LocalDateTime.now());
         leituraSensor.setAtendimento(atendimento);
 
-        // 1. Analisar os dados e popular a entidade ANTES de salvar
         analiseDadosSensorService.analisarDadosSensor(leituraSensor);
 
-        // 2. Salvar a entidade já com os dados da análise
         LeituraSensor savedLeitura = leituraSensorRepository.save(leituraSensor);
 
-        // 3. Processar e enviar notificação se necessário
         gerenciadorNotificacaoService.processarEEnviarNotificacao(savedLeitura);
 
         LeituraSensorResponseDTO responseDTO = leituraSensorMapper.toResponse(savedLeitura);

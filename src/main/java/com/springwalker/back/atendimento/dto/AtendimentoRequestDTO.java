@@ -9,9 +9,12 @@ import java.time.LocalDateTime;
 
 @Data
 public class AtendimentoRequestDTO {
+    @NotNull
     private Long pacienteId;
+    @NotNull
     private Long medicoResponsavelId;
     private Long medicoComplicacaoId;
+    private Long quartoId;
     private StatusPaciente statusPaciente;
     private String acompanhante;
     private String condicoesPreexistentes;

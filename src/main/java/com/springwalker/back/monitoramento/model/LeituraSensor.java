@@ -39,7 +39,7 @@ public class LeituraSensor {
     @Enumerated(EnumType.STRING)
     private UnidadeMedida unidadeMedida;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "atendimento_id", nullable = false)
     private Atendimento atendimento;
 

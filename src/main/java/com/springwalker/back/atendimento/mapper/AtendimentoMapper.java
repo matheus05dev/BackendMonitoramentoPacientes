@@ -22,5 +22,6 @@ public interface AtendimentoMapper {
     @Mapping(target = "nomeMedicoResponsavel", source = "nomeMedicoResponsavel")
     @Mapping(target = "medicoComplicacaoId", source = "medicoComplicacao.id")
     @Mapping(target = "nomeMedicoComplicacao", source = "nomeMedicoComplicacao")
+    @Mapping(target = "numeroQuarto", source = "quarto.numero")
     AtendimentoResponseDTO toResponseDTO(Atendimento atendimento);
 }

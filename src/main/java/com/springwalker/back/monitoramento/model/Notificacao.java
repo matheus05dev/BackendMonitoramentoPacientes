@@ -33,6 +33,9 @@ public class Notificacao {
 
     private LocalDateTime dataFechamento;
 
+    @Column(name = "numero_quarto")
+    private Integer numeroQuarto;
+
     // Futuramente, pode-se adicionar uma referência ao funcionário que atendeu.
     // @ManyToOne
     // @JoinColumn(name = "responsavel_id")

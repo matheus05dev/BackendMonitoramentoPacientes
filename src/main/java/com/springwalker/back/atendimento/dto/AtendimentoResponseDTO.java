@@ -22,6 +22,7 @@ public class AtendimentoResponseDTO {
     private String condicoesPreexistentes;
     private Diagnostico diagnostico;
     private String tratamento;
+    private Integer numeroQuarto;
     private LocalDateTime dataEntrada;
     private LocalDateTime dataSaida;
     private String observacoes;

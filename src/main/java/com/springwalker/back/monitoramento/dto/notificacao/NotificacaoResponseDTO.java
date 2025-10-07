@@ -13,4 +13,5 @@ public class NotificacaoResponseDTO {
     private StatusNotificacao status;
     private LocalDateTime dataCriacao;
     private LocalDateTime dataFechamento;
+    private Integer numeroQuarto;
 }

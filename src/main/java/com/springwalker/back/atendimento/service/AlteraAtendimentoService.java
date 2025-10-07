@@ -9,6 +9,8 @@ import com.springwalker.back.atendimento.repository.AtendimentoRepository;
 import com.springwalker.back.funcionario.repository.FuncionarioSaudeRepository;
 import com.springwalker.back.paciente.model.Paciente;
 import com.springwalker.back.paciente.repository.PacienteRepository;
+import com.springwalker.back.quarto.model.Quarto;
+import com.springwalker.back.quarto.repository.QuartoRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,7 @@ public class AlteraAtendimentoService {
     private final AtendimentoRepository atendimentoRepository;
     private final FuncionarioSaudeRepository funcionarioSaudeRepository;
     private final PacienteRepository pacienteRepository;
+    private final QuartoRepository quartoRepository;
     private final AtendimentoMapper atendimentoMapper;
 
     @Transactional
@@ -34,7 +37,7 @@ public class AlteraAtendimentoService {
             throw new IllegalStateException("Não é permitido alterar um atendimento já liberado.");
         }
 
-        // Atualiza campos
+        // Atualiza campos do atendimento
         atendimentoExistente.setStatusPaciente(dto.getStatusPaciente());
         if (dto.getStatusPaciente() != null && dto.getStatusPaciente().name().equals("Liberado")) {
             atendimentoExistente.setDataSaida(LocalDateTime.now());
@@ -50,13 +53,26 @@ public class AlteraAtendimentoService {
         atendimentoExistente.setTratamento_complicacao(dto.getTratamentoComplicacao());
         atendimentoExistente.setStatusMonitoramento(dto.getStatusMonitoramento());
 
-        // Atualiza paciente e médicos SEMPRE que vier no DTO, mesmo que o ID não mude
+        // Atualiza o quarto se um novo quartoId for fornecido
+        if (dto.getQuartoId() != null) {
+            Quarto novoQuarto = quartoRepository.findById(dto.getQuartoId())
+                    .orElseThrow(() -> new NoSuchElementException("Quarto não encontrado"));
+            atendimentoExistente.setQuarto(novoQuarto);
+            atendimentoExistente.setNumeroQuarto(novoQuarto.getNumero());
+        } else {
+            atendimentoExistente.setQuarto(null);
+            atendimentoExistente.setNumeroQuarto(null);
+        }
+
+        // Atualiza paciente se um novo pacienteId for fornecido
         if (dto.getPacienteId() != null) {
             Paciente paciente = pacienteRepository.findById(dto.getPacienteId())
                     .orElseThrow(() -> new NoSuchElementException("Paciente não encontrado"));
             atendimentoExistente.setPaciente(paciente);
             atendimentoExistente.setNomePaciente(paciente.getNome());
         }
+
+        // Atualiza médicos
         if (dto.getMedicoResponsavelId() != null) {
             FuncionarioSaude medicoResponsavel = funcionarioSaudeRepository.findById(dto.getMedicoResponsavelId())
                     .orElseThrow(() -> new NoSuchElementException("Médico responsável não encontrado"));

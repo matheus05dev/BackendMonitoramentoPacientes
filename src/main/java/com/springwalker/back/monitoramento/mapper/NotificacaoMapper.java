@@ -12,7 +12,9 @@ public interface NotificacaoMapper {
     NotificacaoMapper INSTANCE = Mappers.getMapper(NotificacaoMapper.class);
 
     @Mapping(source = "leituraSensor", target = "leituraSensor")
+    @Mapping(source = "numeroQuarto", target = "numeroQuarto")
     NotificacaoResponseDTO toResponse(Notificacao notificacao);
+
 
     // Se necessário, um método para converter DTO para Model
     // Notificacao toModel(NotificacaoRequestDTO dto);

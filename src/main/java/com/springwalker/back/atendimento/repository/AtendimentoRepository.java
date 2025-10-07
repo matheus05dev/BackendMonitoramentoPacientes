@@ -1,5 +1,3 @@
-// src/main/java/com/springwalker/back/atendimento/repository/AtendimentoRepository.java
-
 package com.springwalker.back.atendimento.repository;
 
 import com.springwalker.back.atendimento.model.Atendimento;
@@ -9,10 +7,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Repository
 public interface AtendimentoRepository extends JpaRepository<Atendimento, Long> {
 
     boolean existsByPacienteIdAndDataSaidaIsNull(Long pacienteId);
+
+    Optional<Atendimento> findByPacienteIdAndDataSaidaIsNull(Long pacienteId);
 
     @Modifying
     @Transactional

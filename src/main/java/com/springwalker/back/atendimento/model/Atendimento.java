@@ -6,6 +6,7 @@ import com.springwalker.back.core.enums.StatusPaciente;
 import com.springwalker.back.funcionario.model.FuncionarioSaude;
 import com.springwalker.back.monitoramento.model.LeituraSensor;
 import com.springwalker.back.paciente.model.Paciente;
+import com.springwalker.back.quarto.model.Quarto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -73,6 +74,10 @@ public class Atendimento {
     private Paciente paciente;
 
     @ManyToOne
+    @JoinColumn(name = "quarto_id")
+    private Quarto quarto;
+
+    @ManyToOne
     @JoinColumn(name = "Médico Responsável Id", nullable = true)
     private FuncionarioSaude medicoResponsavel;
 
@@ -89,6 +94,9 @@ public class Atendimento {
     @Column(name = "Nome Médico Complicação", updatable = false)
     private String nomeMedicoComplicacao;
 
+    @Column(name = "Numero Quarto")
+    private Integer numeroQuarto;
+    
     @OneToMany(mappedBy = "atendimento", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LeituraSensor> leituras;
 }
