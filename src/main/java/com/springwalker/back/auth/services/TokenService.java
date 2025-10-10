@@ -24,7 +24,7 @@ public class TokenService {
             var algoritmo = Algorithm.HMAC256(secret);
             return JWT.create()
                     .withIssuer("API Voll.med")
-                    .withSubject(user.getLogin())
+                    .withSubject(user.getUsername())
                     .withExpiresAt(dataExpiracao())
                     .sign(algoritmo);
         } catch (JWTCreationException exception){
