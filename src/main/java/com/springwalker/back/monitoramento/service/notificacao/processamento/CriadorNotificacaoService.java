@@ -43,7 +43,7 @@ public class CriadorNotificacaoService {
                 .leituraSensor(leitura)
                 .status(StatusNotificacao.ABERTA)
                 .dataCriacao(LocalDateTime.now())
-                .numeroQuarto(numeroQuarto) // Preenche o numeroQuarto
+                .numeroQuarto(numeroQuarto)
                 .build();
         return notificacaoRepository.save(notificacao);
     }

@@ -15,7 +15,7 @@ import java.time.ZoneOffset;
 @Service
 public class TokenService {
 
-    // TODO: Mover para um local seguro (variáveis de ambiente, etc)
+
     @Value("${api.security.token.secret:secret}")
     private String secret;
 

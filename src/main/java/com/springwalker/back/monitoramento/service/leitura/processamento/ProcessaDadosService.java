@@ -35,9 +35,6 @@ public class ProcessaDadosService {
         Atendimento atendimento = atendimentoRepository.findById(atendimentoId)
                 .orElseThrow(() -> new RuntimeException("Atendimento não encontrado com o ID: " + atendimentoId));
 
-        // Não precisamos mais do refresh aqui, pois o clear() já garante a busca fresca.
-        // entityManager.refresh(atendimento);
-
         if (atendimento.getStatusMonitoramento() != StatusMonitoramento.MONITORANDO) {
             throw new RuntimeException("O atendimento com ID " + atendimentoId + " não está em modo de monitoramento.");
         }

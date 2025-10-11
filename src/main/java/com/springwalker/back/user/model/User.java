@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-@Entity(name = "User")
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
