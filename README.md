@@ -84,21 +84,19 @@ graph TD
         Notificacao
     end
 
-    %% Relacionamentos
-    Paciente --> Pessoa
-    FuncionarioSaude --> Pessoa
-    Pessoa -- "1..*" o-- Telefone
+    Paciente --|> Pessoa
+    FuncionarioSaude --|> Pessoa
+    Pessoa --o|1..*| Telefone
 
-    Atendimento -- "M..1" --> Paciente
-    Atendimento -- "Médico Responsável" --> FuncionarioSaude
-    Atendimento -- "Médico Complicação" --> FuncionarioSaude
-    Atendimento -- "M..1" --> Quarto
-    Paciente -- "M..1" o-- Quarto
+    Atendimento -->|M..1| Paciente
+    Atendimento -->|Médico Responsável| FuncionarioSaude
+    Atendimento -->|Médico Complicação| FuncionarioSaude
+    Atendimento -->|M..1| Quarto
+    Paciente --o|M..1| Quarto
 
-    Atendimento -- "1..*" o-- LeituraSensor
-    LeituraSensor -- "1..1" o-- Notificacao
+    Atendimento --o|1..*| LeituraSensor
+    LeituraSensor --o|1..1| Notificacao
 
-    %% Estilização
     classDef base fill:#E0BBE4,stroke:#333;
     classDef domain fill:#957DAD,stroke:#333,color:white;
     classDef iot fill:#D291BC,stroke:#333,color:white;
