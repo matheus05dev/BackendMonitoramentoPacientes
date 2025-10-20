@@ -67,36 +67,38 @@ Abaixo está um diagrama que ilustra o relacionamento entre as principais entida
 
 ```mermaid
 graph TD
-    subgraph Entidades Base
+    subgraph Entidades_Base
         Pessoa
         Telefone
     end
 
-    subgraph Domínios Principais
+    subgraph Dominios_Principais
         Paciente
         FuncionarioSaude
         Quarto
         Atendimento
     end
 
-    subgraph "Domínio de Monitoramento (IoT)"
+    subgraph Dominio_Monitoramento_IoT
         LeituraSensor
         Notificacao
     end
 
-    Paciente --|> Pessoa
-    FuncionarioSaude --|> Pessoa
-    Pessoa --o|1..*| Telefone
+    %% Relacionamentos
+    Paciente -->|herda| Pessoa
+    FuncionarioSaude -->|herda| Pessoa
+    Pessoa -->|possui 1..*| Telefone
 
-    Atendimento -->|M..1| Paciente
-    Atendimento -->|Médico Responsável| FuncionarioSaude
-    Atendimento -->|Médico Complicação| FuncionarioSaude
-    Atendimento -->|M..1| Quarto
-    Paciente --o|M..1| Quarto
+    Atendimento -->|ref. 1| Paciente
+    Atendimento -->|medico resp.| FuncionarioSaude
+    Atendimento -->|medico comp.| FuncionarioSaude
+    Atendimento -->|ref. 1| Quarto
+    Paciente -->|alocado em 1| Quarto
 
-    Atendimento --o|1..*| LeituraSensor
-    LeituraSensor --o|1..1| Notificacao
+    Atendimento -->|gera 0..*| LeituraSensor
+    LeituraSensor -->|gera 0..1| Notificacao
 
+    %% Estilização
     classDef base fill:#E0BBE4,stroke:#333;
     classDef domain fill:#957DAD,stroke:#333,color:white;
     classDef iot fill:#D291BC,stroke:#333,color:white;
