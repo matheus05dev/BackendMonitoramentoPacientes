@@ -85,8 +85,8 @@ graph TD
     end
 
     %% Relacionamentos
-    Paciente --|> Pessoa
-    FuncionarioSaude --|> Pessoa
+    Paciente --> Pessoa
+    FuncionarioSaude --> Pessoa
     Pessoa -- "1..*" o-- Telefone
 
     Atendimento -- "M..1" --> Paciente
