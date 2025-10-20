@@ -67,13 +67,12 @@ Abaixo está um diagrama que ilustra o relacionamento entre as principais entida
 
 ```mermaid
 graph TD
-    subgraph "Entidades Base"
+    subgraph Entidades Base
         Pessoa
         Telefone
     end
 
-    subgraph "Domínios Principais"
-        direction LR
+    subgraph Domínios Principais
         Paciente
         FuncionarioSaude
         Quarto
@@ -81,33 +80,28 @@ graph TD
     end
 
     subgraph "Domínio de Monitoramento (IoT)"
-        direction LR
         LeituraSensor
         Notificacao
     end
 
-    %% Relacionamentos de Herança
+    %% Relacionamentos
     Paciente --|> Pessoa
     FuncionarioSaude --|> Pessoa
+    Pessoa -- "1..*" o-- Telefone
 
-    %% Relacionamentos de Composição e Agregação
-    Pessoa "1" --o "0..*" Telefone
+    Atendimento -- "M..1" --> Paciente
+    Atendimento -- "Médico Responsável" --> FuncionarioSaude
+    Atendimento -- "Médico Complicação" --> FuncionarioSaude
+    Atendimento -- "M..1" --> Quarto
+    Paciente -- "M..1" o-- Quarto
 
-    %% Relacionamentos Centrais do Negócio
-    Atendimento "M" -- "1" Paciente
-    Atendimento "M" -- "1 (Médico Resp.)" FuncionarioSaude
-    Atendimento "M" -- "0..1 (Médico Comp.)" FuncionarioSaude
-    Atendimento "M" -- "1" Quarto
-    Paciente "M" --o "1" Quarto
+    Atendimento -- "1..*" o-- LeituraSensor
+    LeituraSensor -- "1..1" o-- Notificacao
 
-    %% Relacionamentos de Monitoramento
-    Atendimento "1" --o "0..*" LeituraSensor
-    LeituraSensor "1" -- "0..1" Notificacao
-
-    %% Estilização para clareza
-    classDef base fill:#E0BBE4,stroke:#333,stroke-width:2px;
-    classDef domain fill:#957DAD,stroke:#333,stroke-width:2px,color:white;
-    classDef iot fill:#D291BC,stroke:#333,stroke-width:2px,color:white;
+    %% Estilização
+    classDef base fill:#E0BBE4,stroke:#333;
+    classDef domain fill:#957DAD,stroke:#333,color:white;
+    classDef iot fill:#D291BC,stroke:#333,color:white;
 
     class Pessoa,Telefone base;
     class Paciente,FuncionarioSaude,Quarto,Atendimento domain;
