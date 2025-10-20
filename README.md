@@ -114,7 +114,7 @@ graph TD
 
 1.  **Pré-requisitos:**
     *   JDK 24 ou superior
-    *   Maven 3.x
+    *   Maven 4.0.0
     *   MySQL
 2.  **Clone o repositório:**
     ```bash
