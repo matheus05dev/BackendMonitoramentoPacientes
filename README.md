@@ -99,7 +99,7 @@ graph TD
     LeituraSensor -->|gera 0..1| Notificacao
 
     %% Estilização
-    classDef base fill:#f2f2f2,stroke:#333;
+    classDef base fill:#201d1d,stroke:#333;
     classDef domain fill:#4682B4,stroke:#333,color:white;
     classDef iot fill:#3CB371,stroke:#333,color:white;
 
@@ -114,7 +114,7 @@ graph TD
 
 1.  **Pré-requisitos:**
     *   JDK 24 ou superior
-    *   Maven 3.x
+    *   Maven 4.0.0
     *   MySQL
 2.  **Clone o repositório:**
     ```bash
