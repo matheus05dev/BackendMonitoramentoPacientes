@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class UserRestController {
 
     //Criar usuário
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Cria um novo usuário",
             description = "Cria um novo usuário com os dados fornecidos.",
             responses = {
@@ -41,6 +43,7 @@ public class UserRestController {
     }
     //Alterar usuário
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Atualiza um usuário existente",
             description = "Atualiza os dados de um usuário existente pelo ID.",
             responses = {
@@ -54,6 +57,7 @@ public class UserRestController {
     }
     //Buscar usuário
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Lista todos os usuários",
             description = "Retorna uma lista de todos os usuários cadastrados.",
             responses = {
@@ -65,6 +69,7 @@ public class UserRestController {
     }
     //Buscar usuário por ID
     @GetMapping("/id/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Busca um usuário por ID",
             description = "Retorna um usuário específico pelo seu ID.",
             responses = {
@@ -78,6 +83,7 @@ public class UserRestController {
 
     //Buscar usuário por username
     @GetMapping("/username/{username}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Busca um usuário por username",
             description = "Retorna um usuário específico pelo seu nome de usuário.",
             responses = {
@@ -91,6 +97,7 @@ public class UserRestController {
 
     //Deleta usuário
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Deleta um usuário",
             description = "Deleta um usuário existente pelo ID.",
             responses = {

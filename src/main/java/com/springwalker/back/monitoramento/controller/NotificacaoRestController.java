@@ -1,6 +1,6 @@
 package com.springwalker.back.monitoramento.controller;
 
-import com.springwalker.back.core.enums.StatusNotificacao;
+import com.springwalker.back.monitoramento.enums.notificacao.StatusNotificacao;
 import com.springwalker.back.monitoramento.dto.notificacao.NotificacaoResponseDTO;
 import com.springwalker.back.monitoramento.mapper.NotificacaoMapper;
 import com.springwalker.back.monitoramento.model.Notificacao;
@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class NotificacaoRestController {
     private final NotificacaoMapper notificacaoMapper;
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'ENFERMEIRO', 'AUXILIAR_ENFERMAGEM', 'TECNICO_ENFERMAGEM', 'ESTAGIARIO')")
     @Operation(summary = "Busca o histórico de notificações", description = "Retorna uma lista de todas as notificações geradas. Pode ser filtrado por status (ABERTA, EM_ATENDIMENTO, FECHADA).")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Histórico de notificações retornado com sucesso")
@@ -50,6 +52,7 @@ public class NotificacaoRestController {
     }
 
     @PutMapping("/{id}/fechar")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'ENFERMEIRO', 'AUXILIAR_ENFERMAGEM', 'TECNICO_ENFERMAGEM')")
     @Operation(summary = "Fecha uma notificação de alerta", description = "Altera o status de uma notificação para 'FECHADA', indicando que o alerta foi atendido.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Notificação fechada com sucesso"),

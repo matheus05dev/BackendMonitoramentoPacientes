@@ -1,8 +1,8 @@
 package com.springwalker.back.atendimento.model;
 
-import com.springwalker.back.core.enums.Diagnostico;
-import com.springwalker.back.core.enums.StatusMonitoramento;
-import com.springwalker.back.core.enums.StatusPaciente;
+import com.springwalker.back.atendimento.enums.Diagnostico;
+import com.springwalker.back.atendimento.enums.StatusMonitoramento;
+import com.springwalker.back.atendimento.enums.StatusPaciente;
 import com.springwalker.back.funcionario.model.FuncionarioSaude;
 import com.springwalker.back.monitoramento.model.LeituraSensor;
 import com.springwalker.back.paciente.model.Paciente;

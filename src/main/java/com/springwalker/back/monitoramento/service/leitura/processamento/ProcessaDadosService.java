@@ -2,7 +2,7 @@ package com.springwalker.back.monitoramento.service.leitura.processamento;
 
 import com.springwalker.back.atendimento.model.Atendimento;
 import com.springwalker.back.atendimento.repository.AtendimentoRepository;
-import com.springwalker.back.core.enums.StatusMonitoramento;
+import com.springwalker.back.atendimento.enums.StatusMonitoramento;
 import com.springwalker.back.monitoramento.dto.leitura.LeituraSensorRequestDTO;
 import com.springwalker.back.monitoramento.dto.leitura.LeituraSensorResponseDTO;
 import com.springwalker.back.monitoramento.mapper.LeituraSensorMapper;

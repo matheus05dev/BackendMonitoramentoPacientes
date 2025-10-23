@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -33,6 +34,7 @@ public class QuartoRestController {
 
     // Buscar todos os quartos
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'ENFERMEIRO', 'AUXILIAR_ENFERMAGEM', 'TECNICO_ENFERMAGEM', 'ESTAGIARIO')")
     @Operation(summary = "Listar todos os quartos", description = "Retorna uma lista de todos os quartos cadastrados")
     @ApiResponse(responseCode = "200", description = "Lista de quartos retornada com sucesso")
     public List<QuartoResponseDTO> listar() {
@@ -41,6 +43,7 @@ public class QuartoRestController {
 
     // Buscar um quarto por ID
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'ENFERMEIRO', 'AUXILIAR_ENFERMAGEM', 'TECNICO_ENFERMAGEM', 'ESTAGIARIO')")
     @Operation(summary = "Buscar quarto por ID", description = "Retorna os detalhes de um quarto específico pelo ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Quarto encontrado"),
@@ -52,6 +55,7 @@ public class QuartoRestController {
 
     // Inserir um novo quarto
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Criar novo quarto", description = "Cria um novo quarto no sistema")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Quarto criado com sucesso"),
@@ -67,6 +71,7 @@ public class QuartoRestController {
 
     // Alterar um quarto
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Alterar quarto", description = "Atualiza os dados de um quarto existente")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Quarto alterado com sucesso"),
@@ -82,6 +87,7 @@ public class QuartoRestController {
 
     // Apagar um quarto
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Deletar quarto", description = "Remove um quarto do sistema")
     @ApiResponse(responseCode = "204", description = "Quarto deletado com sucesso")
@@ -94,6 +100,7 @@ public class QuartoRestController {
 
     // Inserir vários quartos
     @PostMapping("/inserir-varios")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Criar vários quartos", description = "Cria múltiplos quartos no sistema")
     @ApiResponse(responseCode = "200", description = "Quartos criados com sucesso")
     public List<QuartoResponseDTO> inserirVarios(@RequestBody List<QuartoRequestDTO> dtos) {
@@ -102,6 +109,7 @@ public class QuartoRestController {
 
     // Endpoint para alocar paciente em um quarto
     @PutMapping("/{quartoId}/alocar-paciente/{pacienteId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'ENFERMEIRO', 'AUXILIAR_ENFERMAGEM', 'TECNICO_ENFERMAGEM')")
     @Operation(summary = "Alocar paciente ao quarto", description = "Atribui um paciente a um quarto específico")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Paciente alocado com sucesso"),
@@ -117,6 +125,7 @@ public class QuartoRestController {
 
     // Endpoint para remover paciente de um quarto
     @PutMapping("/{quartoId}/remover-paciente/{pacienteId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'ENFERMEIRO', 'AUXILIAR_ENFERMAGEM', 'TECNICO_ENFERMAGEM')")
     @Operation(summary = "Remover paciente do quarto", description = "Remove um paciente de um quarto específico")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Paciente removido com sucesso"),

@@ -2,7 +2,7 @@ package com.springwalker.back.monitoramento.service.notificacao.processamento;
 
 import com.springwalker.back.atendimento.model.Atendimento;
 import com.springwalker.back.atendimento.repository.AtendimentoRepository;
-import com.springwalker.back.core.enums.StatusNotificacao;
+import com.springwalker.back.monitoramento.enums.notificacao.StatusNotificacao;
 import com.springwalker.back.monitoramento.model.LeituraSensor;
 import com.springwalker.back.monitoramento.model.Notificacao;
 import com.springwalker.back.monitoramento.repository.NotificacaoRepository;

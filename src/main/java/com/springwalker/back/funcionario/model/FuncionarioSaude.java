@@ -1,8 +1,8 @@
 package com.springwalker.back.funcionario.model;
 
 import com.springwalker.back.atendimento.model.Atendimento;
-import com.springwalker.back.core.enums.Cargo;
-import com.springwalker.back.core.model.Pessoa;
+import com.springwalker.back.funcionario.enums.Cargo;
+import com.springwalker.back.pessoa.model.Pessoa;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;

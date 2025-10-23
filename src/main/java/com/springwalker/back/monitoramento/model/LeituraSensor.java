@@ -1,10 +1,10 @@
 package com.springwalker.back.monitoramento.model;
 
 import com.springwalker.back.atendimento.model.Atendimento;
-import com.springwalker.back.core.enums.CondicaoSaude;
-import com.springwalker.back.core.enums.Gravidade;
-import com.springwalker.back.core.enums.TipoDado;
-import com.springwalker.back.core.enums.UnidadeMedida;
+import com.springwalker.back.monitoramento.enums.leitura.CondicaoSaude;
+import com.springwalker.back.monitoramento.enums.leitura.Gravidade;
+import com.springwalker.back.monitoramento.enums.leitura.TipoDado;
+import com.springwalker.back.monitoramento.enums.leitura.UnidadeMedida;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

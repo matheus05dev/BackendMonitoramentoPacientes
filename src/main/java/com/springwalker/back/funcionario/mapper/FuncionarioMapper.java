@@ -1,7 +1,7 @@
 package com.springwalker.back.funcionario.mapper;
 
 import com.springwalker.back.atendimento.model.Atendimento;
-import com.springwalker.back.core.mapper.TelefoneMapper;
+import com.springwalker.back.pessoa.mapper.TelefoneMapper;
 import com.springwalker.back.funcionario.dto.FuncionarioSaudeRequestDTO;
 import com.springwalker.back.funcionario.dto.FuncionarioSaudeResponseDTO;
 import com.springwalker.back.funcionario.model.FuncionarioSaude;

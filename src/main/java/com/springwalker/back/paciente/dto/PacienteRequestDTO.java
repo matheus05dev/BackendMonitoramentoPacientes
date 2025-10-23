@@ -1,7 +1,7 @@
 package com.springwalker.back.paciente.dto;
 
-import com.springwalker.back.core.dto.TelefoneDTO;
-import com.springwalker.back.core.enums.Sexo;
+import com.springwalker.back.pessoa.dto.TelefoneDTO;
+import com.springwalker.back.pessoa.enums.Sexo;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

@@ -1,6 +1,6 @@
 package com.springwalker.back.monitoramento.model;
 
-import com.springwalker.back.core.enums.StatusNotificacao;
+import com.springwalker.back.monitoramento.enums.notificacao.StatusNotificacao;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

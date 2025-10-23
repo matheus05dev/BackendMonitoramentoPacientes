@@ -18,6 +18,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,6 +39,7 @@ public class AtendimentoRestController {
 
     // Inserir um novo atendimento
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO')")
     @Operation(summary = "Criar novo atendimento", description = "Cria um novo atendimento médico associando paciente e funcionário")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Atendimento criado com sucesso"),
@@ -50,6 +52,7 @@ public class AtendimentoRestController {
 
     // Buscar atendimento por Id
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'ENFERMEIRO', 'AUXILIAR_ENFERMAGEM', 'TECNICO_ENFERMAGEM', 'ESTAGIARIO')")
     @Operation(summary = "Buscar atendimento por ID", description = "Retorna os detalhes de um atendimento específico pelo ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Atendimento encontrado"),
@@ -63,6 +66,7 @@ public class AtendimentoRestController {
 
     // Buscar todos atendimentos
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'ENFERMEIRO', 'AUXILIAR_ENFERMAGEM', 'TECNICO_ENFERMAGEM', 'ESTAGIARIO')")
     @Operation(summary = "Listar todos os atendimentos", description = "Retorna uma lista de todos os atendimentos registrados")
     @ApiResponse(responseCode = "200", description = "Lista de atendimentos retornada com sucesso")
     public ResponseEntity<List<AtendimentoResponseDTO>> buscarTodosAtendimentos() {
@@ -72,6 +76,7 @@ public class AtendimentoRestController {
 
     // Alterar um atendimento existente
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO')")
     @Operation(summary = "Alterar atendimento", description = "Atualiza os dados de um atendimento existente")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Atendimento alterado com sucesso"),
@@ -86,6 +91,7 @@ public class AtendimentoRestController {
 
     // Apagar um atendimento
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Deletar atendimento", description = "Remove um atendimento do sistema")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Atendimento deletado com sucesso"),

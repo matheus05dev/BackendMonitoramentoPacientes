@@ -1,7 +1,7 @@
 package com.springwalker.back.monitoramento.service.notificacao;
 
-import com.springwalker.back.core.enums.StatusNotificacao;
-import com.springwalker.back.core.enums.TipoDado;
+import com.springwalker.back.monitoramento.enums.notificacao.StatusNotificacao;
+import com.springwalker.back.monitoramento.enums.leitura.TipoDado;
 import com.springwalker.back.monitoramento.model.Notificacao;
 import com.springwalker.back.monitoramento.repository.NotificacaoRepository;
 import lombok.RequiredArgsConstructor;

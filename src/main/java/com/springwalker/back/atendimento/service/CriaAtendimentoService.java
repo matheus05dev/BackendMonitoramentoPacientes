@@ -2,8 +2,10 @@ package com.springwalker.back.atendimento.service;
 
 import com.springwalker.back.atendimento.dto.AtendimentoRequestDTO;
 import com.springwalker.back.atendimento.dto.AtendimentoResponseDTO;
+import com.springwalker.back.atendimento.enums.StatusPaciente;
 import com.springwalker.back.atendimento.mapper.AtendimentoMapper;
 import com.springwalker.back.atendimento.model.Atendimento;
+import com.springwalker.back.funcionario.enums.Cargo;
 import com.springwalker.back.funcionario.model.FuncionarioSaude;
 import com.springwalker.back.atendimento.repository.AtendimentoRepository;
 import com.springwalker.back.funcionario.repository.FuncionarioSaudeRepository;
@@ -38,7 +40,7 @@ public class CriaAtendimentoService {
 
         FuncionarioSaude medicoResponsavel = funcionarioSaudeRepository.findById(dto.getMedicoResponsavelId())
                 .orElseThrow(() -> new NoSuchElementException("Médico responsável não encontrado"));
-        if (medicoResponsavel.getCargo() != com.springwalker.back.core.enums.Cargo.MEDICO) {
+        if (medicoResponsavel.getCargo() != Cargo.MEDICO) {
             throw new IllegalArgumentException("O funcionário responsável deve ser um médico.");
         }
 
@@ -46,7 +48,7 @@ public class CriaAtendimentoService {
         if (dto.getMedicoComplicacaoId() != null) {
             medicoComplicacao = funcionarioSaudeRepository.findById(dto.getMedicoComplicacaoId())
                     .orElseThrow(() -> new NoSuchElementException("Médico de complicação não encontrado"));
-            if (medicoComplicacao.getCargo() != com.springwalker.back.core.enums.Cargo.MEDICO) {
+            if (medicoComplicacao.getCargo() != Cargo.MEDICO) {
                 throw new IllegalArgumentException("O funcionário de complicação deve ser um médico.");
             }
         }
@@ -56,7 +58,7 @@ public class CriaAtendimentoService {
         atendimento.setMedicoResponsavel(medicoResponsavel);
         atendimento.setMedicoComplicacao(medicoComplicacao);
         atendimento.setDataEntrada(LocalDateTime.now());
-        atendimento.setStatusPaciente(com.springwalker.back.core.enums.StatusPaciente.Internado);
+        atendimento.setStatusPaciente(StatusPaciente.Internado);
         atendimento.setDataSaida(null);
         atendimento.setStatusMonitoramento(dto.getStatusMonitoramento());
 

@@ -1,8 +1,8 @@
 package com.springwalker.back.funcionario.dto;
 
-import com.springwalker.back.core.dto.TelefoneDTO;
-import com.springwalker.back.core.enums.Cargo;
-import com.springwalker.back.core.enums.Sexo;
+import com.springwalker.back.pessoa.dto.TelefoneDTO;
+import com.springwalker.back.funcionario.enums.Cargo;
+import com.springwalker.back.pessoa.enums.Sexo;
 import lombok.Data;
 
 import java.time.LocalDate;

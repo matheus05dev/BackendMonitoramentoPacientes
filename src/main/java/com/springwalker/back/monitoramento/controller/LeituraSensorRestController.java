@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,6 +39,7 @@ public class LeituraSensorRestController {
     }
 
     @GetMapping("/atendimento/{atendimentoId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'ENFERMEIRO', 'AUXILIAR_ENFERMAGEM', 'TECNICO_ENFERMAGEM', 'ESTAGIARIO')")
     @Operation(summary = "Busca todas as leituras de um atendimento", description = "Retorna uma lista com todo o histórico de leituras de um atendimento específico.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Lista de leituras retornada com sucesso")
@@ -48,6 +50,7 @@ public class LeituraSensorRestController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'ENFERMEIRO', 'AUXILIAR_ENFERMAGEM', 'TECNICO_ENFERMAGEM', 'ESTAGIARIO')")
     @Operation(summary = "Busca todas as leituras registradas", description = "Retorna uma lista com todas as leituras de todos os atendimentos. Use com cautela em produção.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Lista de todas as leituras retornada com sucesso")

@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -32,6 +33,7 @@ public class PacienteRestController {
     private final DeletaPacienteService deletaPacienteService;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO','ENFERMEIRO')")
     @Operation(summary = "Criar novo paciente", description = "Cria um novo paciente no sistema")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Paciente criado com sucesso"),
@@ -50,6 +52,7 @@ public class PacienteRestController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'ENFERMEIRO', 'AUXILIAR_ENFERMAGEM', 'TECNICO_ENFERMAGEM', 'ESTAGIARIO')")
     @Operation(summary = "Listar todos os pacientes", description = "Retorna uma lista de todos os pacientes cadastrados")
     @ApiResponse(responseCode = "200", description = "Lista de pacientes retornada com sucesso")
     public ResponseEntity<List<PacienteResponseDTO>> listarTodosPacientes() {
@@ -57,6 +60,7 @@ public class PacienteRestController {
     }
 
     @GetMapping("/id/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'ENFERMEIRO', 'AUXILIAR_ENFERMAGEM', 'TECNICO_ENFERMAGEM', 'ESTAGIARIO')")
     @Operation(summary = "Buscar paciente por ID", description = "Retorna os detalhes de um paciente específico pelo ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Paciente encontrado"),
@@ -69,6 +73,7 @@ public class PacienteRestController {
     }
 
     @GetMapping("/cpf/{cpf}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'ENFERMEIRO', 'AUXILIAR_ENFERMAGEM', 'TECNICO_ENFERMAGEM', 'ESTAGIARIO')")
     @Operation(summary = "Buscar paciente por CPF", description = "Retorna os detalhes de um paciente específico pelo CPF")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Paciente encontrado"),
@@ -81,6 +86,7 @@ public class PacienteRestController {
     }
 
     @GetMapping("/nome/{nome}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'ENFERMEIRO', 'AUXILIAR_ENFERMAGEM', 'TECNICO_ENFERMAGEM', 'ESTAGIARIO')")
     @Operation(summary = "Buscar pacientes por nome", description = "Retorna uma lista de pacientes que correspondem ao nome informado")
     @ApiResponse(responseCode = "200", description = "Lista de pacientes retornada com sucesso")
     public ResponseEntity<List<PacienteResponseDTO>> buscarPacientePorNome(@PathVariable String nome) {
@@ -88,6 +94,7 @@ public class PacienteRestController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'ENFERMEIRO')")
     @Operation(summary = "Alterar paciente", description = "Atualiza os dados de um paciente existente")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Paciente alterado com sucesso"),
@@ -105,6 +112,7 @@ public class PacienteRestController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Deletar paciente", description = "Remove um paciente do sistema")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Paciente deletado com sucesso"),

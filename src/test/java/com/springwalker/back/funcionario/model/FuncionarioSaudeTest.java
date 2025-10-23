@@ -1,9 +1,8 @@
 package com.springwalker.back.funcionario.model;
 
 import com.springwalker.back.atendimento.model.Atendimento;
-import com.springwalker.back.core.enums.Cargo;
-import com.springwalker.back.core.enums.Sexo;
-import com.springwalker.back.core.model.Telefone;
+import com.springwalker.back.funcionario.enums.Cargo;
+import com.springwalker.back.pessoa.model.Telefone;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,6 +1,6 @@
 package com.springwalker.back.paciente.mapper;
 
-import com.springwalker.back.core.mapper.TelefoneMapper;
+import com.springwalker.back.pessoa.mapper.TelefoneMapper;
 import com.springwalker.back.paciente.dto.PacienteRequestDTO;
 import com.springwalker.back.paciente.dto.PacienteResponseDTO;
 import com.springwalker.back.paciente.model.Paciente;

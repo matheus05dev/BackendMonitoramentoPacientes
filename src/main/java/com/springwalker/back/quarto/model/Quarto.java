@@ -2,8 +2,8 @@ package com.springwalker.back.quarto.model;
 
 import com.springwalker.back.paciente.model.Paciente;
 import jakarta.persistence.*;
-import com.springwalker.back.core.enums.LocalizacaoQuarto;
-import com.springwalker.back.core.enums.TipoQuarto;
+import com.springwalker.back.quarto.enums.LocalizacaoQuarto;
+import com.springwalker.back.quarto.enums.TipoQuarto;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -47,9 +47,8 @@ public class Quarto {
     @OneToMany(mappedBy = "quarto")
     private List<Paciente> pacientes = new ArrayList<>();
 
-    /**
-     * Adiciona um paciente ao quarto, respeitando a capacidade e evitando duplicidade.
-     */
+     // Adiciona um paciente ao quarto, respeitando a capacidade e evitando duplicidade.
+
     public void adicionarPaciente(Paciente paciente) {
         if (pacientes == null) {
             pacientes = new ArrayList<>();
@@ -70,9 +69,8 @@ public class Quarto {
         pacientes.add(paciente);
     }
 
-    /**
-     * Remove um paciente do quarto.
-     */
+    // Remove um paciente do quarto.
+
     public void removerPaciente(Paciente paciente) {
         if (!pacientes.remove(paciente)) {
             throw new IllegalStateException(
@@ -81,9 +79,9 @@ public class Quarto {
         }
     }
 
-    /**
-     * Verifica se ainda há vagas no quarto.
-     */
+
+  // Verifica se ainda há vagas no quarto.
+
     public boolean temVaga() {
         return pacientes != null && pacientes.size() < capacidade;
     }

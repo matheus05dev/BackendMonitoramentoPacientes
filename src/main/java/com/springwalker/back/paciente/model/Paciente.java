@@ -1,6 +1,6 @@
 package com.springwalker.back.paciente.model;
 
-import com.springwalker.back.core.model.Pessoa;
+import com.springwalker.back.pessoa.model.Pessoa;
 import com.springwalker.back.quarto.model.Quarto;
 import jakarta.persistence.*;
 import lombok.*;

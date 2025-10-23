@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class FuncionarioSaudeRestController {
 
     // Buscar todos os funcionários
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'ENFERMEIRO', 'AUXILIAR_ENFERMAGEM', 'TECNICO_ENFERMAGEM', 'ESTAGIARIO')")
     @Operation(summary = "Listar todos os funcionários", description = "Retorna uma lista de todos os funcionários de saúde cadastrados")
     @ApiResponse(responseCode = "200", description = "Lista de funcionários retornada com sucesso")
     public List<FuncionarioSaudeResponseDTO> listar() {
@@ -37,6 +39,7 @@ public class FuncionarioSaudeRestController {
 
     // Inserir um novo funcionário
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Criar novo funcionário", description = "Cria um novo funcionário de saúde no sistema")
     @ApiResponse(responseCode = "200", description = "Funcionário criado com sucesso")
     public FuncionarioSaudeResponseDTO inserir(@RequestBody FuncionarioSaudeRequestDTO funcionarioSaude) {
@@ -45,6 +48,7 @@ public class FuncionarioSaudeRestController {
 
     // Alterar um funcionário por ID
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Alterar funcionário", description = "Atualiza os dados de um funcionário existente")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Funcionário alterado com sucesso"),
@@ -63,6 +67,7 @@ public class FuncionarioSaudeRestController {
 
     // Excluir um funcionário por ID
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Deletar funcionário", description = "Remove um funcionário do sistema")
     public void excluir(@PathVariable Long id) {
         delataFuncionarioSaudeService.execute(id);
@@ -70,6 +75,7 @@ public class FuncionarioSaudeRestController {
 
     // Buscar um funcionário por ID
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'ENFERMEIRO', 'AUXILIAR_ENFERMAGEM', 'TECNICO_ENFERMAGEM', 'ESTAGIARIO')")
     @Operation(summary = "Buscar funcionário por ID", description = "Retorna os detalhes de um funcionário específico pelo ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Funcionário encontrado"),
@@ -83,6 +89,7 @@ public class FuncionarioSaudeRestController {
 
     // Buscar funcionários por nome (busca parcial)
     @GetMapping("/buscar-por-nome/{nome}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'ENFERMEIRO', 'AUXILIAR_ENFERMAGEM', 'TECNICO_ENFERMAGEM', 'ESTAGIARIO')")
     @Operation(summary = "Buscar funcionários por nome", description = "Retorna uma lista de funcionários que correspondem ao nome informado")
     @ApiResponse(responseCode = "200", description = "Lista de funcionários retornada com sucesso")
     public List<FuncionarioSaudeResponseDTO> buscarPorNome(@PathVariable String nome) {
@@ -91,6 +98,7 @@ public class FuncionarioSaudeRestController {
 
     // Buscar um funcionário por CPF
     @GetMapping("/buscar-por-cpf/{cpf}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'ENFERMEIRO', 'AUXILIAR_ENFERMAGEM', 'TECNICO_ENFERMAGEM', 'ESTAGIARIO')")
     @Operation(summary = "Buscar funcionário por CPF", description = "Retorna os detalhes de um funcionário específico pelo CPF")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Funcionário encontrado"),

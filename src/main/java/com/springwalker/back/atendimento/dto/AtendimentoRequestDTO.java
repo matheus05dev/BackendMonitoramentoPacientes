@@ -1,8 +1,8 @@
 package com.springwalker.back.atendimento.dto;
 
-import com.springwalker.back.core.enums.Diagnostico;
-import com.springwalker.back.core.enums.StatusMonitoramento;
-import com.springwalker.back.core.enums.StatusPaciente;
+import com.springwalker.back.atendimento.enums.Diagnostico;
+import com.springwalker.back.atendimento.enums.StatusMonitoramento;
+import com.springwalker.back.atendimento.enums.StatusPaciente;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import java.time.LocalDateTime;

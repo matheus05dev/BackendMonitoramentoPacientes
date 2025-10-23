@@ -1,8 +1,8 @@
 package com.springwalker.back.paciente.model;
 
-import com.springwalker.back.core.enums.LocalizacaoQuarto;
-import com.springwalker.back.core.enums.TipoQuarto;
-import com.springwalker.back.core.model.Telefone;
+import com.springwalker.back.quarto.enums.LocalizacaoQuarto;
+import com.springwalker.back.quarto.enums.TipoQuarto;
+import com.springwalker.back.pessoa.model.Telefone;
 import com.springwalker.back.quarto.model.Quarto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

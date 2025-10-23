@@ -1,6 +1,6 @@
 package com.springwalker.back.monitoramento.service.notificacao.processamento;
 
-import com.springwalker.back.core.enums.Gravidade;
+import com.springwalker.back.monitoramento.enums.leitura.Gravidade;
 import com.springwalker.back.monitoramento.model.LeituraSensor;
 import com.springwalker.back.monitoramento.model.Notificacao;
 import com.springwalker.back.monitoramento.service.notificacao.BuscarNotificacaoService;

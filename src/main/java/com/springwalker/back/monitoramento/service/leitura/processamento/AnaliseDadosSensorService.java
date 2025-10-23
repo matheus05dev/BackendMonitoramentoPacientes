@@ -1,6 +1,6 @@
 package com.springwalker.back.monitoramento.service.leitura.processamento;
 
-import com.springwalker.back.core.enums.TipoDado;
+import com.springwalker.back.monitoramento.enums.leitura.TipoDado;
 import com.springwalker.back.monitoramento.model.LeituraSensor;
 import com.springwalker.back.monitoramento.service.leitura.processamento.strategies.AnaliseDadosSensorStrategy;
 import org.springframework.stereotype.Service;

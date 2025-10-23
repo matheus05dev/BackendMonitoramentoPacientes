@@ -1,7 +1,7 @@
 package com.springwalker.back.quarto.dto;
 
-import com.springwalker.back.core.enums.LocalizacaoQuarto;
-import com.springwalker.back.core.enums.TipoQuarto;
+import com.springwalker.back.quarto.enums.LocalizacaoQuarto;
+import com.springwalker.back.quarto.enums.TipoQuarto;
 import lombok.Data;
 import java.util.List;
 

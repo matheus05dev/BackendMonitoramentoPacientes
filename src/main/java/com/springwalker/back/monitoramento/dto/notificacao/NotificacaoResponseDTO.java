@@ -1,6 +1,6 @@
 package com.springwalker.back.monitoramento.dto.notificacao;
 
-import com.springwalker.back.core.enums.StatusNotificacao;
+import com.springwalker.back.monitoramento.enums.notificacao.StatusNotificacao;
 import com.springwalker.back.monitoramento.dto.leitura.LeituraSensorResponseDTO;
 import lombok.Data;
 
