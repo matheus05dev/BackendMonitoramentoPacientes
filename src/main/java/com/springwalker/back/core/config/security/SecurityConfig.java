@@ -35,6 +35,9 @@ public class SecurityConfig {
                     req.requestMatchers(HttpMethod.POST,"/api/leituras/atendimento/{atendimentoId}").permitAll();
                     req.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll();
 
+                    // ← ADICIONE ESTA LINHA: Permitir handshake do WebSocket
+                    req.requestMatchers("/ws/**").permitAll();
+
                     //EndPoints ADM
                     req.requestMatchers("/admin/**").hasRole("ADMIN"); // Exige ROLE_ADMIN
 
@@ -55,3 +58,4 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 }
+

@@ -17,7 +17,7 @@ public class BuscarNotificacaoService {
     private final NotificacaoRepository notificacaoRepository;
 
     public List<Notificacao> buscarTodasNotificacoes() {
-        return notificacaoRepository.findAllByOrderByDataCriacaoDesc();
+        return notificacaoRepository.findAllWithDetails();
     }
 
     public List<Notificacao> buscarNotificacoesPorStatus(StatusNotificacao status) {
