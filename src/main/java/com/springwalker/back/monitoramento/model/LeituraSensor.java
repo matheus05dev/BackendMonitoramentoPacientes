@@ -53,4 +53,7 @@ public class LeituraSensor {
 
     @OneToOne(mappedBy = "leituraSensor", cascade = CascadeType.ALL, orphanRemoval = true)
     private Notificacao notificacao;
+
+    @Column(name = "duracao_estimada_minutos")
+    private Integer duracaoEstimadaMinutos;
 }

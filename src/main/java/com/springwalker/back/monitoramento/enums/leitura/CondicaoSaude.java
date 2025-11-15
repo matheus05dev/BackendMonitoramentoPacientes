@@ -18,5 +18,8 @@ public enum CondicaoSaude {
     HIPERTENSAO_ESTAGIO_2,
     HIPERTENSAO_ESTAGIO_1,
     PRE_HIPERTENSAO,
-    HIPOTENSAO
+    HIPOTENSAO,
+
+    // Para Medicação
+    MEDICACAO_FINALIZANDO
 }

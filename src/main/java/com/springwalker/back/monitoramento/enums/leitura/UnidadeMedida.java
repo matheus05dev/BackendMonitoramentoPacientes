@@ -3,7 +3,8 @@ package com.springwalker.back.monitoramento.enums.leitura;
 public enum UnidadeMedida {
     MMHG("mmHg"),
     CELSIUS("°C"),
-    BPM("bpm");
+    BPM("bpm"),
+    GRAMAS("g");
 
     private final String simbolo;
 

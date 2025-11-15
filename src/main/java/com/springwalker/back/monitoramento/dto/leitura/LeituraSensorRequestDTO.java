@@ -22,4 +22,6 @@ public class LeituraSensorRequestDTO {
     private CondicaoSaude condicaoSaude;
 
     private Gravidade gravidade;
+
+    private Integer duracaoEstimadaMinutos;
 }

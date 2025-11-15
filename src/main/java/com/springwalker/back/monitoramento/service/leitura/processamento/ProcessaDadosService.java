@@ -5,6 +5,7 @@ import com.springwalker.back.atendimento.repository.AtendimentoRepository;
 import com.springwalker.back.atendimento.enums.StatusMonitoramento;
 import com.springwalker.back.monitoramento.dto.leitura.LeituraSensorRequestDTO;
 import com.springwalker.back.monitoramento.dto.leitura.LeituraSensorResponseDTO;
+import com.springwalker.back.monitoramento.enums.leitura.TipoDado;
 import com.springwalker.back.monitoramento.mapper.LeituraSensorMapper;
 import com.springwalker.back.monitoramento.model.LeituraSensor;
 import com.springwalker.back.monitoramento.repository.LeituraSensorRepository;
@@ -47,7 +48,9 @@ public class ProcessaDadosService {
 
         LeituraSensor savedLeitura = leituraSensorRepository.save(leituraSensor);
 
-        gerenciadorNotificacaoService.processarEEnviarNotificacao(savedLeitura);
+        if (savedLeitura.getTipoDado() != TipoDado.MEDICACAO) {
+            gerenciadorNotificacaoService.processarEEnviarNotificacao(savedLeitura);
+        }
 
         LeituraSensorResponseDTO responseDTO = leituraSensorMapper.toResponse(savedLeitura);
 

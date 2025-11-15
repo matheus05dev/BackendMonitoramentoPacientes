@@ -18,5 +18,6 @@ public class LeituraSensorResponseDTO {
     private UnidadeMedida unidadeMedida;
     private CondicaoSaude condicaoSaude;
     private Gravidade gravidade;
+    private Integer duracaoEstimadaMinutos;
 
 }
