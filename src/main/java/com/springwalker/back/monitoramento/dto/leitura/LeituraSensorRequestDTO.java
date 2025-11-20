@@ -7,11 +7,16 @@ import com.springwalker.back.monitoramento.enums.leitura.UnidadeMedida;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 public class LeituraSensorRequestDTO {
 
     @NotNull
     private Double valor;
+
+    @NotNull
+    private LocalDateTime dataHora;
 
     @NotNull
     private TipoDado tipoDado;
