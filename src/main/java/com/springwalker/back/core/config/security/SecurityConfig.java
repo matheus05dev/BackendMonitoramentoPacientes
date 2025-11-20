@@ -38,6 +38,11 @@ public class SecurityConfig {
                     // ← ADICIONE ESTA LINHA: Permitir handshake do WebSocket
                     req.requestMatchers("/ws/**").permitAll();
 
+                    //EndPoints Quarto
+                    req.requestMatchers(HttpMethod.POST, "/api/quarto").hasRole("ADMIN");
+                    req.requestMatchers(HttpMethod.PUT, "/api/quarto/**").hasRole("ADMIN");
+                    req.requestMatchers(HttpMethod.DELETE, "/api/quarto/**").hasRole("ADMIN");
+
                     //EndPoints ADM
                     req.requestMatchers("/admin/**").hasRole("ADMIN"); // Exige ROLE_ADMIN
 
@@ -58,4 +63,3 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 }
-

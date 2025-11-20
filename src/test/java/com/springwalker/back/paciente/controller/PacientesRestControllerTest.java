@@ -62,7 +62,7 @@ class PacientesRestControllerTest {
     private TokenService tokenService;
 
     @MockitoBean
-    private UserRepository userRepository; // Assuming this is needed by SecurityConfig
+    private UserRepository userRepository;
 
     @Autowired
     private ObjectMapper objectMapper;

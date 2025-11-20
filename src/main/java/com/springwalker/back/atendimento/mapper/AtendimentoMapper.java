@@ -14,6 +14,8 @@ public interface AtendimentoMapper {
     @Mapping(target = "medicoResponsavel", ignore = true)
     @Mapping(target = "medicoComplicacao", ignore = true)
     @Mapping(target = "statusMonitoramento", source = "statusMonitoramento")
+    @Mapping(target = "diagnostico_complicacao", source = "diagnosticoComplicacao")
+    @Mapping(target = "tratamento_complicacao", source = "tratamentoComplicacao")
     Atendimento toEntity(AtendimentoRequestDTO dto);
 
     @Mapping(target = "pacienteId", source = "paciente.id")
@@ -23,5 +25,7 @@ public interface AtendimentoMapper {
     @Mapping(target = "medicoComplicacaoId", source = "medicoComplicacao.id")
     @Mapping(target = "nomeMedicoComplicacao", source = "nomeMedicoComplicacao")
     @Mapping(target = "numeroQuarto", source = "quarto.numero")
+    @Mapping(target = "diagnosticoComplicacao", source = "diagnostico_complicacao")
+    @Mapping(target = "tratamentoComplicacao", source = "tratamento_complicacao")
     AtendimentoResponseDTO toResponseDTO(Atendimento atendimento);
 }

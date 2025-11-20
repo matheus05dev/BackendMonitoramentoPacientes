@@ -4,8 +4,8 @@ import com.springwalker.back.paciente.model.Paciente;
 import jakarta.persistence.*;
 import com.springwalker.back.quarto.enums.LocalizacaoQuarto;
 import com.springwalker.back.quarto.enums.TipoQuarto;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -23,46 +23,39 @@ public class Quarto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", unique = true)
+    @Column(name = "id")
     private Long id;
 
-    @NotNull
-    @Column(name = "Número", unique = true)
+    @Column(name = "numero", unique = true)
     private Integer numero;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "Setor")
+    @Column(name = "localizacao")
     private LocalizacaoQuarto localizacao;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "Tipo")
+    @Column(name = "tipo")
     private TipoQuarto tipo;
 
-    @NotNull
-    @Column(name = "Capacidade")
+    @Column(name = "capacidade")
     private Integer capacidade;
 
     @OneToMany(mappedBy = "quarto")
+    @Builder.Default
     private List<Paciente> pacientes = new ArrayList<>();
 
      // Adiciona um paciente ao quarto, respeitando a capacidade e evitando duplicidade.
 
     public void adicionarPaciente(Paciente paciente) {
-        if (pacientes == null) {
-            pacientes = new ArrayList<>();
+        if (pacientes.contains(paciente)) {
+            throw new IllegalStateException(
+                    "Paciente já está neste quarto."
+            );
         }
 
         if (pacientes.size() >= capacidade) {
             throw new IllegalStateException(
                     "Quarto " + numero + " já atingiu a capacidade máxima de " + capacidade + " pacientes."
-            );
-        }
-
-        if (pacientes.contains(paciente)) {
-            throw new IllegalStateException(
-                    "Paciente já está neste quarto."
             );
         }
 
@@ -83,6 +76,6 @@ public class Quarto {
   // Verifica se ainda há vagas no quarto.
 
     public boolean temVaga() {
-        return pacientes != null && pacientes.size() < capacidade;
+        return pacientes.size() < capacidade;
     }
 }
