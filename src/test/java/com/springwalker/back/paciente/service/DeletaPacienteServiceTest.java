@@ -24,7 +24,7 @@ class DeletaPacienteServiceTest {
     private DeletaPacienteService deletaPacienteService;
 
     @Test
-    @DisplayName("Should delete a patient successfully when patient exists")
+    @DisplayName("Deve deletar um paciente com sucesso quando o paciente existir")
     void shouldDeletePatientSuccessfullyWhenPatientExists() {
         Long pacienteId = 1L;
         when(pacienteRepository.existsById(pacienteId)).thenReturn(true);
@@ -37,7 +37,7 @@ class DeletaPacienteServiceTest {
     }
 
     @Test
-    @DisplayName("Should throw RuntimeException when patient to delete does not exist")
+    @DisplayName("Deve lançar RuntimeException quando o paciente a ser deletado não existir")
     void shouldThrowExceptionWhenPatientToDeleteDoesNotExist() {
         Long pacienteId = 1L;
         when(pacienteRepository.existsById(pacienteId)).thenReturn(false);

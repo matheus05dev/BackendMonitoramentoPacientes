@@ -24,7 +24,7 @@ class UserRepositoryTest {
     private TestEntityManager entityManager;
 
     @Test
-    @DisplayName("Should persist a user successfully")
+    @DisplayName("Deve persistir um usuário com sucesso")
     void shouldPersistUserSuccessfully() {
         User user = new User("testuser", "password", Role.ADMIN);
         User savedUser = userRepository.save(user);
@@ -40,7 +40,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    @DisplayName("Should find a user by username")
+    @DisplayName("Deve encontrar um usuário por nome de usuário")
     void shouldFindUserByUsername() {
         User user = new User("findbyusername", "password", Role.MEDICO);
         entityManager.persistAndFlush(user);
@@ -52,14 +52,14 @@ class UserRepositoryTest {
     }
 
     @Test
-    @DisplayName("Should return empty when user not found by username")
+    @DisplayName("Deve retornar vazio quando o usuário não for encontrado por nome de usuário")
     void shouldReturnEmptyWhenUserNotFoundByUsername() {
         Optional<User> foundUser = userRepository.findByUsername("nonexistent");
         assertFalse(foundUser.isPresent());
     }
 
     @Test
-    @DisplayName("Should find a user by ID")
+    @DisplayName("Deve encontrar um usuário por ID")
     void shouldFindUserById() {
         User user = new User("findbyid", "password", Role.ENFERMEIRO);
         User persistedUser = entityManager.persistAndFlush(user);
@@ -71,14 +71,14 @@ class UserRepositoryTest {
     }
 
     @Test
-    @DisplayName("Should return empty when user not found by ID")
+    @DisplayName("Deve retornar vazio quando o usuário não for encontrado por ID")
     void shouldReturnEmptyWhenUserNotFoundById() {
         Optional<User> foundUser = userRepository.findById(999L);
         assertFalse(foundUser.isPresent());
     }
 
     @Test
-    @DisplayName("Should delete a user by ID")
+    @DisplayName("Deve deletar um usuário por ID")
     void shouldDeleteUserById() {
         User user = new User("todelete", "password", Role.AUXILIAR_ENFERMAGEM);
         User persistedUser = entityManager.persistAndFlush(user);
@@ -90,7 +90,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    @DisplayName("Should check if a user exists by username")
+    @DisplayName("Deve verificar se um usuário existe por nome de usuário")
     void shouldCheckIfUserExistsByUsername() {
         User user = new User("existuser", "password", Role.TECNICO_ENFERMAGEM);
         entityManager.persistAndFlush(user);

@@ -60,7 +60,7 @@ class BuscaPacienteServiceTest {
     }
 
     @Test
-    @DisplayName("Should list all patients when there are patients")
+    @DisplayName("Deve listar todos os pacientes quando houver pacientes")
     void shouldListAllPatientsWhenPatientsExist() {
         List<Paciente> pacientes = Arrays.asList(paciente1, paciente2);
         List<PacienteResponseDTO> responseDTOs = Arrays.asList(responseDTO1, responseDTO2);
@@ -80,7 +80,7 @@ class BuscaPacienteServiceTest {
     }
 
     @Test
-    @DisplayName("Should return an empty list when no patients exist")
+    @DisplayName("Deve retornar uma lista vazia quando não houver pacientes")
     void shouldReturnEmptyListWhenNoPatientsExist() {
         when(pacienteRepository.findAll()).thenReturn(Collections.emptyList());
 
@@ -93,7 +93,7 @@ class BuscaPacienteServiceTest {
     }
 
     @Test
-    @DisplayName("Should find patient by ID when patient exists")
+    @DisplayName("Deve encontrar paciente por ID quando o paciente existir")
     void shouldFindPatientByIdWhenPatientExists() {
         when(pacienteRepository.findById(1L)).thenReturn(Optional.of(paciente1));
         when(pacienteMapper.toResponseDTO(paciente1)).thenReturn(responseDTO1);
@@ -107,7 +107,7 @@ class BuscaPacienteServiceTest {
     }
 
     @Test
-    @DisplayName("Should return empty when patient by ID does not exist")
+    @DisplayName("Deve retornar vazio quando o paciente por ID não existir")
     void shouldReturnEmptyWhenPatientByIdDoesNotExist() {
         when(pacienteRepository.findById(99L)).thenReturn(Optional.empty());
 
@@ -119,7 +119,7 @@ class BuscaPacienteServiceTest {
     }
 
     @Test
-    @DisplayName("Should find patients by name when patients exist")
+    @DisplayName("Deve encontrar pacientes por nome quando os pacientes existirem")
     void shouldFindPatientsByNameWhenPatientsExist() {
         List<Paciente> pacientes = Collections.singletonList(paciente1);
         List<PacienteResponseDTO> responseDTOs = Collections.singletonList(responseDTO1);
@@ -137,7 +137,7 @@ class BuscaPacienteServiceTest {
     }
 
     @Test
-    @DisplayName("Should return empty list when no patients found by name")
+    @DisplayName("Deve retornar lista vazia quando nenhum paciente for encontrado por nome")
     void shouldReturnEmptyListWhenNoPatientsFoundByName() {
         when(pacienteRepository.findPacientesByNomeContaining("NonExistent")).thenReturn(Collections.emptyList());
 
@@ -150,7 +150,7 @@ class BuscaPacienteServiceTest {
     }
 
     @Test
-    @DisplayName("Should find patient by CPF when patient exists")
+    @DisplayName("Deve encontrar paciente por CPF quando o paciente existir")
     void shouldFindPatientByCpfWhenPatientExists() {
         when(pacienteRepository.findByCpf("11122233344")).thenReturn(Optional.of(paciente1));
         when(pacienteMapper.toResponseDTO(paciente1)).thenReturn(responseDTO1);
@@ -164,7 +164,7 @@ class BuscaPacienteServiceTest {
     }
 
     @Test
-    @DisplayName("Should return empty when patient by CPF does not exist")
+    @DisplayName("Deve retornar vazio quando o paciente por CPF não existir")
     void shouldReturnEmptyWhenPatientByCpfDoesNotExist() {
         when(pacienteRepository.findByCpf("99988877766")).thenReturn(Optional.empty());
 

@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class DelataFuncionarioSaudeService {
+public class DeletaFuncionarioSaudeService {
 
     private final FuncionarioSaudeRepository funcionarioSaudeRepository;
     private final AtendimentoRepository atendimentoRepository;

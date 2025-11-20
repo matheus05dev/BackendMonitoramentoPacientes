@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring", uses = {TelefoneMapper.class}, nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-public interface FuncionarioMapper {
+public interface FuncionarioSaudeMapper {
 
     FuncionarioSaude toEntity(FuncionarioSaudeRequestDTO dto);
 

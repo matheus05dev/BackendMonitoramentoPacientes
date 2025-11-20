@@ -2,7 +2,7 @@ package com.springwalker.back.funcionario.service;
 
 import com.springwalker.back.funcionario.dto.FuncionarioSaudeRequestDTO;
 import com.springwalker.back.funcionario.dto.FuncionarioSaudeResponseDTO;
-import com.springwalker.back.funcionario.mapper.FuncionarioMapper;
+import com.springwalker.back.funcionario.mapper.FuncionarioSaudeMapper;
 import com.springwalker.back.funcionario.model.FuncionarioSaude;
 import com.springwalker.back.funcionario.repository.FuncionarioSaudeRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AlteraFuncionarioSaudeService {
 
     private final FuncionarioSaudeRepository funcionarioSaudeRepository;
-    private final FuncionarioMapper funcionarioMapper;
+    private final FuncionarioSaudeMapper funcionarioSaudeMapper;
 
     @Transactional
     public FuncionarioSaudeResponseDTO execute(Long id, FuncionarioSaudeRequestDTO dto) {
@@ -23,12 +23,12 @@ public class AlteraFuncionarioSaudeService {
                 .orElseThrow(() -> new RuntimeException("Funcionário não encontrado com ID: " + id));
 
         // Usa o mapper para atualizar a entidade com os dados do DTO
-        funcionarioMapper.updateFromDto(dto, funcionarioExistente);
+        funcionarioSaudeMapper.updateFromDto(dto, funcionarioExistente);
 
         // Salva a entidade atualizada
         FuncionarioSaude funcionarioAtualizado = funcionarioSaudeRepository.save(funcionarioExistente);
 
         // Retorna o DTO de resposta
-        return funcionarioMapper.toResponseDTO(funcionarioAtualizado);
+        return funcionarioSaudeMapper.toResponseDTO(funcionarioAtualizado);
     }
 }

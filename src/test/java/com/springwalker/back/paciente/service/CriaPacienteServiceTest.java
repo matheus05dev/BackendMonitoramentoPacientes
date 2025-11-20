@@ -44,7 +44,7 @@ class CriaPacienteServiceTest {
         requestDTO = new PacienteRequestDTO();
         requestDTO.setCpf("12345678900");
         requestDTO.setNome("Test Patient");
-        requestDTO.setQuartoId(1L); // Example quartoId
+        requestDTO.setQuartoId(1L);
 
         paciente = new Paciente();
         paciente.setCpf("12345678900");
@@ -52,7 +52,7 @@ class CriaPacienteServiceTest {
 
         quarto = new Quarto();
         quarto.setId(1L);
-        quarto.setNumero(101); // Corrected: Integer for quarto number
+        quarto.setNumero(101);
 
         pacienteSalvo = new Paciente();
         pacienteSalvo.setId(1L);
@@ -68,7 +68,7 @@ class CriaPacienteServiceTest {
     }
 
     @Test
-    @DisplayName("Should create a patient successfully with a valid Quarto ID")
+    @DisplayName("Deve criar um paciente com sucesso com um ID de Quarto válido")
     void shouldCreatePatientSuccessfullyWithQuartoId() {
         when(pacienteRepository.existsByCpf(requestDTO.getCpf())).thenReturn(false);
         when(pacienteMapper.toEntity(requestDTO)).thenReturn(paciente);
@@ -92,7 +92,7 @@ class CriaPacienteServiceTest {
     }
 
     @Test
-    @DisplayName("Should create a patient successfully without a Quarto ID")
+    @DisplayName("Deve criar um paciente com sucesso sem um ID de Quarto")
     void shouldCreatePatientSuccessfullyWithoutQuartoId() {
         requestDTO.setQuartoId(null);
         pacienteSalvo.setQuarto(null);
@@ -119,7 +119,7 @@ class CriaPacienteServiceTest {
     }
 
     @Test
-    @DisplayName("Should throw IllegalArgumentException when CPF is duplicated")
+    @DisplayName("Deve lançar IllegalArgumentException quando o CPF for duplicado")
     void shouldThrowExceptionWhenCpfIsDuplicated() {
         when(pacienteRepository.existsByCpf(requestDTO.getCpf())).thenReturn(true);
 
@@ -136,7 +136,7 @@ class CriaPacienteServiceTest {
     }
 
     @Test
-    @DisplayName("Should throw RuntimeException when Quarto ID is provided but not found")
+    @DisplayName("Deve lançar RuntimeException quando o ID do Quarto for fornecido mas não encontrado")
     void shouldThrowExceptionWhenQuartoIdNotFound() {
         when(pacienteRepository.existsByCpf(requestDTO.getCpf())).thenReturn(false);
         when(pacienteMapper.toEntity(requestDTO)).thenReturn(paciente);

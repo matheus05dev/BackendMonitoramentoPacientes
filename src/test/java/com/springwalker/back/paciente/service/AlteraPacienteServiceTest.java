@@ -48,12 +48,11 @@ class AlteraPacienteServiceTest {
 
         quartoExistente = new Quarto();
         quartoExistente.setId(10L);
-        quartoExistente.setNumero(101); // Corrected: Integer for quarto number
+        quartoExistente.setNumero(101);
 
         novoQuarto = new Quarto();
         novoQuarto.setId(20L);
-        novoQuarto.setNumero(202); // Corrected: Integer for quarto number
-
+        novoQuarto.setNumero(202);
         pacienteExistente = new Paciente();
         pacienteExistente.setId(pacienteId);
         pacienteExistente.setCpf("11122233344");
@@ -61,7 +60,7 @@ class AlteraPacienteServiceTest {
         pacienteExistente.setQuarto(quartoExistente);
 
         requestDTO = new PacienteRequestDTO();
-        requestDTO.setCpf("11122233344"); // CPF remains same
+        requestDTO.setCpf("11122233344");
         requestDTO.setNome("Paciente Novo Nome");
         requestDTO.setQuartoId(novoQuarto.getId());
 
@@ -75,11 +74,11 @@ class AlteraPacienteServiceTest {
         responseDTO.setId(pacienteId);
         responseDTO.setCpf("11122233344");
         responseDTO.setNome("Paciente Novo Nome");
-        responseDTO.setQuartoId(novoQuarto.getId()); // Corrected: Use quartoId
+        responseDTO.setQuartoId(novoQuarto.getId());
     }
 
     @Test
-    @DisplayName("Should update patient successfully with Quarto ID change")
+    @DisplayName("Deve atualizar paciente com sucesso com mudança de ID de Quarto")
     void shouldUpdatePatientSuccessfullyWithQuartoIdChange() {
         when(pacienteRepository.findById(pacienteId)).thenReturn(Optional.of(pacienteExistente));
         doNothing().when(pacienteMapper).updateFromDto(requestDTO, pacienteExistente);
@@ -102,7 +101,7 @@ class AlteraPacienteServiceTest {
     }
 
     @Test
-    @DisplayName("Should update patient successfully without Quarto ID change (same ID)")
+    @DisplayName("Deve atualizar paciente com sucesso sem mudança de ID de Quarto (mesmo ID)")
     void shouldUpdatePatientSuccessfullyWithoutQuartoIdChange() {
         requestDTO.setQuartoId(quartoExistente.getId()); // Set to existing quarto ID
         pacienteAtualizado.setQuarto(quartoExistente);
@@ -128,7 +127,7 @@ class AlteraPacienteServiceTest {
     }
 
     @Test
-    @DisplayName("Should update patient successfully removing Quarto association")
+    @DisplayName("Deve atualizar paciente com sucesso removendo associação de Quarto")
     void shouldUpdatePatientSuccessfullyRemovingQuartoAssociation() {
         requestDTO.setQuartoId(null); // Remove quarto association
         pacienteAtualizado.setQuarto(null);
@@ -154,7 +153,7 @@ class AlteraPacienteServiceTest {
     }
 
     @Test
-    @DisplayName("Should update patient successfully when patient already has no Quarto and requestDTO.quartoId is null")
+    @DisplayName("Deve atualizar paciente com sucesso quando paciente já não tem Quarto e requestDTO.quartoId é nulo")
     void shouldUpdatePatientSuccessfullyWhenNoQuartoAndRequestQuartoIdIsNull() {
         pacienteExistente.setQuarto(null); // Patient initially has no quarto
         requestDTO.setQuartoId(null); // Request also has no quarto
@@ -181,7 +180,7 @@ class AlteraPacienteServiceTest {
     }
 
     @Test
-    @DisplayName("Should throw RuntimeException when patient not found")
+    @DisplayName("Deve lançar RuntimeException quando paciente não for encontrado")
     void shouldThrowExceptionWhenPatientNotFound() {
         when(pacienteRepository.findById(pacienteId)).thenReturn(Optional.empty());
 
@@ -198,7 +197,7 @@ class AlteraPacienteServiceTest {
     }
 
     @Test
-    @DisplayName("Should throw RuntimeException when new Quarto ID is provided but not found")
+    @DisplayName("Deve lançar RuntimeException quando novo ID de Quarto for fornecido mas não encontrado")
     void shouldThrowExceptionWhenNewQuartoIdNotFound() {
         when(pacienteRepository.findById(pacienteId)).thenReturn(Optional.of(pacienteExistente));
         doNothing().when(pacienteMapper).updateFromDto(requestDTO, pacienteExistente);
