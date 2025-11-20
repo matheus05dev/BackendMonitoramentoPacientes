@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,7 +21,7 @@ public class Paciente extends Pessoa {
     @ElementCollection
     @CollectionTable(name = "Alergias", joinColumns = @JoinColumn(name = "Paciente Id"))
     @Column(name = "Alergia")
-    private List<String> alergias;
+    private List<String> alergias = new ArrayList<>();;
 
     @ManyToOne
     @JoinColumn(name = "Quarto_Id")
