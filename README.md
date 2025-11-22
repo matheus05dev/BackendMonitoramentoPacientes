@@ -40,7 +40,7 @@ Com uma arquitetura moderna e princípios sólidos de engenharia de software, o 
 - **Monitoramento IoT:** Preparado para integração com dispositivos (como ESP32) para coleta de sinais vitais em tempo real.
 - **Regras de Negócio:** Validações para alocação de pacientes, permissões de funcionários e integridade dos dados.
 - **Notificações:** Sistema de alertas para eventos críticos, como leituras anormais de sensores.
-- **Segurança:** Tratamento de exceções, validação de dados e uso de DTOs para proteger a integridade das entidades.
+- **Segurança:** Autenticação baseada em JWT e autorização de acesso aos endpoints.
 - **Documentação:** API documentada com Swagger para facilitar o uso e os testes.
 
 ---
@@ -50,9 +50,13 @@ Com uma arquitetura moderna e princípios sólidos de engenharia de software, o 
 - **Java 24**
 - **Spring Boot 3.4.5**
 - **Spring Data JPA** & **Hibernate**
+- **Spring Security**
 - **Maven**
 - **Lombok**
 - **MySQL**
+- **JWT (JSON Web Token)**
+- **MapStruct**
+- **Springdoc (Swagger)**
 - **Jakarta Validation** / **Hibernate Validator**
 
 ---
@@ -84,6 +88,12 @@ graph TD
         Notificacao
     end
 
+    subgraph Dominio_Seguranca
+        Usuario
+        Role
+        JWT
+    end
+
     %% Relacionamentos
     Paciente -->|herda| Pessoa
     FuncionarioSaude -->|herda| Pessoa
@@ -98,14 +108,20 @@ graph TD
     Atendimento -->|gera 0..*| LeituraSensor
     LeituraSensor -->|gera 0..1| Notificacao
 
+    Usuario -->|possui 1..*| Role
+    FuncionarioSaude -->|é um| Usuario
+    Usuario -->|autentica e gera| JWT
+
     %% Estilização
     classDef base fill:#201d1d,stroke:#333;
     classDef domain fill:#4682B4,stroke:#333,color:white;
     classDef iot fill:#3CB371,stroke:#333,color:white;
+    classDef security fill:#FF4500,stroke:#333,color:white;
 
     class Pessoa,Telefone base;
     class Paciente,FuncionarioSaude,Quarto,Atendimento domain;
     class LeituraSensor,Notificacao iot;
+    class Usuario,Role,JWT security;
 ```
 
 ---
@@ -122,7 +138,7 @@ graph TD
     cd BackendMonitoramentoPacientes
     ```
 3.  **Configure o banco de dados:**
-    *   Edite o arquivo `src/main/resources/application.properties` com as credenciais do seu banco MySQL.
+    *   Edite o arquivo `src/main/resources/application.properties` com as credenciais do seu banco MySQL. Certifique-se de criar o schema no banco de dados antes de executar a aplicação.
 4.  **Compile e execute:**
     ```bash
     mvn clean install
@@ -141,60 +157,67 @@ graph TD
 <details>
 <summary>Clique para ver os endpoints</summary>
 
-### Quarto
-Base URL: `/api/quarto`
+### Autenticação
+Base URL: `/api/auth`
 
 | Método | URL | Descrição |
 |---|---|---|
-| GET | `/` | Lista todos os quartos |
-| GET | `/{id}` | Busca quarto por ID |
-| POST | `/` | Cria novo quarto |
-| PUT | `/{id}` | Altera quarto existente |
-| DELETE | `/{id}` | Remove quarto |
+| POST | `/login` | Autentica um usuário e retorna um token JWT |
+
+### Quarto
+Base URL: `/api/quarto`
+
+| Método | URL | Descrição | Role |
+|---|---|---|---|
+| GET | `/` | Lista todos os quartos | `ANY` |
+| GET | `/{id}` | Busca quarto por ID | `ANY` |
+| POST | `/` | Cria novo quarto | `ADMIN` |
+| PUT | `/{id}` | Altera quarto existente | `ADMIN` |
+| DELETE | `/{id}` | Remove quarto | `ADMIN` |
 
 ### Paciente
 Base URL: `/api/pacientes`
 
-| Método | URL | Descrição |
-|---|---|---|
-| POST | `/` | Cria novo paciente |
-| GET | `/` | Lista todos os pacientes |
-| GET | `/id/{id}` | Busca paciente por ID |
-| GET | `/cpf/{cpf}` | Busca paciente por CPF |
+| Método | URL | Descrição | Role |
+|---|---|---|---|
+| POST | `/` | Cria novo paciente | `ANY` |
+| GET | `/` | Lista todos os pacientes | `ANY` |
+| GET | `/id/{id}` | Busca paciente por ID | `ANY` |
+| GET | `/cpf/{cpf}` | Busca paciente por CPF | `ANY` |
 
 ### Funcionário
 Base URL: `/api/funcionarios`
 
-| Método | URL | Descrição |
-|---|---|---|
-| POST | `/` | Cria novo funcionário |
-| GET | `/` | Lista todos os funcionários |
-| GET | `/id/{id}` | Busca funcionário por ID |
+| Método | URL | Descrição | Role |
+|---|---|---|---|
+| POST | `/` | Cria novo funcionário | `ANY` |
+| GET | `/` | Lista todos os funcionários | `ANY` |
+| GET | `/id/{id}` | Busca funcionário por ID | `ANY` |
 
 ### Atendimento
 Base URL: `/api/atendimento`
 
-| Método | URL | Descrição |
-|---|---|---|
-| POST | `/` | Cria novo atendimento |
-| GET | `/` | Lista todos os atendimentos |
-| GET | `/{id}` | Busca atendimento por ID |
+| Método | URL | Descrição | Role |
+|---|---|---|---|
+| POST | `/` | Cria novo atendimento | `ANY` |
+| GET | `/` | Lista todos os atendimentos | `ANY` |
+| GET | `/{id}` | Busca atendimento por ID | `ANY` |
 
 ### Leitura
 Base URL: `/api/leituras`
 
-| Método | URL | Descrição |
-|---|---|---|
-| POST | `/atendimento/{atendimentoId}` | Cria nova leitura |
-| GET | `/atendimento/{atendimentoId}` | Lista leituras por atendimento |
+| Método | URL | Descrição | Role |
+|---|---|---|---|
+| POST | `/atendimento/{atendimentoId}` | Cria nova leitura | `PUBLIC` |
+| GET | `/atendimento/{atendimentoId}` | Lista leituras por atendimento | `ANY` |
 
 ### Notificações
 Base URL: `/api/notificacoes`
 
-| Método | URL | Descrição |
-|---|---|---|
-| PUT | `/{id}/fechar` | Fecha uma notificação de alerta |
-| GET | `/` | Lista todas as notificações |
+| Método | URL | Descrição | Role |
+|---|---|---|---|
+| PUT | `/{id}/fechar` | Fecha uma notificação de alerta | `ANY` |
+| GET | `/` | Lista todas as notificações | `ANY` |
 
 </details>
 
