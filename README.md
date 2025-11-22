@@ -152,6 +152,8 @@ graph TD
     *   **Documentação Swagger:** [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 6.  **Simulador IoT (Opcional):**
     *   Para testar o envio de dados dos sensores, utilize o simulador em Python disponível [neste repositório](https://github.com/matheus05dev/SimuladorIoTMonitoramentoPacientes).
+7.  **Frontend Angular (Opcional):**
+    *   Para interagir com a API, utilize o frontend em Angular disponível [neste repositório](https://github.com/matheus05dev/FrontendMonitoramentoPacientes).
 
 ---
 
