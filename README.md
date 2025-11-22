@@ -70,7 +70,7 @@ O projeto adota uma **arquitetura em camadas** com princípios de **Domain-Drive
 
 ### Diagrama de Entidades
 
-O diagrama abaixo ilustra o relacionamento entre as principais entidades do sistema:
+Para uma compreensão visual da estrutura de dados e dos relacionamentos entre as entidades do sistema, consulte o diagrama abaixo:
 
 ```mermaid
 graph TD
@@ -115,7 +115,7 @@ graph TD
     Usuario --"autentica e gera"--> JWT
 
     %% Estilização
-    classDef base fill:#f9f9f9,stroke:#333,stroke-width:2px;
+    classDef base fill:#e0e0e0,stroke:#333,stroke-width:2px;
     classDef domain fill:#e8f0ff,stroke:#4a90e2,stroke-width:2px;
     classDef iot fill:#e8f5e9,stroke:#4caf50,stroke-width:2px;
     classDef security fill:#fff3e0,stroke:#ff9800,stroke-width:2px;
