@@ -17,6 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @RestController
@@ -32,9 +33,6 @@ public class NotificacaoRestController {
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'ENFERMEIRO', 'AUXILIAR_ENFERMAGEM', 'TECNICO_ENFERMAGEM', 'ESTAGIARIO')")
     @Operation(summary = "Busca o histórico de notificações", description = "Retorna uma lista de todas as notificações geradas. Pode ser filtrado por status (ABERTA, EM_ATENDIMENTO, FECHADA).")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Histórico de notificações retornado com sucesso")
-    })
     public ResponseEntity<List<NotificacaoResponseDTO>> getNotificacoes(
             @Parameter(description = "Filtra as notificações por status") @RequestParam(required = false) StatusNotificacao status) {
 
@@ -54,13 +52,9 @@ public class NotificacaoRestController {
     @PutMapping("/{id}/fechar")
     @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'ENFERMEIRO', 'AUXILIAR_ENFERMAGEM', 'TECNICO_ENFERMAGEM')")
     @Operation(summary = "Fecha uma notificação de alerta", description = "Altera o status de uma notificação para 'FECHADA', indicando que o alerta foi atendido.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Notificação fechada com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Notificação não encontrada")
-    })
     public ResponseEntity<NotificacaoResponseDTO> fecharNotificacao(@PathVariable Long id) {
-        return gerenciadorNotificacaoService.fecharNotificacao(id)
-                .map(notificacao -> ResponseEntity.ok(notificacaoMapper.toResponse(notificacao)))
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(gerenciadorNotificacaoService.fecharNotificacao(id)
+                .map(notificacaoMapper::toResponse)
+                .orElseThrow(() -> new NoSuchElementException("Notificação não encontrada com o ID: " + id)));
     }
 }

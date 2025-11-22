@@ -17,12 +17,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.NoSuchElementException;
 
 @RestController
-@RequestMapping("/api/pacientes") // Plural, seguindo o padrão REST
+@RequestMapping("/api/pacientes")
 @RequiredArgsConstructor
 @Tag(name = "Pacientes", description = "Gerenciamento de pacientes")
 public class PacienteRestController {
@@ -39,16 +38,9 @@ public class PacienteRestController {
             @ApiResponse(responseCode = "201", description = "Paciente criado com sucesso"),
             @ApiResponse(responseCode = "400", description = "Dados inválidos")
     })
-    public ResponseEntity<?> criarPaciente(@RequestBody @Valid PacienteRequestDTO requestDTO) {
-        try {
-            PacienteResponseDTO responseDTO = criaPacienteService.execute(requestDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
-        } catch (IllegalArgumentException e) {
-            // Captura a exceção de CPF duplicado do serviço
-            Map<String, String> error = new HashMap<>();
-            error.put("message", e.getMessage());
-            return ResponseEntity.badRequest().body(error);
-        }
+    public ResponseEntity<PacienteResponseDTO> criarPaciente(@RequestBody @Valid PacienteRequestDTO requestDTO) {
+        PacienteResponseDTO responseDTO = criaPacienteService.execute(requestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
     }
 
     @GetMapping
@@ -67,9 +59,8 @@ public class PacienteRestController {
             @ApiResponse(responseCode = "404", description = "Paciente não encontrado")
     })
     public ResponseEntity<PacienteResponseDTO> buscarPacientePorId(@PathVariable Long id) {
-        return buscaPacienteService.buscarPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(buscaPacienteService.buscarPorId(id)
+                .orElseThrow(() -> new NoSuchElementException("Paciente não encontrado com o ID: " + id)));
     }
 
     @GetMapping("/cpf/{cpf}")
@@ -80,9 +71,8 @@ public class PacienteRestController {
             @ApiResponse(responseCode = "404", description = "Paciente não encontrado")
     })
     public ResponseEntity<PacienteResponseDTO> buscarPacientePorCpf(@PathVariable String cpf) {
-        return buscaPacienteService.buscarPorCpf(cpf)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(buscaPacienteService.buscarPorCpf(cpf)
+                .orElseThrow(() -> new NoSuchElementException("Paciente não encontrado com o CPF: " + cpf)));
     }
 
     @GetMapping("/nome/{nome}")
@@ -103,12 +93,8 @@ public class PacienteRestController {
     })
     public ResponseEntity<PacienteResponseDTO> alterarPaciente(@PathVariable Long id,
             @RequestBody @Valid PacienteRequestDTO requestDTO) {
-        try {
-            PacienteResponseDTO responseDTO = alteraPacienteService.execute(id, requestDTO);
-            return ResponseEntity.ok(responseDTO);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+        PacienteResponseDTO responseDTO = alteraPacienteService.execute(id, requestDTO);
+        return ResponseEntity.ok(responseDTO);
     }
 
     @DeleteMapping("/{id}")
@@ -119,11 +105,7 @@ public class PacienteRestController {
             @ApiResponse(responseCode = "404", description = "Paciente não encontrado")
     })
     public ResponseEntity<Void> deletarPaciente(@PathVariable Long id) {
-        try {
-            deletaPacienteService.execute(id);
-            return ResponseEntity.noContent().build(); // Status 204
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+        deletaPacienteService.execute(id);
+        return ResponseEntity.noContent().build();
     }
 }

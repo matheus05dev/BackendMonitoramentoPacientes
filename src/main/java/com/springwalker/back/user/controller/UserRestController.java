@@ -10,12 +10,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/users")
@@ -28,82 +29,49 @@ public class UserRestController {
     private final BuscarUserService buscarUserService;
     private final DeletarUserService deletarUserService;
 
-    //Criar usuário
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Cria um novo usuário",
-            description = "Cria um novo usuário com os dados fornecidos.",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Usuário criado com sucesso"),
-                    @ApiResponse(responseCode = "400", description = "Dados de requisição inválidos")
-            })
+    @Operation(summary = "Cria um novo usuário")
     public ResponseEntity<UserResponseDTO> createUser(@RequestBody UserRequestDTO userRequestDTO) {
         UserResponseDTO user = criarUserService.execute(userRequestDTO);
-        return ResponseEntity.ok(user);
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
-    //Alterar usuário
+
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Atualiza um usuário existente",
-            description = "Atualiza os dados de um usuário existente pelo ID.",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Usuário atualizado com sucesso"),
-                    @ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
-                    @ApiResponse(responseCode = "400", description = "Dados de requisição inválidos")
-            })
+    @Operation(summary = "Atualiza um usuário existente")
     public ResponseEntity<UserResponseDTO> updateUser(@PathVariable Long id, @RequestBody UserRequestDTO userRequestDTO) {
         UserResponseDTO user = alteraUserService.execute(id, userRequestDTO);
         return ResponseEntity.ok(user);
     }
-    //Buscar usuário
+
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Lista todos os usuários",
-            description = "Retorna uma lista de todos os usuários cadastrados.",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Lista de usuários retornada com sucesso")
-            })
+    @Operation(summary = "Lista todos os usuários")
     public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
         List<UserResponseDTO> users = buscarUserService.buscarTodos();
         return ResponseEntity.ok(users);
     }
-    //Buscar usuário por ID
+
     @GetMapping("/id/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Busca um usuário por ID",
-            description = "Retorna um usuário específico pelo seu ID.",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Usuário encontrado com sucesso"),
-                    @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
-            })
+    @Operation(summary = "Busca um usuário por ID")
     public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id) {
-        UserResponseDTO user = buscarUserService.buscarPorId(id).orElse(null);
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(buscarUserService.buscarPorId(id)
+                .orElseThrow(() -> new NoSuchElementException("Usuário não encontrado com o ID: " + id)));
     }
 
-    //Buscar usuário por username
     @GetMapping("/username/{username}")
     @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Busca um usuário por username",
-            description = "Retorna um usuário específico pelo seu nome de usuário.",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "Usuário encontrado com sucesso"),
-                    @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
-            })
+    @Operation(summary = "Busca um usuário por username")
     public ResponseEntity<UserResponseDTO> getUserByUsername(@PathVariable String username) {
-        UserResponseDTO user = buscarUserService.buscarPorUsername(username).orElse(null);
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(buscarUserService.buscarPorUsername(username)
+                .orElseThrow(() -> new NoSuchElementException("Usuário não encontrado com o username: " + username)));
     }
 
-    //Deleta usuário
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Deleta um usuário",
-            description = "Deleta um usuário existente pelo ID.",
-            responses = {
-                    @ApiResponse(responseCode = "204", description = "Usuário deletado com sucesso"),
-                    @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
-            })
+    @Operation(summary = "Deleta um usuário")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         deletarUserService.execute(id);
         return ResponseEntity.noContent().build();

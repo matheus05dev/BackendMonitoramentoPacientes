@@ -6,10 +6,6 @@ import com.springwalker.back.atendimento.service.AlteraAtendimentoService;
 import com.springwalker.back.atendimento.service.BuscaAtendimentoService;
 import com.springwalker.back.atendimento.service.CriaAtendimentoService;
 import com.springwalker.back.atendimento.service.DeletaAtendimentoService;
-import com.springwalker.back.funcionario.model.FuncionarioSaude;
-import com.springwalker.back.funcionario.repository.FuncionarioSaudeRepository;
-import com.springwalker.back.paciente.model.Paciente;
-import com.springwalker.back.paciente.repository.PacienteRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -23,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
@@ -34,10 +29,7 @@ public class AtendimentoRestController {
     private final CriaAtendimentoService criaAtendimento;
     private final BuscaAtendimentoService buscaAtendimento;
     private final DeletaAtendimentoService deletaAtendimento;
-    private final PacienteRepository pacienteRepository;
-    private final FuncionarioSaudeRepository funcionarioSaudeRepository;
 
-    // Inserir um novo atendimento
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO')")
     @Operation(summary = "Criar novo atendimento", description = "Cria um novo atendimento médico associando paciente e funcionário")
@@ -50,7 +42,6 @@ public class AtendimentoRestController {
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
 
-    // Buscar atendimento por Id
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'ENFERMEIRO', 'AUXILIAR_ENFERMAGEM', 'TECNICO_ENFERMAGEM', 'ESTAGIARIO')")
     @Operation(summary = "Buscar atendimento por ID", description = "Retorna os detalhes de um atendimento específico pelo ID")
@@ -59,12 +50,9 @@ public class AtendimentoRestController {
             @ApiResponse(responseCode = "404", description = "Atendimento não encontrado")
     })
     public ResponseEntity<AtendimentoResponseDTO> buscarAtendimentoPorId(@PathVariable Long id) {
-        return buscaAtendimento.buscarAtendimentoPorId(id)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return ResponseEntity.ok(buscaAtendimento.buscarAtendimentoPorId(id).orElseThrow(() -> new NoSuchElementException("Atendimento não encontrado com o ID: " + id)));
     }
 
-    // Buscar todos atendimentos
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'ENFERMEIRO', 'AUXILIAR_ENFERMAGEM', 'TECNICO_ENFERMAGEM', 'ESTAGIARIO')")
     @Operation(summary = "Listar todos os atendimentos", description = "Retorna uma lista de todos os atendimentos registrados")
@@ -74,7 +62,6 @@ public class AtendimentoRestController {
         return ResponseEntity.ok(dtos);
     }
 
-    // Alterar um atendimento existente
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO')")
     @Operation(summary = "Alterar atendimento", description = "Atualiza os dados de um atendimento existente")
@@ -89,7 +76,6 @@ public class AtendimentoRestController {
         return ResponseEntity.ok(responseDTO);
     }
 
-    // Apagar um atendimento
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Deletar atendimento", description = "Remove um atendimento do sistema")
@@ -100,20 +86,5 @@ public class AtendimentoRestController {
     public ResponseEntity<AtendimentoResponseDTO> deletarAtendimento(@PathVariable Long id) {
         AtendimentoResponseDTO dto = deletaAtendimento.deletarAtendimento(id);
         return ResponseEntity.ok(dto);
-    }
-
-    @ExceptionHandler(NoSuchElementException.class)
-    public ResponseEntity<Void> handleNoSuchElementException(NoSuchElementException ex) {
-        return ResponseEntity.notFound().build();
-    }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex) {
-        return ResponseEntity.badRequest().body(ex.getMessage());
-    }
-
-    @ExceptionHandler(IllegalStateException.class)
-    public ResponseEntity<String> handleIllegalStateException(IllegalStateException ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 }
