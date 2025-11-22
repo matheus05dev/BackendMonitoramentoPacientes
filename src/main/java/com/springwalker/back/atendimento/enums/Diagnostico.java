@@ -1,5 +1,8 @@
 package com.springwalker.back.atendimento.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum Diagnostico {
     A41("Septicemia"),
     A02("Infecção por Salmonella, exceto tifo e paratifo"),
@@ -68,9 +71,5 @@ public enum Diagnostico {
 
     Diagnostico(String descricao) {
         this.descricao = descricao;
-    }
-
-    public String getDescricao() {
-        return descricao;
     }
 }

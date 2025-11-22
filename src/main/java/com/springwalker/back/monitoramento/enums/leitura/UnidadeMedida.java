@@ -1,5 +1,8 @@
 package com.springwalker.back.monitoramento.enums.leitura;
 
+import lombok.Getter;
+
+@Getter
 public enum UnidadeMedida {
     MMHG("mmHg"),
     CELSIUS("°C"),
@@ -12,7 +15,4 @@ public enum UnidadeMedida {
         this.simbolo = simbolo;
     }
 
-    public String getSimbolo() {
-        return simbolo;
-    }
 }
