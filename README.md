@@ -16,7 +16,7 @@
 
 ## 📋 Sumário
 
-- [Sobre o Projeto](#-sobre-o-projeto)
+- [📖Sobre o Projeto](#-sobre-o-projeto)
 - [✨ Principais Funcionalidades](#-principais-funcionalidades)
 - [🛠️ Tecnologias e Justificativas](#-tecnologias-e-justificativas)
 - [🏗️ Arquitetura do Sistema](#-arquitetura-do-sistema)
