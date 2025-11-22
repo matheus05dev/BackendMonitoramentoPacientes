@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class BackApplication {
+public class InfraMedAPIApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(BackApplication.class, args);
+        SpringApplication.run(InfraMedAPIApplication.class, args);
     }
 
 }

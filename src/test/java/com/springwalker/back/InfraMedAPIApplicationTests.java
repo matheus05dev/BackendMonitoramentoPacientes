@@ -6,7 +6,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
 @ActiveProfiles("test")
-class BackApplicationTests {
+class InfraMedAPIApplicationTests {
 
     @Test
     void contextLoads() {
