@@ -219,6 +219,8 @@ Base URL: `/api/auth`
 | Método | URL | Descrição | Role |
 |---|---|---|---|
 | POST | `/login` | Autentica um usuário e retorna um token JWT. | `PUBLIC` |
+| POST | `/refresh` | Gera um novo access token a partir de um refresh token. | `PUBLIC` |
+| POST | `/logout` | Efetua o logout do usuário. | `ANY` |
 
 ### Quarto
 Base URL: `/api/quarto`
