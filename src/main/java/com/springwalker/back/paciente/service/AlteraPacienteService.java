@@ -11,6 +11,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 @Service
@@ -25,7 +26,7 @@ public class AlteraPacienteService {
     public PacienteResponseDTO execute(Long id, PacienteRequestDTO requestDTO) {
         // Busca a entidade existente ou lança uma exceção
         Paciente pacienteExistente = pacienteRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Paciente não encontrado com ID: " + id));
+                .orElseThrow(() -> new NoSuchElementException("Paciente não encontrado com ID: " + id));
 
         // Usa o mapper para atualizar os campos da entidade com base no DTO
         pacienteMapper.updateFromDto(requestDTO, pacienteExistente);
@@ -55,7 +56,7 @@ public class AlteraPacienteService {
         } else {
             // Se for um novo ID, busca o novo quarto e associa ao paciente
             Quarto novoQuarto = quartoRepository.findById(novoQuartoId)
-                    .orElseThrow(() -> new RuntimeException("Quarto não encontrado com ID: " + novoQuartoId));
+                    .orElseThrow(() -> new NoSuchElementException("Quarto não encontrado com ID: " + novoQuartoId)); // Alterado para NoSuchElementException
             paciente.setQuarto(novoQuarto);
         }
     }

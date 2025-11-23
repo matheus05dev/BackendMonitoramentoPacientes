@@ -1,9 +1,11 @@
 package com.springwalker.back.monitoramento.controller;
 
+import com.springwalker.back.core.log.service.LogService; // Importar LogService
 import com.springwalker.back.monitoramento.dto.leitura.LeituraSensorRequestDTO;
 import com.springwalker.back.monitoramento.dto.leitura.LeituraSensorResponseDTO;
 import com.springwalker.back.monitoramento.service.leitura.BuscaLeituraService;
 import com.springwalker.back.monitoramento.service.leitura.processamento.ProcessaDadosService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,9 +31,18 @@ class LeituraSensorRestControllerTest {
     private ProcessaDadosService processaDadosService;
     @Mock
     private BuscaLeituraService buscaLeituraService;
+    @Mock
+    private LogService logService; // Alterado de LogRepository para LogService
 
     @InjectMocks
     private LeituraSensorRestController leituraSensorRestController;
+
+    @BeforeEach
+    void setUp() {
+        // Manually inject mocks into the controller
+        // Alterado para injetar logService
+        leituraSensorRestController = new LeituraSensorRestController(processaDadosService, buscaLeituraService, logService);
+    }
 
     @Test
     @DisplayName("Deve salvar uma nova leitura de sensor com sucesso")
@@ -47,8 +58,11 @@ class LeituraSensorRestControllerTest {
 
         assertNotNull(responseEntity);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertNotNull(responseEntity.getBody()); // Add assertion for non-null body
         assertEquals(expectedResponseDTO, responseEntity.getBody());
         verify(processaDadosService, times(1)).salvar(atendimentoId, requestDTO);
+        // Alterado para verificar logService.logEvent
+        verify(logService, times(1)).logEvent(anyString(), anyString());
     }
 
     @Test
@@ -67,9 +81,12 @@ class LeituraSensorRestControllerTest {
 
         assertNotNull(responseEntity);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertNotNull(responseEntity.getBody()); // Add assertion for non-null body
         assertEquals(expectedLeituras.size(), responseEntity.getBody().size());
         assertEquals(expectedLeituras, responseEntity.getBody());
         verify(buscaLeituraService, times(1)).buscarPorAtendimento(atendimentoId);
+        // Alterado para verificar logService.logEvent
+        verify(logService, times(1)).logEvent(anyString(), anyString());
     }
 
     @Test
@@ -82,8 +99,11 @@ class LeituraSensorRestControllerTest {
 
         assertNotNull(responseEntity);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertNotNull(responseEntity.getBody()); // Add assertion for non-null body
         assertEquals(0, responseEntity.getBody().size());
         verify(buscaLeituraService, times(1)).buscarPorAtendimento(atendimentoId);
+        // Alterado para verificar logService.logEvent
+        verify(logService, times(1)).logEvent(anyString(), anyString());
     }
 
     @Test
@@ -101,9 +121,12 @@ class LeituraSensorRestControllerTest {
 
         assertNotNull(responseEntity);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertNotNull(responseEntity.getBody()); // Add assertion for non-null body
         assertEquals(expectedLeituras.size(), responseEntity.getBody().size());
         assertEquals(expectedLeituras, responseEntity.getBody());
         verify(buscaLeituraService, times(1)).buscarTodas();
+        // Alterado para verificar logService.logEvent
+        verify(logService, times(1)).logEvent(anyString(), anyString());
     }
 
     @Test
@@ -115,7 +138,10 @@ class LeituraSensorRestControllerTest {
 
         assertNotNull(responseEntity);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertNotNull(responseEntity.getBody()); // Add assertion for non-null body
         assertEquals(0, responseEntity.getBody().size());
         verify(buscaLeituraService, times(1)).buscarTodas();
+        // Alterado para verificar logService.logEvent
+        verify(logService, times(1)).logEvent(anyString(), anyString());
     }
 }

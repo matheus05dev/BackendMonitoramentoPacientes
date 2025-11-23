@@ -11,6 +11,7 @@ import com.springwalker.back.atendimento.service.BuscaAtendimentoService;
 import com.springwalker.back.atendimento.service.CriaAtendimentoService;
 import com.springwalker.back.atendimento.service.DeletaAtendimentoService;
 import com.springwalker.back.core.auth.services.TokenService;
+import com.springwalker.back.core.log.service.LogService; // Added import
 import com.springwalker.back.funcionario.repository.FuncionarioSaudeRepository;
 import com.springwalker.back.paciente.repository.PacienteRepository;
 import com.springwalker.back.user.repository.UserRepository;
@@ -32,6 +33,7 @@ import java.util.Optional;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify; // Added import for verify
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -58,6 +60,8 @@ class AtendimentoRestControllerTest {
     private UserRepository userRepository;
     @MockitoBean
     private TokenService tokenService;
+    @MockitoBean
+    private LogService logService; // Added MockitoBean for LogService
 
 
 
@@ -117,6 +121,8 @@ class AtendimentoRestControllerTest {
                 .andExpect(jsonPath("$.id").value(atendimentoResponseDTO.getId()))
                 .andExpect(jsonPath("$.pacienteId").value(atendimentoResponseDTO.getPacienteId()))
                 .andExpect(jsonPath("$.nomePaciente").value(atendimentoResponseDTO.getNomePaciente()));
+
+        verify(logService).logEvent(eq("CRIACAO_ATENDIMENTO"), eq("Criação de novo atendimento: " + atendimentoResponseDTO.getId()));
     }
 
     @Test
@@ -130,6 +136,8 @@ class AtendimentoRestControllerTest {
                 .andExpect(jsonPath("$.id").value(atendimentoResponseDTO.getId()))
                 .andExpect(jsonPath("$.pacienteId").value(atendimentoResponseDTO.getPacienteId()))
                 .andExpect(jsonPath("$.nomePaciente").value(atendimentoResponseDTO.getNomePaciente()));
+
+        verify(logService).logEvent(eq("BUSCA_ATENDIMENTO"), eq("Busca de atendimento por ID: 1"));
     }
 
     @Test
@@ -140,6 +148,8 @@ class AtendimentoRestControllerTest {
         mockMvc.perform(get("/api/atendimento/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
+
+        verify(logService).logEvent(eq("BUSCA_ATENDIMENTO"), eq("Busca de atendimento por ID: 1"));
     }
 
     @Test
@@ -154,6 +164,8 @@ class AtendimentoRestControllerTest {
                 .andExpect(jsonPath("$[0].id").value(atendimentoResponseDTO.getId()))
                 .andExpect(jsonPath("$[0].pacienteId").value(atendimentoResponseDTO.getPacienteId()))
                 .andExpect(jsonPath("$[0].nomePaciente").value(atendimentoResponseDTO.getNomePaciente()));
+
+        verify(logService).logEvent(eq("LISTAGEM_ATENDIMENTOS"), eq("Listagem de todos os atendimentos"));
     }
 
     @Test
@@ -169,6 +181,8 @@ class AtendimentoRestControllerTest {
                 .andExpect(jsonPath("$.id").value(atendimentoResponseDTO.getId()))
                 .andExpect(jsonPath("$.pacienteId").value(atendimentoResponseDTO.getPacienteId()))
                 .andExpect(jsonPath("$.nomePaciente").value(atendimentoResponseDTO.getNomePaciente()));
+
+        verify(logService).logEvent(eq("ALTERACAO_ATENDIMENTO"), eq("Alteração de atendimento: 1"));
     }
 
     @Test
@@ -181,6 +195,8 @@ class AtendimentoRestControllerTest {
                 .with(csrf())) // Adicionado para CSRF
                 .andExpect(status().isOk()) // O controller retorna 200 OK com o DTO deletado
                 .andExpect(jsonPath("$.id").value(atendimentoResponseDTO.getId()));
+
+        verify(logService).logEvent(eq("EXCLUSAO_ATENDIMENTO"), eq("Exclusão de atendimento: 1"));
     }
 
     @Test
@@ -192,5 +208,7 @@ class AtendimentoRestControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(csrf())) // Adicionado para CSRF
                 .andExpect(status().isNotFound());
+
+        verify(logService).logEvent(eq("EXCLUSAO_ATENDIMENTO"), eq("Exclusão de atendimento: 1"));
     }
 }

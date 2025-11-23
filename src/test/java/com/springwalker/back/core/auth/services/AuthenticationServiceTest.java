@@ -1,5 +1,6 @@
 package com.springwalker.back.core.auth.services;
 
+import com.springwalker.back.core.log.service.LogService;
 import com.springwalker.back.user.model.User;
 import com.springwalker.back.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,6 +21,9 @@ class AuthenticationServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private LogService logService;
 
     @InjectMocks
     private AuthenticationService authenticationService;

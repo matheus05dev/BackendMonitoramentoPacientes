@@ -1,5 +1,6 @@
 package com.springwalker.back.monitoramento.controller;
 
+import com.springwalker.back.core.log.service.LogService; // Importar LogService
 import com.springwalker.back.monitoramento.dto.leitura.LeituraSensorRequestDTO;
 import com.springwalker.back.monitoramento.dto.leitura.LeituraSensorResponseDTO;
 import com.springwalker.back.monitoramento.service.leitura.BuscaLeituraService;
@@ -23,6 +24,7 @@ public class LeituraSensorRestController {
 
     private final ProcessaDadosService processaDadosService;
     private final BuscaLeituraService buscaLeituraService;
+    private final LogService logService; // Injetar LogService
 
     @PostMapping("/atendimento/{atendimentoId}")
     @Operation(summary = "Salva uma nova leitura de sensor", description = "Recebe os dados de um sensor e os associa a um atendimento existente.")
@@ -34,6 +36,7 @@ public class LeituraSensorRestController {
     public ResponseEntity<LeituraSensorResponseDTO> salvarLeitura(
             @PathVariable Long atendimentoId,
             @RequestBody LeituraSensorRequestDTO requestDTO) {
+        logService.logEvent("SALVAR_LEITURA_SENSOR", "Salvando leitura de sensor para atendimento: " + atendimentoId);
         LeituraSensorResponseDTO responseDTO = processaDadosService.salvar(atendimentoId, requestDTO);
         return ResponseEntity.ok(responseDTO);
     }
@@ -45,6 +48,7 @@ public class LeituraSensorRestController {
             @ApiResponse(responseCode = "200", description = "Lista de leituras retornada com sucesso")
     })
     public ResponseEntity<List<LeituraSensorResponseDTO>> buscarLeiturasPorAtendimento(@PathVariable Long atendimentoId) {
+        logService.logEvent("BUSCAR_LEITURAS_ATENDIMENTO", "Buscando leituras para atendimento: " + atendimentoId);
         List<LeituraSensorResponseDTO> leituras = buscaLeituraService.buscarPorAtendimento(atendimentoId);
         return ResponseEntity.ok(leituras);
     }
@@ -56,6 +60,7 @@ public class LeituraSensorRestController {
             @ApiResponse(responseCode = "200", description = "Lista de todas as leituras retornada com sucesso")
     })
     public ResponseEntity<List<LeituraSensorResponseDTO>> buscarTodasLeituras() {
+        logService.logEvent("BUSCAR_TODAS_LEITURAS", "Buscando todas as leituras de sensores");
         List<LeituraSensorResponseDTO> leituras = buscaLeituraService.buscarTodas();
         return ResponseEntity.ok(leituras);
     }

@@ -6,6 +6,7 @@ import com.springwalker.back.atendimento.service.AlteraAtendimentoService;
 import com.springwalker.back.atendimento.service.BuscaAtendimentoService;
 import com.springwalker.back.atendimento.service.CriaAtendimentoService;
 import com.springwalker.back.atendimento.service.DeletaAtendimentoService;
+import com.springwalker.back.core.log.service.LogService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -29,6 +30,7 @@ public class AtendimentoRestController {
     private final CriaAtendimentoService criaAtendimento;
     private final BuscaAtendimentoService buscaAtendimento;
     private final DeletaAtendimentoService deletaAtendimento;
+    private final LogService logService;
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO')")
@@ -39,6 +41,7 @@ public class AtendimentoRestController {
     })
     public ResponseEntity<AtendimentoResponseDTO> criaAtendimento(@Valid @RequestBody AtendimentoRequestDTO dto) {
         AtendimentoResponseDTO responseDTO = criaAtendimento.criarAtendimento(dto);
+        logService.logEvent("CRIACAO_ATENDIMENTO", "Criação de novo atendimento: " + responseDTO.getId());
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
 
@@ -50,6 +53,7 @@ public class AtendimentoRestController {
             @ApiResponse(responseCode = "404", description = "Atendimento não encontrado")
     })
     public ResponseEntity<AtendimentoResponseDTO> buscarAtendimentoPorId(@PathVariable Long id) {
+        logService.logEvent("BUSCA_ATENDIMENTO", "Busca de atendimento por ID: " + id);
         return ResponseEntity.ok(buscaAtendimento.buscarAtendimentoPorId(id).orElseThrow(() -> new NoSuchElementException("Atendimento não encontrado com o ID: " + id)));
     }
 
@@ -58,6 +62,7 @@ public class AtendimentoRestController {
     @Operation(summary = "Listar todos os atendimentos", description = "Retorna uma lista de todos os atendimentos registrados")
     @ApiResponse(responseCode = "200", description = "Lista de atendimentos retornada com sucesso")
     public ResponseEntity<List<AtendimentoResponseDTO>> buscarTodosAtendimentos() {
+        logService.logEvent("LISTAGEM_ATENDIMENTOS", "Listagem de todos os atendimentos");
         List<AtendimentoResponseDTO> dtos = buscaAtendimento.buscarTodosAtendimentos();
         return ResponseEntity.ok(dtos);
     }
@@ -72,6 +77,7 @@ public class AtendimentoRestController {
     })
     public ResponseEntity<AtendimentoResponseDTO> alterarAtendimento(@PathVariable Long id,
             @Valid @RequestBody AtendimentoRequestDTO dto) {
+        logService.logEvent("ALTERACAO_ATENDIMENTO", "Alteração de atendimento: " + id);
         AtendimentoResponseDTO responseDTO = alteraAtendimento.alterarAtendimento(id, dto);
         return ResponseEntity.ok(responseDTO);
     }
@@ -84,6 +90,7 @@ public class AtendimentoRestController {
             @ApiResponse(responseCode = "404", description = "Atendimento não encontrado")
     })
     public ResponseEntity<AtendimentoResponseDTO> deletarAtendimento(@PathVariable Long id) {
+        logService.logEvent("EXCLUSAO_ATENDIMENTO", "Exclusão de atendimento: " + id);
         AtendimentoResponseDTO dto = deletaAtendimento.deletarAtendimento(id);
         return ResponseEntity.ok(dto);
     }

@@ -1,5 +1,6 @@
 package com.springwalker.back.monitoramento.controller;
 
+import com.springwalker.back.core.log.service.LogService;
 import com.springwalker.back.monitoramento.enums.notificacao.StatusNotificacao;
 import com.springwalker.back.monitoramento.dto.notificacao.NotificacaoResponseDTO;
 import com.springwalker.back.monitoramento.mapper.NotificacaoMapper;
@@ -15,8 +16,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
+
 import java.util.stream.Collectors;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/notificacoes")
@@ -27,6 +29,7 @@ public class NotificacaoRestController {
     private final GerenciadorNotificacaoService gerenciadorNotificacaoService;
     private final BuscarNotificacaoService buscarNotificacaoService;
     private final NotificacaoMapper notificacaoMapper;
+    private final LogService logService;
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'ENFERMEIRO', 'AUXILIAR_ENFERMAGEM', 'TECNICO_ENFERMAGEM', 'ESTAGIARIO')")
@@ -34,6 +37,7 @@ public class NotificacaoRestController {
     public ResponseEntity<List<NotificacaoResponseDTO>> getNotificacoes(
             @Parameter(description = "Filtra as notificações por status") @RequestParam(required = false) StatusNotificacao status) {
 
+        logService.logEvent("BUSCA_NOTIFICACAO", "Busca de notificações com status: " + (status != null ? status.name() : "todos"));
         List<Notificacao> notificacoes;
         if (status != null) {
             notificacoes = buscarNotificacaoService.buscarNotificacoesPorStatus(status);
@@ -51,8 +55,12 @@ public class NotificacaoRestController {
     @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'ENFERMEIRO', 'AUXILIAR_ENFERMAGEM', 'TECNICO_ENFERMAGEM')")
     @Operation(summary = "Fecha uma notificação de alerta", description = "Altera o status de uma notificação para 'FECHADA', indicando que o alerta foi atendido.")
     public ResponseEntity<NotificacaoResponseDTO> fecharNotificacao(@PathVariable Long id) {
-        return ResponseEntity.ok(gerenciadorNotificacaoService.fecharNotificacao(id)
-                .map(notificacaoMapper::toResponse)
-                .orElseThrow(() -> new NoSuchElementException("Notificação não encontrada com o ID: " + id)));
+        logService.logEvent("FECHAMENTO_NOTIFICACAO", "Fechamento de notificação com ID: " + id);
+        Optional<Notificacao> notificacaoOptional = gerenciadorNotificacaoService.fecharNotificacao(id);
+        if (notificacaoOptional.isPresent()) {
+            return ResponseEntity.ok(notificacaoMapper.toResponse(notificacaoOptional.get()));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

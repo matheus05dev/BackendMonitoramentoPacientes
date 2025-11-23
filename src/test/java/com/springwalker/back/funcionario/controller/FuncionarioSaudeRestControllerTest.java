@@ -3,6 +3,7 @@ package com.springwalker.back.funcionario.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springwalker.back.core.auth.services.TokenService;
 import com.springwalker.back.core.config.security.SecurityConfig;
+import com.springwalker.back.core.log.service.LogService;
 import com.springwalker.back.funcionario.dto.FuncionarioSaudeRequestDTO;
 import com.springwalker.back.funcionario.dto.FuncionarioSaudeResponseDTO;
 import com.springwalker.back.funcionario.enums.Cargo;
@@ -25,6 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -40,7 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(FuncionarioSaudeRestController.class)
 @Import(SecurityConfig.class)
-@WithMockUser(roles = "ADMIN") // Default user for tests, can be overridden
+@WithMockUser(roles = "ADMIN")
 class FuncionarioSaudeRestControllerTest {
 
     @Autowired
@@ -65,6 +67,9 @@ class FuncionarioSaudeRestControllerTest {
     @MockitoBean
     private UserRepository userRepository;
 
+    @MockitoBean
+    private LogService logService;
+
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -72,7 +77,7 @@ class FuncionarioSaudeRestControllerTest {
         FuncionarioSaudeRequestDTO dto = new FuncionarioSaudeRequestDTO();
         dto.setNome("Funcionario Teste");
         dto.setEmail("teste@example.com");
-        dto.setCpf("123.456.789-00");
+        dto.setCpf("62231975009"); // CPF válido
         dto.setDataNascimento(LocalDate.of(1990, 1, 1));
         dto.setSexo(Sexo.Masculino);
         dto.setCargo(Cargo.MEDICO);
@@ -87,7 +92,7 @@ class FuncionarioSaudeRestControllerTest {
         dto.setId(id);
         dto.setNome("Funcionario Teste");
         dto.setEmail("teste@example.com");
-        dto.setCpf("123.456.789-00");
+        dto.setCpf("93702956077"); // CPF válido
         dto.setDataNascimento(LocalDate.of(1990, 1, 1));
         dto.setSexo(Sexo.Masculino);
         dto.setCargo(Cargo.MEDICO);
@@ -123,7 +128,7 @@ class FuncionarioSaudeRestControllerTest {
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDTO)))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated()) // Changed to isCreated (HTTP 201)
                 .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.nome").value("Funcionario Teste"));
     }
@@ -141,7 +146,7 @@ class FuncionarioSaudeRestControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDTO)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("CPF já cadastrado."));
+                .andExpect(jsonPath("$.message").value("CPF já cadastrado.")); // Corrigido o jsonPath
     }
 
     @Test
@@ -168,7 +173,7 @@ class FuncionarioSaudeRestControllerTest {
         FuncionarioSaudeRequestDTO requestDTO = createRequestDTO();
 
         when(alteraFuncionarioSaudeService.execute(anyLong(), any(FuncionarioSaudeRequestDTO.class)))
-                .thenThrow(new RuntimeException("Funcionário não encontrado"));
+                .thenThrow(new NoSuchElementException("Funcionário não encontrado")); // Changed to NoSuchElementException
 
         mockMvc.perform(put("/api/funcionario/999")
                         .with(csrf())
@@ -184,13 +189,13 @@ class FuncionarioSaudeRestControllerTest {
 
         mockMvc.perform(delete("/api/funcionario/1")
                         .with(csrf()))
-                .andExpect(status().isOk()); // Changed to isOk as the controller returns void, which defaults to 200
+                .andExpect(status().isNoContent()); // Alterado para isNoContent (HTTP 204)
     }
 
     @Test
     @DisplayName("Deve retornar not found ao tentar excluir funcionário inexistente")
     void excluir_notFound() throws Exception {
-        doThrow(new RuntimeException("Funcionário não encontrado"))
+        doThrow(new NoSuchElementException("Funcionário não encontrado")) // Changed to NoSuchElementException
                 .when(deletaFuncionarioSaudeService).execute(anyLong());
 
         mockMvc.perform(delete("/api/funcionario/999")
@@ -245,12 +250,14 @@ class FuncionarioSaudeRestControllerTest {
     @DisplayName("Deve buscar funcionário por CPF com sucesso")
     void buscarPorCpf_success() throws Exception {
         FuncionarioSaudeResponseDTO responseDTO = createResponseDTO(1L);
-        when(buscarFuncionarioSaudeService.buscarPorCpf("123.456.789-00")).thenReturn(Optional.of(responseDTO));
+        // Ensure the CPF in the responseDTO matches the one being searched for
+        responseDTO.setCpf("111.444.777-05");
+        when(buscarFuncionarioSaudeService.buscarPorCpf("111.444.777-05")).thenReturn(Optional.of(responseDTO));
 
-        mockMvc.perform(get("/api/funcionario/buscar-por-cpf/123.456.789-00"))
+        mockMvc.perform(get("/api/funcionario/buscar-por-cpf/111.444.777-05"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1L))
-                .andExpect(jsonPath("$.cpf").value("123.456.789-00"));
+                .andExpect(jsonPath("$.cpf").value("111.444.777-05"));
     }
 
     @Test

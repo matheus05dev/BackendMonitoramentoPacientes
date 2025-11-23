@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springwalker.back.core.auth.services.TokenService; // Import TokenService
 import com.springwalker.back.core.config.security.SecurityConfig;
 import com.springwalker.back.core.config.security.SecurityFilter;
+import com.springwalker.back.core.log.service.LogService;
 import com.springwalker.back.quarto.dto.QuartoRequestDTO;
 import com.springwalker.back.quarto.dto.QuartoResponseDTO;
 import com.springwalker.back.quarto.enums.LocalizacaoQuarto;
@@ -75,6 +76,9 @@ class QuartoRestControllerTest {
 
     @MockitoBean
     private SecurityFilter securityFilter;
+
+    @MockitoBean
+    private LogService logService;
 
     @Autowired
     private ObjectMapper objectMapper;

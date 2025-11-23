@@ -1,5 +1,7 @@
 package com.springwalker.back.monitoramento.controller;
 
+
+import com.springwalker.back.core.log.service.LogService;
 import com.springwalker.back.monitoramento.dto.notificacao.NotificacaoResponseDTO;
 import com.springwalker.back.monitoramento.enums.notificacao.StatusNotificacao;
 import com.springwalker.back.monitoramento.mapper.NotificacaoMapper;
@@ -34,6 +36,8 @@ class NotificacaoRestControllerTest {
     private BuscarNotificacaoService buscarNotificacaoService;
     @Mock
     private NotificacaoMapper notificacaoMapper;
+    @Mock
+    private LogService logService; // Changed from LogRepository
 
     @InjectMocks
     private NotificacaoRestController notificacaoRestController;
@@ -41,6 +45,8 @@ class NotificacaoRestControllerTest {
     @Test
     @DisplayName("Deve retornar todas as notificações quando nenhum status for fornecido")
     void getNotificacoes_shouldReturnAllNotificacoes_whenNoStatusProvided() {
+        doNothing().when(logService).logEvent(anyString(), anyString());
+
         Notificacao notificacao1 = new Notificacao();
         notificacao1.setId(1L);
         Notificacao notificacao2 = new Notificacao();
@@ -60,6 +66,7 @@ class NotificacaoRestControllerTest {
         ResponseEntity<List<NotificacaoResponseDTO>> responseEntity = notificacaoRestController.getNotificacoes(null);
 
         assertNotNull(responseEntity);
+        assertNotNull(responseEntity.getBody()); // Added null check
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(expectedResponses.size(), responseEntity.getBody().size());
         assertEquals(expectedResponses, responseEntity.getBody());
@@ -67,11 +74,14 @@ class NotificacaoRestControllerTest {
         verify(buscarNotificacaoService, never()).buscarNotificacoesPorStatus(any());
         verify(notificacaoMapper, times(1)).toResponse(notificacao1);
         verify(notificacaoMapper, times(1)).toResponse(notificacao2);
+        verify(logService, times(1)).logEvent(anyString(), anyString()); // Changed from logRepository.save(any(Log.class))
     }
 
     @Test
     @DisplayName("Deve retornar notificações filtradas por status")
     void getNotificacoes_shouldReturnFilteredNotificacoes_whenStatusProvided() {
+        doNothing().when(logService).logEvent(anyString(), anyString());
+
         StatusNotificacao status = StatusNotificacao.ABERTA;
         Notificacao notificacao1 = new Notificacao();
         notificacao1.setId(1L);
@@ -89,31 +99,39 @@ class NotificacaoRestControllerTest {
         ResponseEntity<List<NotificacaoResponseDTO>> responseEntity = notificacaoRestController.getNotificacoes(status);
 
         assertNotNull(responseEntity);
+        assertNotNull(responseEntity.getBody()); // Added null check
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(expectedResponses.size(), responseEntity.getBody().size());
         assertEquals(expectedResponses, responseEntity.getBody());
         verify(buscarNotificacaoService, times(1)).buscarNotificacoesPorStatus(status);
         verify(buscarNotificacaoService, never()).buscarTodasNotificacoes();
         verify(notificacaoMapper, times(1)).toResponse(notificacao1);
+        verify(logService, times(1)).logEvent(anyString(), anyString()); // Changed from logRepository.save(any(Log.class))
     }
 
     @Test
     @DisplayName("Deve retornar lista vazia quando não houver notificações")
     void getNotificacoes_shouldReturnEmptyList_whenNoNotificacoesFound() {
+        doNothing().when(logService).logEvent(anyString(), anyString());
+
         when(buscarNotificacaoService.buscarTodasNotificacoes()).thenReturn(Collections.emptyList());
 
         ResponseEntity<List<NotificacaoResponseDTO>> responseEntity = notificacaoRestController.getNotificacoes(null);
 
         assertNotNull(responseEntity);
+        assertNotNull(responseEntity.getBody()); // Added null check
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         assertEquals(0, responseEntity.getBody().size());
         verify(buscarNotificacaoService, times(1)).buscarTodasNotificacoes();
         verify(notificacaoMapper, never()).toResponse(any());
+        verify(logService, times(1)).logEvent(anyString(), anyString()); // Changed from logRepository.save(any(Log.class))
     }
 
     @Test
     @DisplayName("Deve fechar uma notificação com sucesso")
     void fecharNotificacao_shouldCloseNotificacaoSuccessfully() {
+        doNothing().when(logService).logEvent(anyString(), anyString());
+
         Long notificacaoId = 1L;
         Notificacao notificacaoFechada = new Notificacao();
         notificacaoFechada.setId(notificacaoId);
@@ -133,11 +151,14 @@ class NotificacaoRestControllerTest {
         assertEquals(expectedResponse, responseEntity.getBody());
         verify(gerenciadorNotificacaoService, times(1)).fecharNotificacao(notificacaoId);
         verify(notificacaoMapper, times(1)).toResponse(notificacaoFechada);
+        verify(logService, times(1)).logEvent(anyString(), anyString()); // Changed from logRepository.save(any(Log.class))
     }
 
     @Test
     @DisplayName("Deve retornar 404 quando a notificação a ser fechada não for encontrada")
     void fecharNotificacao_shouldReturnNotFound_whenNotificacaoNotFound() {
+        doNothing().when(logService).logEvent(anyString(), anyString());
+
         Long notificacaoId = 1L;
 
         when(gerenciadorNotificacaoService.fecharNotificacao(notificacaoId)).thenReturn(Optional.empty());
@@ -148,5 +169,6 @@ class NotificacaoRestControllerTest {
         assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
         verify(gerenciadorNotificacaoService, times(1)).fecharNotificacao(notificacaoId);
         verify(notificacaoMapper, never()).toResponse(any());
+        verify(logService, times(1)).logEvent(anyString(), anyString()); // Changed from logRepository.save(any(Log.class))
     }
 }

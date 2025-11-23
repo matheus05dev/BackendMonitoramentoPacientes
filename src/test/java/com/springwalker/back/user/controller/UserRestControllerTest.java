@@ -3,6 +3,7 @@ package com.springwalker.back.user.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springwalker.back.core.auth.services.TokenService;
 import com.springwalker.back.core.config.security.SecurityConfig;
+import com.springwalker.back.core.log.service.LogService;
 import com.springwalker.back.user.dto.UserRequestDTO;
 import com.springwalker.back.user.dto.UserResponseDTO;
 import com.springwalker.back.user.repository.UserRepository;
@@ -33,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UserRestController.class)
-@Import(SecurityConfig.class) // Importa a configuração de segurança
+@Import(SecurityConfig.class)
 @WithMockUser(roles = "ADMIN")
 class UserRestControllerTest {
 
@@ -59,6 +60,9 @@ class UserRestControllerTest {
     @MockitoBean
     private UserRepository userRepository;
 
+    @MockitoBean
+    private LogService logService;
+
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -74,7 +78,7 @@ class UserRestControllerTest {
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(requestDTO)))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated()) // Changed to isCreated()
                 .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.username").value("test.user"));
     }

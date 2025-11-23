@@ -1,5 +1,6 @@
 package com.springwalker.back.funcionario.controller;
 
+import com.springwalker.back.core.log.service.LogService; // Importar LogService
 import com.springwalker.back.funcionario.dto.FuncionarioSaudeRequestDTO;
 import com.springwalker.back.funcionario.dto.FuncionarioSaudeResponseDTO;
 import com.springwalker.back.funcionario.service.AlteraFuncionarioSaudeService;
@@ -30,12 +31,14 @@ public class FuncionarioSaudeRestController {
     private final AlteraFuncionarioSaudeService alteraFuncionarioSaudeService;
     private final CriaFuncionarioSaudeService criaFuncionarioSaudeService;
     private final DeletaFuncionarioSaudeService deletaFuncionarioSaudeService;
+    private final LogService logService; // Injetar LogService
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN', 'MEDICO', 'ENFERMEIRO', 'AUXILIAR_ENFERMAGEM', 'TECNICO_ENFERMAGEM', 'ESTAGIARIO')")
     @Operation(summary = "Listar todos os funcionários", description = "Retorna uma lista de todos os funcionários de saúde cadastrados")
     @ApiResponse(responseCode = "200", description = "Lista de funcionários retornada com sucesso")
     public List<FuncionarioSaudeResponseDTO> listar() {
+        logService.logEvent("LISTAGEM_FUNCIONARIOS", "Listagem de todos os funcionários");
         return buscarFuncionarioSaudeService.listarTodos();
     }
 
@@ -48,6 +51,7 @@ public class FuncionarioSaudeRestController {
     })
     public ResponseEntity<FuncionarioSaudeResponseDTO> inserir(@Valid @RequestBody FuncionarioSaudeRequestDTO funcionarioSaude) {
         FuncionarioSaudeResponseDTO novoFuncionario = criaFuncionarioSaudeService.execute(funcionarioSaude);
+        logService.logEvent("CRIACAO_FUNCIONARIO", "Criação de novo funcionário: " + novoFuncionario.getId());
         return new ResponseEntity<>(novoFuncionario, HttpStatus.CREATED);
     }
 
@@ -60,6 +64,7 @@ public class FuncionarioSaudeRestController {
     })
     public ResponseEntity<FuncionarioSaudeResponseDTO> alterar(@PathVariable Long id,
             @Valid @RequestBody FuncionarioSaudeRequestDTO funcionarioSaude) {
+        logService.logEvent("ALTERACAO_FUNCIONARIO", "Alteração de funcionário: " + id);
         FuncionarioSaudeResponseDTO funcionarioAtualizado = alteraFuncionarioSaudeService.execute(id, funcionarioSaude);
         return ResponseEntity.ok(funcionarioAtualizado);
     }
@@ -72,6 +77,7 @@ public class FuncionarioSaudeRestController {
             @ApiResponse(responseCode = "404", description = "Funcionário não encontrado")
     })
     public ResponseEntity<Void> excluir(@PathVariable Long id) {
+        logService.logEvent("EXCLUSAO_FUNCIONARIO", "Exclusão de funcionário: " + id);
         deletaFuncionarioSaudeService.execute(id);
         return ResponseEntity.noContent().build();
     }
@@ -84,6 +90,7 @@ public class FuncionarioSaudeRestController {
             @ApiResponse(responseCode = "404", description = "Funcionário não encontrado")
     })
     public ResponseEntity<FuncionarioSaudeResponseDTO> buscarPorId(@PathVariable Long id) {
+        logService.logEvent("BUSCA_FUNCIONARIO", "Busca de funcionário por ID: " + id);
         return ResponseEntity.ok(buscarFuncionarioSaudeService.buscarPorId(id)
                 .orElseThrow(() -> new NoSuchElementException("Funcionário não encontrado com o ID: " + id)));
     }
@@ -93,6 +100,7 @@ public class FuncionarioSaudeRestController {
     @Operation(summary = "Buscar funcionários por nome", description = "Retorna uma lista de funcionários que correspondem ao nome informado")
     @ApiResponse(responseCode = "200", description = "Lista de funcionários retornada com sucesso")
     public List<FuncionarioSaudeResponseDTO> buscarPorNome(@PathVariable String nome) {
+        logService.logEvent("BUSCA_FUNCIONARIO_NOME", "Busca de funcionário por nome: " + nome);
         return buscarFuncionarioSaudeService.buscarPorNome(nome);
     }
 
@@ -104,6 +112,7 @@ public class FuncionarioSaudeRestController {
             @ApiResponse(responseCode = "404", description = "Funcionário não encontrado")
     })
     public ResponseEntity<FuncionarioSaudeResponseDTO> buscarPorCpf(@PathVariable String cpf) {
+        logService.logEvent("BUSCA_FUNCIONARIO_CPF", "Busca de funcionário por CPF: " + cpf);
         return ResponseEntity.ok(buscarFuncionarioSaudeService.buscarPorCpf(cpf)
                 .orElseThrow(() -> new NoSuchElementException("Funcionário não encontrado com o CPF: " + cpf)));
     }
