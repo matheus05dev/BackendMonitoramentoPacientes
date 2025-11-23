@@ -20,10 +20,13 @@
 - [✨ Principais Funcionalidades](#-principais-funcionalidades)
 - [🛠️ Tecnologias e Justificativas](#-tecnologias-e-justificativas)
 - [🏗️ Arquitetura do Sistema](#-arquitetura-do-sistema)
+- [🛡️ Qualidade de Código e Segurança](#-qualidade-de-código-e-segurança)
 - [🚀 Como Executar](#-como-executar)
 - [📄 Endpoints da API](#-endpoints-da-api)
+- [🗄️ Estrutura de Banco de Dados e Logs](#-estrutura-de-banco-de-dados-e-logs)
 - [💡 Contexto do Projeto](#-contexto-do-projeto)
 - [✍️ Autor](#-autor)
+
 
 ---
 
@@ -95,6 +98,7 @@ graph TD
         Usuario
         Role
         JWT
+        Log
     end
 
     %% Relacionamentos
@@ -113,6 +117,7 @@ graph TD
     FuncionarioSaude --"é um"--> Usuario
     Usuario --"possui 1..*"--> Role
     Usuario --"autentica e gera"--> JWT
+    Usuario --"registra 0..*"--> Log
 
     %% Estilização
     classDef base fill:#e0e0e0,stroke:#333,stroke-width:2px;
@@ -123,8 +128,14 @@ graph TD
     class Pessoa,Telefone base;
     class Paciente,FuncionarioSaude,Quarto,Atendimento domain;
     class LeituraSensor,Notificacao iot;
-    class Usuario,Role,JWT security;
+    class Usuario,Role,JWT,Log security;
 ```
+
+---
+
+## 🛡️ Qualidade de Código e Segurança
+
+O projeto InfraMed preza pela alta qualidade de código e segurança. Para garantir isso, são utilizadas ferramentas de análise estática de código (como Qodana) e práticas de gestão de dependências para identificar e mitigar potenciais vulnerabilidades e manter um código limpo e robusto.
 
 ---
 
@@ -142,18 +153,40 @@ graph TD
 3.  **Configure o banco de dados:**
     *   No seu MySQL, crie um schema (ex: `inframed_db`).
     *   Edite o arquivo `src/main/resources/application.properties` com suas credenciais do banco.
-4.  **Compile e execute:**
+4.  **Variáveis de Ambiente (application.properties):**
+    As seguintes propriedades no arquivo `src/main/resources/application.properties` são importantes para a configuração da aplicação:
+
+    | Propriedade | Descrição | Exemplo |
+    |---|---|---|
+    | `spring.datasource.url` | URL de conexão com o banco de dados MySQL. | `jdbc:mysql://localhost:3306/monitoramentoPacienteDB?createDatabaseIfNotExist=true` |
+    | `spring.datasource.username` | Nome de usuário do banco de dados. | `root` |
+    | `spring.datasource.password` | Senha do usuário do banco de dados. | `sua_senha` |
+    | `server.port` | Porta em que a aplicação Spring Boot será executada. | `8080` |
+    | `spring.jackson.locale` | Localidade para formatação de dados. | `pt_BR` |
+    | `spring.jackson.time-zone` | Fuso horário da aplicação. | `America/Sao_Paulo` |
+
+5.  **Compile e execute:**
     ```bash
     mvn clean install
     mvn spring-boot:run
     ```
-5.  **Acesse a aplicação:**
+6.  **Acesse a aplicação:**
     *   **Backend:** [http://localhost:8080](http://localhost:8080)
     *   **Documentação Swagger:** [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
-6.  **Simulador IoT (Opcional):**
+7.  **Simulador IoT (Opcional):**
     *   Para testar o envio de dados dos sensores, utilize o simulador em Python disponível [neste repositório](https://github.com/matheus05dev/SimuladorIoTMonitoramentoPacientes).
-7.  **Frontend Angular (Opcional):**
+8.  **Frontend Angular (Opcional):**
     *   Para interagir com a API, utilize o frontend em Angular disponível [neste repositório](https://github.com/matheus05dev/FrontendMonitoramentoPacientes).
+
+---
+
+## 🧪 Como Rodar os Testes
+
+Para executar os testes automatizados do projeto, utilize o Maven:
+
+```bash
+mvn test
+```
 
 ---
 
@@ -254,6 +287,24 @@ Base URL: `/api/notificacoes`
 | GET | `/` | Lista todas as notificações. | `ANY` |
 
 </details>
+
+---
+
+## 🗄️ Estrutura de Banco de Dados e Logs
+
+Para facilitar a compreensão da estrutura do banco de dados e o rastreamento de operações, disponibilizamos os seguintes recursos:
+
+*   **Queries SQL:** As queries SQL utilizadas para a criação e manipulação do banco de dados podem ser encontradas na pasta `database/`.
+*   **Explicação das Queries:** Para uma descrição detalhada de cada query e seu propósito, consulte o arquivo [database/query_explanations.md](database/query_explanations.md).
+*   **Tabela de Log:** Abaixo, a estrutura da tabela de log utilizada para registrar eventos importantes no sistema.
+
+| Coluna | Tipo | Descrição |
+|---|---|---|
+| `id` | `BIGINT` | Identificador único do registro de log. |
+| `timestamp` | `DATETIME` | Data e hora em que o evento ocorreu. |
+| `event_type` | `VARCHAR(255)` | Tipo do evento (ex: CREATE, UPDATE, DELETE, LOGIN). |
+| `user_id` | `BIGINT` | ID do usuário que realizou a ação (se aplicável). |
+| `description` | `TEXT` | Mensagem detalhada do evento. |
 
 ---
 

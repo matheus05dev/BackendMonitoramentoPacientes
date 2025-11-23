@@ -57,10 +57,7 @@ public class NotificacaoRestController {
     public ResponseEntity<NotificacaoResponseDTO> fecharNotificacao(@PathVariable Long id) {
         logService.logEvent("FECHAMENTO_NOTIFICACAO", "Fechamento de notificação com ID: " + id);
         Optional<Notificacao> notificacaoOptional = gerenciadorNotificacaoService.fecharNotificacao(id);
-        if (notificacaoOptional.isPresent()) {
-            return ResponseEntity.ok(notificacaoMapper.toResponse(notificacaoOptional.get()));
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return notificacaoOptional.map(notificacao -> ResponseEntity.ok(notificacaoMapper.toResponse(notificacao)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
