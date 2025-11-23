@@ -6,10 +6,10 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Status-Concluído-brightgreen" alt="Status do Projeto: Concluído">
-  <img src="https://img.shields.io/badge/Java-24-blue?logo=java&logoColor=white" alt="Java 24">
+  <img src="https://img.shields.io/badge/Java-24-orange?logo=java&logoColor=white" alt="Java 24">
   <img src="https://img.shields.io/badge/Spring_Boot-3.4.5-green?logo=spring&logoColor=white" alt="Spring Boot 3.4.5">
   <img src="https://img.shields.io/badge/Maven-4.0.0-red?logo=apache-maven&logoColor=white" alt="Maven">
-  <img src="https://img.shields.io/badge/MySQL-8.0-orange?logo=mysql&logoColor=white" alt="MySQL">
+  <img src="https://img.shields.io/badge/MySQL-8.0-blue?logo=mysql&logoColor=white" alt="MySQL">
 </p>
 
 ---
