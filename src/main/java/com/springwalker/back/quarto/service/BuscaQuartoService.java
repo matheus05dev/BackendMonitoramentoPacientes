@@ -2,7 +2,6 @@ package com.springwalker.back.quarto.service;
 
 import com.springwalker.back.quarto.dto.QuartoResponseDTO;
 import com.springwalker.back.quarto.mapper.QuartoMapper;
-import com.springwalker.back.quarto.model.Quarto;
 import com.springwalker.back.quarto.repository.QuartoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

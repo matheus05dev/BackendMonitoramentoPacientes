@@ -21,7 +21,7 @@ public class Paciente extends Pessoa {
     @ElementCollection
     @CollectionTable(name = "Alergias", joinColumns = @JoinColumn(name = "Paciente Id"))
     @Column(name = "Alergia")
-    private List<String> alergias = new ArrayList<>();;
+    private List<String> alergias = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "Quarto_Id")

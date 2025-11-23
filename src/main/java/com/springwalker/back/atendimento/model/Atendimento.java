@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 import lombok.Builder; // Adicionado
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -70,7 +71,8 @@ public class Atendimento {
     private String tratamento_complicacao;
 
     @ManyToOne
-    @JoinColumn(name = "Paciente Id", nullable = true)
+    //noinspection DefaultAnnotationParam
+    @JoinColumn(name = "Paciente Id")
     private Paciente paciente;
 
     @ManyToOne
@@ -78,25 +80,25 @@ public class Atendimento {
     private Quarto quarto;
 
     @ManyToOne
-    @JoinColumn(name = "Médico Responsável Id", nullable = true)
+    @JoinColumn(name = "Médico Responsável Id")
     private FuncionarioSaude medicoResponsavel;
 
     @ManyToOne
     @JoinColumn(name = "Medico Complicacao Id")
     private FuncionarioSaude medicoComplicacao;
 
-    @Column(name = "Nome Paciente", updatable = false)
+    @Column(name = "Nome Paciente")
     private String nomePaciente;
 
-    @Column(name = "Nome Médico Responsável", updatable = false)
+    @Column(name = "Nome Médico Responsavel")
     private String nomeMedicoResponsavel;
 
-    @Column(name = "Nome Médico Complicação", updatable = false)
+    @Column(name = "Nome Médico Complicação")
     private String nomeMedicoComplicacao;
 
     @Column(name = "Numero Quarto")
     private Integer numeroQuarto;
     
     @OneToMany(mappedBy = "atendimento", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<LeituraSensor> leituras;
+    private List<LeituraSensor> leituras = new ArrayList<>();
 }

@@ -1,5 +1,33 @@
 version: "1.0"
+# Use the official Qodana linter for JVM languages (Java, Kotlin, Scala, etc.)
+linter: jetbrains/qodana-jvm:latest
+
+# Define a profile for your inspections
 profile:
-  name: qodana.starter
-include:
-  - name: LombokGetterMayBeUsed
+  name: qodana.recommended # Use Qodana's recommended profile
+
+# Exclude files and directories from analysis
+exclude:
+  - name: "**/target/**" # Exclude Maven/Gradle build output directory
+  - name: "**/build/**" # Exclude Gradle build output directory
+  - name: "**/*.class" # Exclude compiled Java classes
+  - name: "**/test/**" # Exclude test source files
+  - name: "**/test-sources/**" # Exclude test source files
+  - name: "**/test-resources/**" # Exclude test resources
+  - name: "**/node_modules/**" # Exclude Node.js dependencies (if any, common in full-stack projects)
+  - name: ".git/**" # Exclude Git directory
+  - name: ".idea/**" # Exclude IntelliJ IDEA project files
+  - name: ".vscode/**" # Exclude VS Code project files
+  - name: ".env" # Exclude environment files
+  - name: "*.min.js" # Exclude minified JavaScript files
+  - name: "*.min.css" # Exclude minified CSS files
+
+# Optionally, you can specify specific inspections to enable or disable
+# inspections:
+#   - entrypoint: "UnusedDeclaration"
+#     enabled: false
+#   - entrypoint: "ConstantConditions"
+#     enabled: true
+
+# You can also specify a fail threshold for the Qodana scan
+# failThreshold: 0 # Fail if any issues are found (0 = no issues allowed)

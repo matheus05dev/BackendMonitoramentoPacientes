@@ -52,8 +52,6 @@ public class ProcessaDadosService {
             gerenciadorNotificacaoService.processarEEnviarNotificacao(savedLeitura);
         }
 
-        LeituraSensorResponseDTO responseDTO = leituraSensorMapper.toResponse(savedLeitura);
-
-        return responseDTO;
+        return leituraSensorMapper.toResponse(savedLeitura);
     }
 }

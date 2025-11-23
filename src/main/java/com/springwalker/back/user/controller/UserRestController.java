@@ -7,7 +7,6 @@ import com.springwalker.back.user.service.BuscarUserService;
 import com.springwalker.back.user.service.CriarUserService;
 import com.springwalker.back.user.service.DeletarUserService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
