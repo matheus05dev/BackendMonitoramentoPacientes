@@ -26,7 +26,9 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(csrf -> csrf.disable())
+                .csrf(csrf -> csrf.disable()) // O CSRF está desabilitado porque a aplicação é uma API REST stateless (sem estado)
+                                             // e utiliza autenticação baseada em tokens (ex: JWT) nos cabeçalhos,
+                                             // e não cookies de sessão, tornando os ataques CSRF tradicionais ineficazes.
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .cors(withDefaults())
                 .authorizeHttpRequests(req -> {
