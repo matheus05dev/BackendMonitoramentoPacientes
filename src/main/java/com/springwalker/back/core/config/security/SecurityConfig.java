@@ -33,6 +33,7 @@ public class SecurityConfig {
                 .cors(withDefaults())
                 .authorizeHttpRequests(req -> {
                     //EndPoints Públicos
+                    req.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
                     req.requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll();
                     req.requestMatchers(HttpMethod.POST, "/api/auth/refresh").permitAll();
                     req.requestMatchers(HttpMethod.POST,"/api/leituras/atendimento/{atendimentoId}").permitAll();
