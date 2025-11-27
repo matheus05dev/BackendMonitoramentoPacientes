@@ -20,7 +20,7 @@ public class DataInitializer implements CommandLineRunner {
     public void run(String... args) throws Exception {
         if (userRepository.findByUsername("admin.math@mail.com").isEmpty()) {
             User adminUser = new User(
-                    "admin.math@mail.com",
+                    "admin",
                     passwordEncoder.encode("admin"),
                     Role.ADMIN // Adicionando a role de admin
             );
