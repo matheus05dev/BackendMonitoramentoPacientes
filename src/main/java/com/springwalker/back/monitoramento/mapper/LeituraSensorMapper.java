@@ -14,8 +14,10 @@ public interface LeituraSensorMapper {
 
     @Mapping(source = "duracaoEstimadaMinutos", target = "duracaoEstimadaMinutos")
     @Mapping(source = "dataHora", target = "dataHora")
+    @Mapping(source = "codigo", target = "codigo")
     LeituraSensor toModel(LeituraSensorRequestDTO dto);
 
     @Mapping(source = "atendimento.id", target = "atendimentoId")
+    @Mapping(source = "codigo", target = "codigo")
     LeituraSensorResponseDTO toResponse(LeituraSensor model);
 }

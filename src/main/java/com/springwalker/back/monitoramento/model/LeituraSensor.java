@@ -56,4 +56,7 @@ public class LeituraSensor {
 
     @Column(name = "duracao_estimada_minutos")
     private Integer duracaoEstimadaMinutos;
+
+    @Column(name = "codigo_medicacao")
+    private Integer codigo;
 }

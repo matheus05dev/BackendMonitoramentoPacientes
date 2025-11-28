@@ -38,6 +38,7 @@ public class LeituraSensorRestController {
             @RequestBody LeituraSensorRequestDTO requestDTO) {
         logService.logEvent("SALVAR_LEITURA_SENSOR", "Salvando leitura de sensor para atendimento: " + atendimentoId);
         LeituraSensorResponseDTO responseDTO = processaDadosService.salvar(atendimentoId, requestDTO);
+        System.out.println(responseDTO.toString());
         return ResponseEntity.ok(responseDTO);
     }
 

@@ -36,6 +36,7 @@ public class SecurityConfig {
                     req.requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll();
                     req.requestMatchers(HttpMethod.POST, "/api/auth/refresh").permitAll();
                     req.requestMatchers(HttpMethod.POST,"/api/leituras/atendimento/{atendimentoId}").permitAll();
+                    req.requestMatchers(HttpMethod.GET,"/api/leituras/atendimento/{atendimentoId}").permitAll();
                     req.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll();
 
                     // ← ADICIONE ESTA LINHA: Permitir handshake do WebSocket

@@ -19,5 +19,5 @@ public class LeituraSensorResponseDTO {
     private CondicaoSaude condicaoSaude;
     private Gravidade gravidade;
     private Integer duracaoEstimadaMinutos;
-
+    private Integer codigo;
 }
