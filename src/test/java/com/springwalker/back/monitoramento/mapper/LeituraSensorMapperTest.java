@@ -8,6 +8,7 @@ import com.springwalker.back.monitoramento.enums.leitura.Gravidade;
 import com.springwalker.back.monitoramento.enums.leitura.TipoDado;
 import com.springwalker.back.monitoramento.enums.leitura.UnidadeMedida;
 import com.springwalker.back.monitoramento.model.LeituraSensor;
+import com.springwalker.back.monitoramento.model.Notificacao;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
@@ -48,6 +49,7 @@ class LeituraSensorMapperTest {
         assertNull(model.getAtendimento());
         assertNull(model.getGravidade());
         assertNull(model.getCondicaoSaude());
+        assertNull(model.getNotificacao());
     }
 
     @Test
@@ -57,6 +59,9 @@ class LeituraSensorMapperTest {
         Atendimento atendimento = new Atendimento();
         atendimento.setId(5L);
         atendimento.setNumeroQuarto(202);
+
+        Notificacao notificacao = new Notificacao();
+        notificacao.setId(1L);
 
         LeituraSensor model = LeituraSensor.builder()
                 .id(10L)
@@ -68,7 +73,10 @@ class LeituraSensorMapperTest {
                 .gravidade(Gravidade.NORMAL)
                 .condicaoSaude(CondicaoSaude.NORMAL)
                 .duracaoEstimadaMinutos(60)
+                .notificacao(notificacao)
                 .build();
+
+        notificacao.setLeituraSensor(model);
 
         // When
         LeituraSensorResponseDTO responseDTO = mapper.toResponse(model);
