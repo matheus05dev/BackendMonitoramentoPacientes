@@ -21,7 +21,8 @@
 - [🛠️ Tecnologias e Justificativas](#-tecnologias-e-justificativas)
 - [🏗️ Arquitetura do Sistema](#-arquitetura-do-sistema)
 - [🛡️ Qualidade de Código e Segurança](#-qualidade-de-código-e-segurança)
-- [🚀 Como Executar](#-como-executar)
+- [🚀 Como Executar o Backend](#-como-executar-o-backend)
+- [🌐 Ecossistema Completo](#-ecossistema-completo)
 - [📄 Endpoints da API](#-endpoints-da-api)
 - [🗄️ Estrutura de Banco de Dados e Logs](#-estrutura-de-banco-de-dados-e-logs)
 - [💡 Contexto do Projeto](#-contexto-do-projeto)
@@ -139,11 +140,7 @@ O projeto InfraMed preza pela alta qualidade de código e segurança. Para garan
 
 ---
 
-## 🚀 Como Executar
-
-O ecossistema completo é composto por três partes: o **Backend (esta API)**, o **Frontend (Angular)** e um **Simulador IoT (Python)**. Siga os passos abaixo para executar cada um deles.
-
-### 1. Backend (API Spring Boot)
+## 🚀 Como Executar o Backend
 
 1.  **Pré-requisitos:**
     *   JDK 24 ou superior
@@ -156,78 +153,42 @@ O ecossistema completo é composto por três partes: o **Backend (esta API)**, o
     cd BackendMonitoramentoPacientes
     ```
 
-3.  **Configure o banco de dados e variáveis de ambiente:**
+3.  **Configure o banco de dados:**
     *   No seu MySQL, crie um schema (ex: `inframed_db`).
-    *   Edite o arquivo `src/main/resources/application.properties` com suas credenciais do banco. As propriedades mais importantes são:
-        | Propriedade | Descrição | Exemplo |
-        |---|---|---|
-        | `spring.datasource.url` | URL de conexão com o banco de dados MySQL. | `jdbc:mysql://localhost:3306/monitoramentoPacienteDB?createDatabaseIfNotExist=true` |
-        | `spring.datasource.username` | Nome de usuário do banco de dados. | `root` |
-        | `spring.datasource.password` | Senha do usuário do banco de dados. | `sua_senha` |
-        | `server.port` | Porta em que a aplicação Spring Boot será executada. | `8080` |
+    *   Edite o arquivo `src/main/resources/application.properties` com suas credenciais do banco.
 
-4.  **Compile e execute:**
+4.  **Variáveis de Ambiente (application.properties):**
+    As seguintes propriedades são essenciais para a configuração:
+
+    | Propriedade | Descrição | Exemplo |
+    |---|---|---|
+    | `spring.datasource.url` | URL de conexão com o banco de dados MySQL. | `jdbc:mysql://localhost:3306/monitoramentoPacienteDB?createDatabaseIfNotExist=true` |
+    | `spring.datasource.username` | Nome de usuário do banco de dados. | `root` |
+    | `spring.datasource.password` | Senha do usuário do banco de dados. | `sua_senha` |
+    | `server.port` | Porta em que a aplicação será executada. | `8080` |
+
+5.  **Compile e execute:**
     ```bash
     mvn clean install
     mvn spring-boot:run
     ```
 
-5.  **Acesse a aplicação:**
+6.  **Acesse a aplicação:**
     *   **API:** [http://localhost:8080](http://localhost:8080)
     *   **Documentação Swagger:** [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 
-### 2. Frontend (Angular) - Opcional
+---
 
-1.  **Pré-requisitos:**
-    *   [Node.js e npm](https://nodejs.org/en/)
-    *   [Angular CLI](https://angular.io/cli) (`npm install -g @angular/cli`)
+## 🌐 Ecossistema Completo
 
-2.  **Clone o repositório:**
-    ```bash
-    git clone https://github.com/matheus05dev/FrontendMonitoramentoPacientes
-    cd FrontendMonitoramentoPacientes
-    ```
+O projeto é composto por várias partes que trabalham em conjunto. Abaixo estão os links para os outros repositórios:
 
-3.  **Instale as dependências:**
-    ```bash
-    npm install
-    ```
-
-4.  **Execute a aplicação:**
-    ```bash
-    ng serve
-    ```
-
-5.  **Acesse a aplicação:**
-    *   Acesse [http://localhost:4200](http://localhost:4200) no seu navegador.
-
-### 3. Simulador IoT (Python) - Opcional
-
-1.  **Pré-requisitos:**
-    *   [Python 3.x](https://www.python.org/downloads/)
-
-2.  **Clone o repositório:**
-    ```bash
-    git clone https://github.com/matheus05dev/SimuladorIoTMonitoramentoPacientes
-    cd SimuladorIoTMonitoramentoPacientes
-    ```
-
-3.  **Instale as dependências:**
-    *   É recomendado criar um ambiente virtual.
-    ```bash
-    python -m venv venv
-    source venv/bin/activate  # No Windows: venv\Scripts\activate
-    ```
-    *   Instale as bibliotecas necessárias:
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-4.  **Execute o simulador:**
-    *   O simulador irá enviar dados para a API. Certifique-se de que o backend está em execução.
-    ```bash
-    python simulador.py
-    ```
+- **Frontend (Angular):** Interface web para interação com o sistema.
+  - [https://github.com/matheus05dev/FrontendMonitoramentoPacientes](https://github.com/matheus05dev/FrontendMonitoramentoPacientes)
+- **Simulador IoT (Python):** Script para simular o envio de dados de sensores para o backend.
+  - [https://github.com/matheus05dev/SimuladorIoTMonitoramentoPacientes](https://github.com/matheus05dev/SimuladorIoTMonitoramentoPacientes)
+- **Código do ESP32 (IoT):** Firmware para o microcontrolador ESP32 para coleta de dados reais.
+  - [https://github.com/matheus05dev/IoTMonitoramentoPacientes](https://github.com/matheus05dev/IoTMonitoramentoPacientes)
 
 ---
 
