@@ -44,7 +44,6 @@ class NotificacaoMapperTest {
                 .atendimento(atendimento)
                 .gravidade(Gravidade.ALERTA)
                 .condicaoSaude(CondicaoSaude.NORMAL)
-                .duracaoEstimadaMinutos(60)
                 .build();
 
         Notificacao notificacao = Notificacao.builder()
@@ -75,7 +74,6 @@ class NotificacaoMapperTest {
         assertEquals(leituraSensor.getUnidadeMedida(), dto.getLeituraSensor().getUnidadeMedida());
         assertEquals(leituraSensor.getGravidade(), dto.getLeituraSensor().getGravidade());
         assertEquals(leituraSensor.getCondicaoSaude(), dto.getLeituraSensor().getCondicaoSaude());
-        assertEquals(leituraSensor.getDuracaoEstimadaMinutos(), dto.getLeituraSensor().getDuracaoEstimadaMinutos());
         assertEquals(atendimento.getId(), dto.getLeituraSensor().getAtendimentoId()); // Corrected assertion
     }
 

@@ -12,7 +12,6 @@ public interface LeituraSensorMapper {
 
     LeituraSensorMapper INSTANCE = Mappers.getMapper(LeituraSensorMapper.class);
 
-    @Mapping(source = "duracaoEstimadaMinutos", target = "duracaoEstimadaMinutos")
     @Mapping(source = "dataHora", target = "dataHora")
     @Mapping(source = "codigo", target = "codigo")
     LeituraSensor toModel(LeituraSensorRequestDTO dto);

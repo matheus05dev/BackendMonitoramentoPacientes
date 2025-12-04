@@ -32,7 +32,6 @@ class LeituraSensorMapperTest {
         requestDTO.setDataHora(LocalDateTime.of(2023, 1, 20, 14, 0));
         requestDTO.setTipoDado(TipoDado.TEMPERATURA);
         requestDTO.setUnidadeMedida(UnidadeMedida.CELSIUS);
-        requestDTO.setDuracaoEstimadaMinutos(45);
 
         // When
         LeituraSensor model = mapper.toModel(requestDTO);
@@ -43,7 +42,6 @@ class LeituraSensorMapperTest {
         assertEquals(requestDTO.getDataHora(), model.getDataHora());
         assertEquals(requestDTO.getTipoDado(), model.getTipoDado());
         assertEquals(requestDTO.getUnidadeMedida(), model.getUnidadeMedida());
-        assertEquals(requestDTO.getDuracaoEstimadaMinutos(), model.getDuracaoEstimadaMinutos());
         assertNull(model.getId());
         assertNull(model.getAtendimento());
         assertNull(model.getGravidade());
@@ -67,7 +65,6 @@ class LeituraSensorMapperTest {
                 .atendimento(atendimento)
                 .gravidade(Gravidade.NORMAL)
                 .condicaoSaude(CondicaoSaude.NORMAL)
-                .duracaoEstimadaMinutos(60)
                 .build();
 
         // When
@@ -82,7 +79,6 @@ class LeituraSensorMapperTest {
         assertEquals(model.getUnidadeMedida(), responseDTO.getUnidadeMedida());
         assertEquals(model.getGravidade(), responseDTO.getGravidade());
         assertEquals(model.getCondicaoSaude(), responseDTO.getCondicaoSaude());
-        assertEquals(model.getDuracaoEstimadaMinutos(), responseDTO.getDuracaoEstimadaMinutos());
         assertEquals(atendimento.getId(), responseDTO.getAtendimentoId());
     }
 

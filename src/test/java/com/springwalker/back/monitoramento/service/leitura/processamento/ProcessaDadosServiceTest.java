@@ -40,9 +40,6 @@ class ProcessaDadosServiceTest {
     private AtendimentoRepository atendimentoRepository;
     @Mock
     private LeituraSensorMapper leituraSensorMapper;
-    @Mock
-    private AnaliseDadosSensorService analiseDadosSensorService;
-    @Mock
     private GerenciadorNotificacaoService gerenciadorNotificacaoService;
     @Mock
     private EntityManager entityManager;
@@ -83,7 +80,6 @@ class ProcessaDadosServiceTest {
         verify(entityManager, times(1)).clear();
         verify(atendimentoRepository, times(1)).findById(atendimentoId);
         verify(leituraSensorMapper, times(1)).toModel(requestDTO);
-        verify(analiseDadosSensorService, times(1)).analisarDadosSensor(leituraSensor);
         verify(leituraSensorRepository, times(1)).save(leituraSensor);
         verify(gerenciadorNotificacaoService, times(1)).processarEEnviarNotificacao(savedLeitura);
         verify(leituraSensorMapper, times(1)).toResponse(savedLeitura);
@@ -122,7 +118,6 @@ class ProcessaDadosServiceTest {
         verify(entityManager, times(1)).clear();
         verify(atendimentoRepository, times(1)).findById(atendimentoId);
         verify(leituraSensorMapper, times(1)).toModel(requestDTO);
-        verify(analiseDadosSensorService, times(1)).analisarDadosSensor(leituraSensor);
         verify(leituraSensorRepository, times(1)).save(leituraSensor);
         verify(gerenciadorNotificacaoService, never()).processarEEnviarNotificacao(any(LeituraSensor.class));
         verify(leituraSensorMapper, times(1)).toResponse(savedLeitura);
@@ -143,7 +138,6 @@ class ProcessaDadosServiceTest {
         verify(entityManager, times(1)).clear();
         verify(atendimentoRepository, times(1)).findById(atendimentoId);
         verify(leituraSensorMapper, never()).toModel(any());
-        verify(analiseDadosSensorService, never()).analisarDadosSensor(any());
         verify(leituraSensorRepository, never()).save(any());
         verify(gerenciadorNotificacaoService, never()).processarEEnviarNotificacao(any());
         verify(leituraSensorMapper, never()).toResponse(any());
@@ -168,7 +162,6 @@ class ProcessaDadosServiceTest {
         verify(entityManager, times(1)).clear();
         verify(atendimentoRepository, times(1)).findById(atendimentoId);
         verify(leituraSensorMapper, never()).toModel(any());
-        verify(analiseDadosSensorService, never()).analisarDadosSensor(any());
         verify(leituraSensorRepository, never()).save(any());
         verify(gerenciadorNotificacaoService, never()).processarEEnviarNotificacao(any());
         verify(leituraSensorMapper, never()).toResponse(any());

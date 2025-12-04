@@ -28,7 +28,5 @@ public class LeituraSensorRequestDTO {
 
     private Gravidade gravidade;
 
-    private Integer duracaoEstimadaMinutos;
-
     private Integer codigo;
 }

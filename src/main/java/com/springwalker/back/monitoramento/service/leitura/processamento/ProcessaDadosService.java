@@ -24,7 +24,6 @@ public class ProcessaDadosService {
     private final LeituraSensorRepository leituraSensorRepository;
     private final AtendimentoRepository atendimentoRepository;
     private final LeituraSensorMapper leituraSensorMapper;
-    private final AnaliseDadosSensorService analiseDadosSensorService;
     private final GerenciadorNotificacaoService gerenciadorNotificacaoService;
     private final EntityManager entityManager;
 
@@ -36,15 +35,12 @@ public class ProcessaDadosService {
         Atendimento atendimento = atendimentoRepository.findById(atendimentoId)
                 .orElseThrow(() -> new RuntimeException("Atendimento não encontrado com o ID: " + atendimentoId));
 
-        if (atendimento.getStatusMonitoramento() != StatusMonitoramento.MONITORANDO) {
-            throw new RuntimeException("O atendimento com ID " + atendimentoId + " não está em modo de monitoramento.");
-        }
+        validarStatusMonitoramento(atendimento);
 
         LeituraSensor leituraSensor = leituraSensorMapper.toModel(requestDTO);
         leituraSensor.setDataHora(LocalDateTime.now());
         leituraSensor.setAtendimento(atendimento);
 
-        analiseDadosSensorService.analisarDadosSensor(leituraSensor);
 
         LeituraSensor savedLeitura = leituraSensorRepository.save(leituraSensor);
 
@@ -53,5 +49,11 @@ public class ProcessaDadosService {
         }
 
         return leituraSensorMapper.toResponse(savedLeitura);
+    }
+
+    private void validarStatusMonitoramento(Atendimento atendimento) {
+        if (atendimento.getStatusMonitoramento() != StatusMonitoramento.MONITORANDO) {
+            throw new RuntimeException("O atendimento com ID " + atendimento.getId() + " não está em modo de monitoramento.");
+        }
     }
 }

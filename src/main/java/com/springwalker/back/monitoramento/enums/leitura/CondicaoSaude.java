@@ -21,5 +21,7 @@ public enum CondicaoSaude {
     HIPOTENSAO,
 
     // Para Medicação
-    MEDICACAO_FINALIZANDO
+
+    MEDICACAO_FINALIZADA,
+    MEDICACAO_EM_ANDAMENTO
 }
