@@ -21,7 +21,8 @@
 - [🛠️ Tecnologias e Justificativas](#-tecnologias-e-justificativas)
 - [🏗️ Arquitetura do Sistema](#-arquitetura-do-sistema)
 - [🛡️ Qualidade de Código e Segurança](#-qualidade-de-código-e-segurança)
-- [🚀 Como Executar](#-como-executar)
+- [🚀 Como Executar o Backend](#-como-executar-o-backend)
+- [🌐 Ecossistema Completo](#-ecossistema-completo)
 - [📄 Endpoints da API](#-endpoints-da-api)
 - [🗄️ Estrutura de Banco de Dados e Logs](#-estrutura-de-banco-de-dados-e-logs)
 - [💡 Contexto do Projeto](#-contexto-do-projeto)
@@ -139,44 +140,55 @@ O projeto InfraMed preza pela alta qualidade de código e segurança. Para garan
 
 ---
 
-## 🚀 Como Executar
+## 🚀 Como Executar o Backend
 
 1.  **Pré-requisitos:**
     *   JDK 24 ou superior
     *   Maven 4.0.0
     *   MySQL 8.0
+
 2.  **Clone o repositório:**
     ```bash
     git clone https://github.com/matheus05dev/BackendMonitoramentoPacientes
     cd BackendMonitoramentoPacientes
     ```
+
 3.  **Configure o banco de dados:**
     *   No seu MySQL, crie um schema (ex: `inframed_db`).
     *   Edite o arquivo `src/main/resources/application.properties` com suas credenciais do banco.
+
 4.  **Variáveis de Ambiente (application.properties):**
-    As seguintes propriedades no arquivo `src/main/resources/application.properties` são importantes para a configuração da aplicação:
+    As seguintes propriedades são essenciais para a configuração:
 
     | Propriedade | Descrição | Exemplo |
     |---|---|---|
     | `spring.datasource.url` | URL de conexão com o banco de dados MySQL. | `jdbc:mysql://localhost:3306/monitoramentoPacienteDB?createDatabaseIfNotExist=true` |
     | `spring.datasource.username` | Nome de usuário do banco de dados. | `root` |
     | `spring.datasource.password` | Senha do usuário do banco de dados. | `sua_senha` |
-    | `server.port` | Porta em que a aplicação Spring Boot será executada. | `8080` |
-    | `spring.jackson.locale` | Localidade para formatação de dados. | `pt_BR` |
-    | `spring.jackson.time-zone` | Fuso horário da aplicação. | `America/Sao_Paulo` |
+    | `server.port` | Porta em que a aplicação será executada. | `8080` |
 
 5.  **Compile e execute:**
     ```bash
     mvn clean install
     mvn spring-boot:run
     ```
+
 6.  **Acesse a aplicação:**
-    *   **Backend:** [http://localhost:8080](http://localhost:8080)
+    *   **API:** [http://localhost:8080](http://localhost:8080)
     *   **Documentação Swagger:** [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
-7.  **Simulador IoT (Opcional):**
-    *   Para testar o envio de dados dos sensores, utilize o simulador em Python disponível [neste repositório](https://github.com/matheus05dev/SimuladorIoTMonitoramentoPacientes).
-8.  **Frontend Angular (Opcional):**
-    *   Para interagir com a API, utilize o frontend em Angular disponível [neste repositório](https://github.com/matheus05dev/FrontendMonitoramentoPacientes).
+
+---
+
+## 🌐 Ecossistema Completo
+
+O projeto é composto por várias partes que trabalham em conjunto. Abaixo estão os links para os outros repositórios:
+
+- **Frontend (Angular):** Interface web para interação com o sistema.
+  - [https://github.com/matheus05dev/FrontendMonitoramentoPacientes](https://github.com/matheus05dev/FrontendMonitoramentoPacientes)
+- **Simulador IoT (Python):** Script para simular o envio de dados de sensores para o backend.
+  - [https://github.com/matheus05dev/SimuladorIoTMonitoramentoPacientes](https://github.com/matheus05dev/SimuladorIoTMonitoramentoPacientes)
+- **Código do ESP32 (IoT):** Firmware para o microcontrolador ESP32 para coleta de dados reais.
+  - [https://github.com/matheus05dev/IoTMonitoramentoPacientes](https://github.com/matheus05dev/IoTMonitoramentoPacientes)
 
 ---
 

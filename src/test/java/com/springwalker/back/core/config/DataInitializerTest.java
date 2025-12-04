@@ -38,7 +38,7 @@ class DataInitializerTest {
     @Test
     @DisplayName("Não inicializar dados quando o usuário admin já existe")
     void runWhenAdminUserExists() throws Exception {
-        when(userRepository.findByUsername("admin.math@mail.com")).thenReturn(Optional.of(new User()));
+        when(userRepository.findByUsername("admin")).thenReturn(Optional.of(new User()));
 
         dataInitializer.run();
 
@@ -48,7 +48,7 @@ class DataInitializerTest {
     @Test
     @DisplayName("Inicializar dados quando o usuário admin não existe")
     void runWhenAdminUserDoesNotExist() throws Exception {
-        when(userRepository.findByUsername("admin.math@mail.com")).thenReturn(Optional.empty());
+        when(userRepository.findByUsername("admin")).thenReturn(Optional.empty());
         when(passwordEncoder.encode("admin")).thenReturn("encodedPassword");
 
         dataInitializer.run();
@@ -57,7 +57,7 @@ class DataInitializerTest {
         verify(userRepository).save(userCaptor.capture());
 
         User savedUser = userCaptor.getValue();
-        assertEquals("admin.math@mail.com", savedUser.getUsername());
+        assertEquals("admin", savedUser.getUsername());
         assertEquals("encodedPassword", savedUser.getPassword());
         assertEquals(Role.ADMIN, savedUser.getRole());
     }
