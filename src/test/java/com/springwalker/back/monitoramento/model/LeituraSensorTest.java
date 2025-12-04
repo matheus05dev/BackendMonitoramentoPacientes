@@ -32,7 +32,7 @@ class LeituraSensorTest {
         Integer duracaoEstimadaMinutos = 60;
         Integer codigo = 123;
 
-        LeituraSensor leituraSensor = new LeituraSensor(id, valor, dataHora, tipoDado, unidadeMedida, atendimento, gravidade, condicaoSaude, notificacao, duracaoEstimadaMinutos, codigo);
+        LeituraSensor leituraSensor = new LeituraSensor(id, valor, dataHora, tipoDado, unidadeMedida, atendimento, gravidade, condicaoSaude, notificacao, codigo);
 
         assertNotNull(leituraSensor);
         assertEquals(id, leituraSensor.getId());
@@ -44,7 +44,6 @@ class LeituraSensorTest {
         assertEquals(gravidade, leituraSensor.getGravidade());
         assertEquals(condicaoSaude, leituraSensor.getCondicaoSaude());
         assertEquals(notificacao, leituraSensor.getNotificacao());
-        assertEquals(duracaoEstimadaMinutos, leituraSensor.getDuracaoEstimadaMinutos());
         assertEquals(codigo, leituraSensor.getCodigo());
     }
 
@@ -73,7 +72,6 @@ class LeituraSensorTest {
                 .gravidade(gravidade)
                 .condicaoSaude(condicaoSaude)
                 .notificacao(notificacao)
-                .duracaoEstimadaMinutos(duracaoEstimadaMinutos)
                 .codigo(codigo)
                 .build();
 
@@ -87,7 +85,6 @@ class LeituraSensorTest {
         assertEquals(gravidade, leituraSensor.getGravidade());
         assertEquals(condicaoSaude, leituraSensor.getCondicaoSaude());
         assertEquals(notificacao, leituraSensor.getNotificacao());
-        assertEquals(duracaoEstimadaMinutos, leituraSensor.getDuracaoEstimadaMinutos());
         assertEquals(codigo, leituraSensor.getCodigo());
     }
 
@@ -117,7 +114,6 @@ class LeituraSensorTest {
         leituraSensor.setGravidade(gravidade);
         leituraSensor.setCondicaoSaude(condicaoSaude);
         leituraSensor.setNotificacao(notificacao);
-        leituraSensor.setDuracaoEstimadaMinutos(duracaoEstimadaMinutos);
         leituraSensor.setCodigo(codigo);
 
         assertEquals(id, leituraSensor.getId());
@@ -128,8 +124,6 @@ class LeituraSensorTest {
         assertEquals(atendimento, leituraSensor.getAtendimento());
         assertEquals(gravidade, leituraSensor.getGravidade());
         assertEquals(condicaoSaude, leituraSensor.getCondicaoSaude());
-        assertEquals(notificacao, leituraSensor.getNotificacao());
-        assertEquals(duracaoEstimadaMinutos, leituraSensor.getDuracaoEstimadaMinutos());
-        assertEquals(codigo, leituraSensor.getCodigo());
+        assertEquals(notificacao, leituraSensor.getNotificacao());assertEquals(codigo, leituraSensor.getCodigo());
     }
 }
