@@ -22,6 +22,7 @@
 - [🏗️ Arquitetura do Sistema](#-arquitetura-do-sistema)
 - [🛡️ Qualidade de Código e Segurança](#-qualidade-de-código-e-segurança)
 - [🚀 Como Executar o Backend](#-como-executar-o-backend)
+- [🔧 Configuração do ESP (Dispositivo IoT)](#-configuração-do-esp-dispositivo-iot)
 - [🌐 Ecossistema Completo](#-ecossistema-completo)
 - [📄 Endpoints da API](#-endpoints-da-api)
 - [🗄️ Estrutura de Banco de Dados e Logs](#-estrutura-de-banco-de-dados-e-logs)
@@ -176,6 +177,39 @@ O projeto InfraMed preza pela alta qualidade de código e segurança. Para garan
 6.  **Acesse a aplicação:**
     *   **API:** [http://localhost:8080](http://localhost:8080)
     *   **Documentação Swagger:** [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+
+---
+
+## 🔧 Configuração do ESP (Dispositivo IoT)
+
+Para que o dispositivo ESP (como o ESP32) possa enviar dados para a API, existem duas abordagens principais:
+
+### 1. Alterando a Configuração de CORS
+
+A maneira mais flexível é permitir que o endereço IP do seu ESP acesse a API. Para isso, você precisa alterar a configuração de CORS na aplicação Spring.
+
+- **Arquivo:** `src/main/java/com/springwalker/back/core/config/CorsConfig.java`
+- **O que fazer:** Adicione o endereço IP do seu ESP à lista de origens permitidas no método `addCorsMappings`.
+
+**Exemplo:**
+Se o seu ESP estiver no endereço `http://192.168.1.11`, a configuração ficaria assim:
+
+```java
+@Override
+public void addCorsMappings(CorsRegistry registry) {
+    registry.addMapping("/**")
+            .allowedOrigins("http://localhost:4200", "http://192.168.1.11") // Adicione o IP aqui
+            .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "TRACE", "CONNECT");
+}
+```
+
+### 2. Configurando uma Rede Comum
+
+Uma alternativa é garantir que tanto a máquina que executa a API quanto o dispositivo ESP estejam na mesma rede local. Dessa forma, o ESP pode simplesmente enviar as requisições para o endereço IP da máquina onde a API está rodando, na porta configurada (padrão: `8080`).
+
+- **Endereço de Exemplo da API na rede:** `http://<IP_DA_SUA_MAQUINA>:8080`
+
+Essa abordagem não exige alterações no código, mas requer que os dispositivos estejam no mesmo ambiente de rede.
 
 ---
 
