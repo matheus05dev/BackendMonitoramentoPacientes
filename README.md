@@ -127,20 +127,20 @@ O projeto adota uma **arquitetura em camadas** com princípios de **Domain-Drive
 
 ```
 ┌─────────────────────────────────────────────────┐
-│   Controllers (REST + WebSocket)               │
-│   - Recepção de requisições HTTP/WS            │
+│   Controllers (REST + WebSocket)                │
+│   - Recepção de requisições HTTP/WS             │
 │   - Validação inicial                           │
 └─────────────────────────────────────────────────┘
                       ↓
 ┌─────────────────────────────────────────────────┐
-│   Services (Lógica de Negócio)                 │
+│   Services (Lógica de Negócio)                  │
 │   - Regras de validação                         │
 │   - Orquestração de operações                   │
 │   - Processamento de dados                      │
 └─────────────────────────────────────────────────┘
                       ↓
 ┌─────────────────────────────────────────────────┐
-│   Repositories (Acesso a Dados)                │
+│   Repositories (Acesso a Dados)                 │
 │   - Persistência via JPA                        │
 │   - Queries customizadas                        │
 └─────────────────────────────────────────────────┘
