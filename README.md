@@ -436,12 +436,12 @@ Os seguintes endpoints **não requerem autenticação** para facilitar a integra
 
 ```json
 {
-  "valor": 75.0,
-  "dataHora": "2024-12-19T10:30:00",
-  "tipoDado": "FREQUENCIA_CARDIACA",
-  "unidadeMedida": "BPM",
-  "condicaoSaude": "NORMAL",
-  "gravidade": "NORMAL"
+  "valor": 250.5,
+  "tipoDado": "MEDICACAO",
+  "unidadeMedida": "GRAMAS",
+  "condicaoSaude": "MEDICACAO_EM_ANDAMENTO",
+  "codigo": 12,
+  "atendimentoId": 1
 }
 ```
 
